@@ -1,12 +1,12 @@
 # Fdb version 4
-["biber main"] 1779308635.61133 "main.bcf" "main.bbl" "main" 1779308641.73157 0
-  "main.bcf" 1779308641.59906 110782 2932155beb32924d359daad87ed772a6 "pdflatex"
+["biber main"] 1779309029.36492 "main.bcf" "main.bbl" "main" 1779309035.63058 0
+  "main.bcf" 1779309035.51879 110782 2932155beb32924d359daad87ed772a6 "pdflatex"
   "references.bib" 1779302475.20782 2640 858cec710ccb58ce2f16f66c93192ce2 ""
   (generated)
   "main.bbl"
   "main.blg"
   (rewritten before read)
-["pdflatex"] 1779308640.06029 "main.tex" "main.pdf" "main" 1779308641.73189 0
+["pdflatex"] 1779309034.27637 "main.tex" "main.pdf" "main" 1779309035.63092 0
   "/Users/pierrebeaucoral/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc" 1254269338 2375 baa924870cfb487815765f9094cf3728 ""
   "/Users/pierrebeaucoral/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc" 1202520719 2405 5dcf2c1b967ee25cc46c58cd52244aed ""
   "/Users/pierrebeaucoral/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc" 1202520719 2840 216e6e45ad352e2456e1149f28885bee ""
@@ -182,11 +182,11 @@
   "/Users/pierrebeaucoral/Library/TinyTeX/texmf.cnf" 1774272787.69109 708 85fd07691b6294ba94c59dbc62380410 ""
   "figures/predicted_by_class.pdf" 1779308429.57762 11885 7a673e0c29cbe164061029a3c891cf4b ""
   "figures/red_flag_distribution.pdf" 1779308429.61524 12627 078a2dfacbf8705bac386542ab5405ff ""
-  "main.aux" 1779308641.58643 10024 05acee707b9fced3086b29bb9b27df77 "pdflatex"
-  "main.bbl" 1779308637.44094 10800 d824972987ecc4b592088de4cf8b56d6 "biber main"
-  "main.out" 1779308641.59344 1170 12c149d76845d4d8ebc837a872c98b0f "pdflatex"
-  "main.run.xml" 1779308641.60243 2345 2a3bf96a8d53afbde995fbc1171fecf2 "pdflatex"
-  "main.tex" 1779308527.51722 43144 0cffb7251d9ca6825ca6833b0f69dbe1 ""
+  "main.aux" 1779309035.51587 10024 d61f137801f2acbba800672438b38695 "pdflatex"
+  "main.bbl" 1779309031.23134 10800 d824972987ecc4b592088de4cf8b56d6 "biber main"
+  "main.out" 1779309035.51784 1170 12c149d76845d4d8ebc837a872c98b0f "pdflatex"
+  "main.run.xml" 1779309035.52027 2345 2a3bf96a8d53afbde995fbc1171fecf2 "pdflatex"
+  "main.tex" 1779309008.93542 44417 1fe097b4e792039d75b0a40ad04750d8 ""
   "tables/eval_bypubtype.tex" 1779308429.61772 531 a04ea0d174280c59da8ffa8d20a7b4c2 ""
   "tables/eval_bysource.tex" 1779308429.61684 387 bdd8290bf385fafa5c25197e191df0e6 ""
   "tables/eval_headline.tex" 1779308429.6161 570 4d1b2b17da878b236ed1689834af7490 ""
