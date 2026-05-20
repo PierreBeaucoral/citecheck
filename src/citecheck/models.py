@@ -177,14 +177,55 @@ class RetractionCheck(BaseModel):
         return normalize_doi(v) if isinstance(v, str) else None
 
 
+class HallucinationVerdict(StrEnum):
+    """Aggregate verdict from the 5-layer hallucination detector."""
+
+    REAL_HIGH_CONFIDENCE = "real_high_confidence"
+    REAL_LOW_CONFIDENCE = "real_low_confidence"
+    SUSPICIOUS = "suspicious"
+    LIKELY_HALLUCINATED = "likely_hallucinated"
+    UNCHECKED = "unchecked"
+
+
+class LayerSignal(BaseModel):
+    """Per-layer result emitted by the hallucination detector.
+
+    `flagged` is True when the layer found something suspicious. The detector
+    aggregates the count of flagged signals into a verdict.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    layer: str
+    flagged: bool
+    score: float | None = Field(default=None, ge=0.0, le=1.0)
+    reasoning: str
+
+
+class HallucinationCheck(BaseModel):
+    """Verdict for a single reference's hallucination check."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    verdict: HallucinationVerdict = HallucinationVerdict.UNCHECKED
+    red_flag_count: int = Field(default=0, ge=0)
+    signals: list[LayerSignal] = Field(default_factory=list)
+    reasoning: str = ""
+    caveats: list[str] = Field(
+        default_factory=list,
+        description="Conditions that warranted downgrading the verdict (e.g., pre-2000 paper).",
+    )
+
+
 class CheckedReference(BaseModel):
     """A Reference paired with all the per-reference check results.
 
-    Phase 2 introduces `retraction`. Phases 3+ will append `hallucination`,
-    `journal_quality`, `claim` to this model.
+    Phase 2 introduces `retraction`. Phase 3 adds `hallucination`. Phases 4+
+    will append `journal_quality`, `claim`.
     """
 
     model_config = ConfigDict(extra="forbid")
 
     reference: Reference
     retraction: RetractionCheck = Field(default_factory=RetractionCheck)
+    hallucination: HallucinationCheck = Field(default_factory=HallucinationCheck)

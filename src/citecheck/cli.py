@@ -14,7 +14,13 @@ from rich.table import Table
 
 from citecheck import __version__
 from citecheck.extraction.grobid_client import is_alive
-from citecheck.models import CheckedReference, Reference, ResolutionStatus, RetractionStatus
+from citecheck.models import (
+    CheckedReference,
+    HallucinationVerdict,
+    Reference,
+    ResolutionStatus,
+    RetractionStatus,
+)
 from citecheck.pipeline.check import run as run_check
 from citecheck.pipeline.extract import run as run_extract
 
@@ -104,34 +110,53 @@ _RETRACTION_STYLES = {
     RetractionStatus.ERROR: "red",
 }
 
+_HALLUCINATION_STYLES = {
+    HallucinationVerdict.LIKELY_HALLUCINATED: "bold red",
+    HallucinationVerdict.SUSPICIOUS: "yellow",
+    HallucinationVerdict.REAL_LOW_CONFIDENCE: "cyan",
+    HallucinationVerdict.REAL_HIGH_CONFIDENCE: "green",
+    HallucinationVerdict.UNCHECKED: "dim",
+}
+
+# Compact labels keep the table readable when both Retraction and Hallucination
+# columns are shown.
+_HALL_LABELS = {
+    HallucinationVerdict.LIKELY_HALLUCINATED: "hallucinated",
+    HallucinationVerdict.SUSPICIOUS: "suspicious",
+    HallucinationVerdict.REAL_LOW_CONFIDENCE: "real(low)",
+    HallucinationVerdict.REAL_HIGH_CONFIDENCE: "real(high)",
+    HallucinationVerdict.UNCHECKED: "unchecked",
+}
+
 
 def _render_check_table(checked: list[CheckedReference]) -> Table:
     table = Table(title="Reference check report", show_lines=False)
     table.add_column("#", justify="right", style="dim")
-    table.add_column("Title", overflow="fold", max_width=50)
+    table.add_column("Title", overflow="fold", max_width=48)
     table.add_column("Year", justify="right")
     table.add_column("Resolution")
     table.add_column("Retraction")
-    table.add_column("DOI", overflow="fold", max_width=36)
-    table.add_column("Notice", overflow="fold", max_width=30)
+    table.add_column("Hallucination")
+    table.add_column("DOI", overflow="fold", max_width=32)
 
     for i, item in enumerate(checked, 1):
         ref = item.reference
         retr = item.retraction
+        hall = item.hallucination
         res_style = _STATUS_STYLES[ref.status]
         retr_style = _RETRACTION_STYLES[retr.status]
+        hall_style = _HALLUCINATION_STYLES[hall.verdict]
         title = ref.raw.title or ref.raw.raw_text
         year = str(ref.raw.year) if ref.raw.year else "—"
         doi = ref.resolved_doi or ref.raw.doi or ""
-        notice = retr.notice_doi or ""
         table.add_row(
             str(i),
-            _truncate(title, 50),
+            _truncate(title, 48),
             year,
             f"[{res_style}]{ref.status.value}[/{res_style}]",
             f"[{retr_style}]{retr.status.value}[/{retr_style}]",
+            f"[{hall_style}]{_HALL_LABELS[hall.verdict]}[/{hall_style}]",
             doi,
-            notice,
         )
     return table
 
@@ -140,18 +165,26 @@ def _render_check_summary(checked: list[CheckedReference]) -> str:
     total = len(checked)
     if not total:
         return "[dim]No references found.[/dim]"
-    counts = dict.fromkeys(RetractionStatus, 0)
+    retr_counts = dict.fromkeys(RetractionStatus, 0)
+    hall_counts = dict.fromkeys(HallucinationVerdict, 0)
     for c in checked:
-        counts[c.retraction.status] += 1
+        retr_counts[c.retraction.status] += 1
+        hall_counts[c.hallucination.verdict] += 1
     pct = lambda n: f"{n}/{total} ({n / total:.0%})"  # noqa: E731
     return (
-        f"[bold]Retraction status:[/bold]  "
-        f"[green]clean:[/green] {pct(counts[RetractionStatus.CLEAN])}  "
-        f"[bold red]retracted:[/bold red] {pct(counts[RetractionStatus.RETRACTED])}  "
-        f"[bold yellow]EOC:[/bold yellow] {pct(counts[RetractionStatus.EXPRESSION_OF_CONCERN])}  "
-        f"[yellow]correction:[/yellow] {pct(counts[RetractionStatus.CORRECTION])}  "
-        f"[dim]unchecked:[/dim] {pct(counts[RetractionStatus.UNCHECKED])}  "
-        f"[red]error:[/red] {pct(counts[RetractionStatus.ERROR])}"
+        "[bold]Retraction:[/bold]  "
+        f"[green]clean:[/green] {pct(retr_counts[RetractionStatus.CLEAN])}  "
+        f"[bold red]retracted:[/bold red] {pct(retr_counts[RetractionStatus.RETRACTED])}  "
+        f"[bold yellow]EOC:[/bold yellow] {pct(retr_counts[RetractionStatus.EXPRESSION_OF_CONCERN])}  "
+        f"[yellow]correction:[/yellow] {pct(retr_counts[RetractionStatus.CORRECTION])}  "
+        f"[dim]unchecked:[/dim] {pct(retr_counts[RetractionStatus.UNCHECKED])}  "
+        f"[red]err:[/red] {pct(retr_counts[RetractionStatus.ERROR])}\n"
+        "[bold]Hallucination:[/bold]  "
+        f"[green]real(high):[/green] {pct(hall_counts[HallucinationVerdict.REAL_HIGH_CONFIDENCE])}  "
+        f"[cyan]real(low):[/cyan] {pct(hall_counts[HallucinationVerdict.REAL_LOW_CONFIDENCE])}  "
+        f"[yellow]suspicious:[/yellow] {pct(hall_counts[HallucinationVerdict.SUSPICIOUS])}  "
+        f"[bold red]hallucinated:[/bold red] {pct(hall_counts[HallucinationVerdict.LIKELY_HALLUCINATED])}  "
+        f"[dim]unchecked:[/dim] {pct(hall_counts[HallucinationVerdict.UNCHECKED])}"
     )
 
 
@@ -168,11 +201,32 @@ def check(
             help="Bypass the on-disk cache (~/.citecheck/cache.db). Forces fresh API calls.",
         ),
     ] = False,
+    only_hallucination: Annotated[
+        bool,
+        typer.Option(
+            "--only-hallucination",
+            help="Skip the retraction check; run only the hallucination detector.",
+        ),
+    ] = False,
+    skip_hallucination: Annotated[
+        bool,
+        typer.Option(
+            "--skip-hallucination",
+            help="Skip the hallucination detector (faster — no OpenAlex author/venue calls).",
+        ),
+    ] = False,
     skip_liveness: Annotated[
         bool, typer.Option("--skip-liveness", help="Skip the GROBID liveness probe.")
     ] = False,
 ) -> None:
-    """Extract references, resolve them, and run retraction checks."""
+    """Extract references, resolve them, and run retraction + hallucination checks."""
+    if only_hallucination and skip_hallucination:
+        typer.secho(
+            "--only-hallucination and --skip-hallucination are mutually exclusive.",
+            err=True,
+            fg=typer.colors.RED,
+        )
+        raise typer.Exit(code=2)
     if not pdf_path.is_file():
         typer.secho(f"File not found: {pdf_path}", err=True, fg=typer.colors.RED)
         raise typer.Exit(code=2)
@@ -186,7 +240,12 @@ def check(
         )
         raise typer.Exit(code=3)
 
-    checked = run_check(pdf_path, use_cache=not no_cache)
+    checked = run_check(
+        pdf_path,
+        use_cache=not no_cache,
+        skip_retraction=only_hallucination,
+        skip_hallucination=skip_hallucination,
+    )
 
     if as_json:
         sys.stdout.write(
