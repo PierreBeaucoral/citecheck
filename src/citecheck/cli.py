@@ -247,6 +247,13 @@ def check(
             help="Skip the hallucination detector (faster — no OpenAlex author/venue calls).",
         ),
     ] = False,
+    verify_claims_flag: Annotated[
+        bool,
+        typer.Option(
+            "--verify-claims",
+            help="Phase 5: also check each in-text citation against the cited paper's text via local LLM. Slow (minutes per paper); requires Ollama + sentence-transformers (uv sync --extra claims).",
+        ),
+    ] = False,
     skip_liveness: Annotated[
         bool, typer.Option("--skip-liveness", help="Skip the GROBID liveness probe.")
     ] = False,
@@ -277,6 +284,7 @@ def check(
         use_cache=not no_cache,
         skip_retraction=only_hallucination,
         skip_hallucination=skip_hallucination,
+        verify_claims=verify_claims_flag,
     )
 
     # Warn once if OpenAlex was unavailable for any check. Streaming this banner
@@ -284,7 +292,11 @@ def check(
     if any(
         "openalex" in n.lower() and "exhausted" in n.lower()
         for c in checked
-        for n in (c.retraction.notes + c.hallucination.caveats + [s.reasoning for s in c.hallucination.signals])
+        for n in (
+            c.retraction.notes
+            + c.hallucination.caveats
+            + [s.reasoning for s in c.hallucination.signals]
+        )
     ):
         until = budget.exhausted_until()
         when = until.isoformat() if until else "later today"

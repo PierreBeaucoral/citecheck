@@ -217,11 +217,42 @@ class HallucinationCheck(BaseModel):
     )
 
 
+class ClaimStatus(StrEnum):
+    """Verdict of the Phase 5 claim-verification check."""
+
+    SUPPORTED = "supported"
+    PARTIAL = "partial"
+    NOT_SUPPORTED = "not_supported"
+    UNVERIFIABLE = "unverifiable"  # paywalled / no OA PDF available / no text retrieved
+    UNCHECKED = "unchecked"  # no DOI to fetch, or feature not requested
+    ERROR = "error"
+
+
+class ClaimCheck(BaseModel):
+    """Per-citation verification of whether the cited paper supports the claim."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    status: ClaimStatus = ClaimStatus.UNCHECKED
+    claim_sentence: str | None = None
+    quote: str | None = Field(
+        default=None,
+        description="Supporting passage from the cited paper, when the verifier found one.",
+    )
+    confidence: str | None = Field(
+        default=None,
+        description="LLM's self-reported confidence: 'low' | 'medium' | 'high'.",
+    )
+    reasoning: str | None = None
+    notes: list[str] = Field(default_factory=list)
+
+
 class CheckedReference(BaseModel):
     """A Reference paired with all the per-reference check results.
 
-    Phase 2 introduces `retraction`. Phase 3 adds `hallucination`. Phases 4+
-    will append `journal_quality`, `claim`.
+    Phase 2 introduces `retraction`. Phase 3 adds `hallucination`.
+    Phase 5 adds `claims` (a list because a reference may be cited at
+    multiple claim sentences). Phase 4 will add `journal_quality`.
     """
 
     model_config = ConfigDict(extra="forbid")
@@ -229,3 +260,7 @@ class CheckedReference(BaseModel):
     reference: Reference
     retraction: RetractionCheck = Field(default_factory=RetractionCheck)
     hallucination: HallucinationCheck = Field(default_factory=HallucinationCheck)
+    claims: list[ClaimCheck] = Field(
+        default_factory=list,
+        description="One entry per place this reference is cited in the source PDF.",
+    )

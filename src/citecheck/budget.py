@@ -92,9 +92,9 @@ def openalex_get(client, url: str, **params) -> object | None:
     """
     # Import inside to avoid making metrics a hard dependency of budget's
     # type signature (and to dodge any future circular imports).
-    from citecheck import metrics
-
     import httpx
+
+    from citecheck import metrics
 
     # Normalize for stable metric aggregation: strip the base URL and any
     # specific identifier so /works/doi:10.x/y and /works/doi:10.a/b both
@@ -103,7 +103,7 @@ def openalex_get(client, url: str, **params) -> object | None:
     endpoint = raw_endpoint
     for base in ("https://api.openalex.org", "http://api.openalex.org"):
         if endpoint.startswith(base):
-            endpoint = endpoint[len(base):]
+            endpoint = endpoint[len(base) :]
             break
     # Collapse /works/doi:* and /authors/A123 to bucket forms.
     import re as _re

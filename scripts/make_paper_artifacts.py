@@ -292,9 +292,7 @@ def _emit_bypubtype_clean(predictions: list[dict], labels_by_id: dict[str, dict]
         "\\begin{tabular}{lrrrcccc}\n\\toprule\n"
         "Publication type                          & N & Fab & Real & "
         "Precision & Recall & FPR & $F_1$ \\\\\n"
-        "\\midrule\n"
-        + "\n".join(rows)
-        + "\n\\bottomrule\n\\end{tabular}\n"
+        "\\midrule\n" + "\n".join(rows) + "\n\\bottomrule\n\\end{tabular}\n"
     )
     (TABLES_DIR / "eval_bypubtype.tex").write_text(body, encoding="utf-8")
 
@@ -331,14 +329,10 @@ def _emit_per_layer_firing_rate(predictions: list[dict]) -> None:
     rows = []
     for layer in layers:
         real_flag_rate = (
-            sum(1 for p in real if p.get("layer_flags", {}).get(layer)) / len(real)
-            if real
-            else 0.0
+            sum(1 for p in real if p.get("layer_flags", {}).get(layer)) / len(real) if real else 0.0
         )
         fab_flag_rate = (
-            sum(1 for p in fab if p.get("layer_flags", {}).get(layer)) / len(fab)
-            if fab
-            else 0.0
+            sum(1 for p in fab if p.get("layer_flags", {}).get(layer)) / len(fab) if fab else 0.0
         )
         rows.append(
             f"{nice_names[layer]:<32} & {_fmt(real_flag_rate)} & {_fmt(fab_flag_rate)} \\\\"
@@ -347,9 +341,7 @@ def _emit_per_layer_firing_rate(predictions: list[dict]) -> None:
     body = (
         "\\begin{tabular}{lcc}\n\\toprule\n"
         "Layer                          & Flag rate (real) & Flag rate (fab) \\\\\n"
-        "\\midrule\n"
-        + "\n".join(rows)
-        + "\n\\bottomrule\n\\end{tabular}\n"
+        "\\midrule\n" + "\n".join(rows) + "\n\\bottomrule\n\\end{tabular}\n"
     )
     (TABLES_DIR / "eval_per_layer.tex").write_text(body, encoding="utf-8")
 

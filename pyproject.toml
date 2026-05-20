@@ -35,6 +35,16 @@ dev = [
     "ruff>=0.5",
     "respx>=0.21",
 ]
+# Phase 5: claim verification needs a local sentence-transformer for chunk
+# embeddings plus an Ollama-served LLM for the verifier prompt. Both are
+# heavy (sentence-transformers pulls torch; ollama needs a separate runtime),
+# so they live in an opt-in extra. Install with: uv sync --extra claims
+claims = [
+    "sentence-transformers>=3.0",
+    "lancedb>=0.13",
+    "ollama>=0.4",
+    "pypdf>=4.0",
+]
 
 [project.scripts]
 citecheck = "citecheck.cli:app"
