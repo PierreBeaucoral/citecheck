@@ -6,7 +6,7 @@ readme = "README.md"
 license = { text = "Apache-2.0" }
 requires-python = ">=3.11"
 authors = [
-    { name = "Pierre Beaucoral", email = "p.beauco@gmail.com" },
+    { name = "Pierre Beaucoral", email = "pbeauco@gmail.com" },
 ]
 keywords = ["citations", "retractions", "open-science", "meta-science", "academic-integrity"]
 classifiers = [

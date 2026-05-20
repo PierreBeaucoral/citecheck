@@ -58,10 +58,12 @@ htmlcov/
 # citecheck local cache + downloaded papers
 .citecheck/
 
-# Data — keep structure, not contents (eval set is opt-in via DVC/git-lfs later)
+# Data
+# - Fixtures: user-supplied PDFs for local testing, never tracked
+# - Eval set: labels.csv and corpus_definition.md ARE tracked (ground truth lives in git);
+#   PDFs are fetched on demand via scripts/fetch_eval_pdfs.py and cached in .citecheck/
 data/fixtures/*.pdf
 data/eval/*.pdf
-data/eval/*.csv
 
 # Build artifacts
 *.log
