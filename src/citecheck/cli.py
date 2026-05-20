@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 from rich.console import Console
 from rich.table import Table
 
-from citecheck import __version__
+from citecheck import __version__, budget, metrics
 from citecheck.extraction.grobid_client import is_alive
 from citecheck.models import (
     CheckedReference,
@@ -44,6 +44,38 @@ def _root() -> None:
 def version() -> None:
     """Print the installed citecheck version."""
     typer.echo(__version__)
+
+
+@app.command()
+def stats() -> None:
+    """Show OpenAlex / Crossref API consumption from the local metrics DB."""
+    rows = metrics.summary(7)
+    if not rows:
+        typer.echo("No API calls recorded yet.")
+        return
+    table = Table(title="API consumption (rolling 7 days)")
+    table.add_column("Source")
+    table.add_column("Endpoint")
+    table.add_column("Today", justify="right")
+    table.add_column("7-day total", justify="right")
+    table.add_column("Cache hit %", justify="right")
+    for r in rows:
+        table.add_row(
+            r["source"],
+            r["endpoint"],
+            str(r["today"]),
+            str(r["window"]),
+            f"{r['cache_hit_pct']:.0%}",
+        )
+    console.print(table)
+
+    until = budget.exhausted_until()
+    if until is not None:
+        console.print(
+            f"\n[yellow]OpenAlex circuit is OPEN.[/yellow] "
+            f"Budget exhausted until [bold]{until.isoformat()}[/bold]. "
+            "Tool is running in Crossref-only fallback."
+        )
 
 
 _STATUS_STYLES = {
@@ -246,6 +278,23 @@ def check(
         skip_retraction=only_hallucination,
         skip_hallucination=skip_hallucination,
     )
+
+    # Warn once if OpenAlex was unavailable for any check. Streaming this banner
+    # before the report keeps it visible even in long outputs.
+    if any(
+        "openalex" in n.lower() and "exhausted" in n.lower()
+        for c in checked
+        for n in (c.retraction.notes + c.hallucination.caveats + [s.reasoning for s in c.hallucination.signals])
+    ):
+        until = budget.exhausted_until()
+        when = until.isoformat() if until else "later today"
+        typer.secho(
+            f"⚠  OpenAlex daily budget exhausted; ran in Crossref-only fallback "
+            f"(retraction is_retracted check and hallucination L3/L4/L5 layers "
+            f"degraded). Resumes at {when}.",
+            err=True,
+            fg=typer.colors.YELLOW,
+        )
 
     if as_json:
         sys.stdout.write(

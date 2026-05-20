@@ -256,7 +256,7 @@ Reproducibility is built into the repository. The script \texttt{scripts/build\_
 \end{threeparttable}
 \end{table}
 
-\Cref{tab:eval-bypubtype} breaks the Walters slice down further by publication type. The publication-type field comes from the original Walters and Wilder supplementary appendix, where each citation is tagged \texttt{A} for articles, \texttt{B} for books, \texttt{C} for chapters, or \texttt{W} for websites and grey literature. This decomposition is where the detector's strengths and weaknesses appear most clearly. Articles --- the design target --- attain precision 0.865 and recall 0.957 with false-positive rate 0.086. Books are the residual weakness: precision 0.205 against recall 0.964, on 28 fabrications and 176 real references. Chapters and websites have too few labels in the v1 corpus to be informative (N=33 and N=16 respectively). \Cref{fig:predicted-by-class} visualizes the same pattern at the verdict level: real references concentrate in \texttt{real\_high} and \texttt{real\_low}; fabricated references shift almost entirely to \texttt{suspicious}; the remaining false negatives are nearly all book-class items that L1 and L2 alone could not flag. \Cref{fig:red-flag-dist} reads the same data through the lens of red-flag counts: real references mass at 0--1 flags while fabricated references mass at 2--3, with the right-shift compressed for books because L4 and L5 are inapplicable.
+\Cref{tab:eval-bypubtype} breaks the Walters slice down further by publication type. The publication-type field comes from the original Walters and Wilder supplementary appendix, where each citation is tagged \texttt{A} for articles, \texttt{B} for books, \texttt{C} for chapters, or \texttt{W} for websites and grey literature. This decomposition is where the detector's strengths and weaknesses appear most clearly. Articles --- the design target --- attain precision 0.865 and recall 0.957 with false-positive rate 0.086. Books are the residual weakness: precision 0.205 against recall 0.964, on 28 fabrications and 176 real references. Chapters and websites have too few labels in the v1 corpus to be informative (N=33 and N=16 respectively). \Cref{fig:metrics-by-pubtype} renders the per-type result as a grouped bar chart, where the article column dominates and the book column shows precision below false-positive rate --- the visual signature of a detector that flags too liberally on a class. \Cref{fig:predicted-by-class} visualizes the same data at the verdict level: real references concentrate in \texttt{real\_high} and \texttt{real\_low}; fabricated references shift almost entirely to \texttt{suspicious}; the remaining false negatives are nearly all book-class items that L1 and L2 alone could not flag. \Cref{fig:red-flag-dist} reads the same data through the lens of red-flag counts: real references mass at 0--1 flags while fabricated references mass at 2--3, with the right-shift compressed for books because L4 and L5 are inapplicable.
 
 \begin{table}[htbp]
 \centering
@@ -269,6 +269,13 @@ Reproducibility is built into the repository. The script \texttt{scripts/build\_
 \end{tablenotes}
 \end{threeparttable}
 \end{table}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.85\textwidth]{figures/metrics_by_pubtype.pdf}
+\caption{Precision, recall, and false-positive rate per publication type (Walters slice). Articles attain precision and recall both near 0.9 with FPR below 0.10. Books show high recall (0.96) but precision drops to 0.20 and FPR to 0.60 --- the classic signature of a detector that is over-flagging in the absence of discriminating signal.}
+\label{fig:metrics-by-pubtype}
+\end{figure}
 
 \begin{figure}[htbp]
 \centering
@@ -315,5 +322,28 @@ On a labeled corpus of 770 references drawn from \citet{walters_wilder_2023} and
 The next release adds an economics-specific fabrication corpus and at least one medical corpus so that out-of-domain generalization can be measured. The next major feature beyond that is a claim-verification checker (Phase 5) that detects misrepresentation by retrieving the cited paper's text and querying it against the in-text claim. A web front-end (Phase 6) will then make the tool available to authors who cannot run a Docker stack locally. The repository, the eval corpus, and this paper's replication materials are public at \url{https://github.com/pierrebeaucoral/citecheck}.
 
 \printbibliography
+
+\newpage
+\appendix
+
+\section{Per-layer firing rates}\label{app:per-layer}
+
+\Cref{tab:per-layer-firing} reports the marginal flag rate of each detector layer on the 770-reference corpus, stratified by ground-truth class. The right column (fabricated references) shows which layers actually contribute to true-positive detections; the left column (real references) shows which layers drive false positives. The empirical signature of the book-coverage problem is visible at L3: real-reference flag rate is materially non-zero because monograph authors often lack OpenAlex coverage. L5 (author--title coherence) is the largest contributor to fabricated-reference flags, consistent with the design intent of catching real-author + invented-title combinations. L4 fires rarely on either class because OpenAlex's source index is well-populated for established journals.
+
+\begin{table}[htbp]
+\centering
+\caption{Per-layer firing rate by ground-truth class}
+\label{tab:per-layer-firing}
+\begin{threeparttable}
+\input{tables/eval_per_layer.tex}
+\begin{tablenotes}\small
+\item \textit{Notes:} Fraction of references for which the named layer raised a flag. L1 and L5 are coherence layers (compare two fields against each other); L2, L3, L4 are existence layers (does a single field appear in a public index). Computed from \texttt{layer\_flags} field of \texttt{results.json}; generated by \texttt{scripts/make\_paper\_artifacts.py}.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+\section{Retraction-check coverage}\label{app:retraction}
+
+The retraction check (\cref{sec:tool} stage 3) was not evaluated at scale in this paper because the v1 eval corpus does not contain known-retracted references. The single direct test case is the Wakefield 1998 MMR paper, which citecheck correctly classifies as retracted via OpenAlex's \texttt{is\_retracted} flag even though Crossref's \texttt{update-to} field for that record is empty (the publisher never backfilled the retraction notice). A v2 eval pass will source ~30 retracted DOIs from OpenAlex's \texttt{is\_retracted:true} filter and report retraction-detection precision and recall alongside the fabrication metrics.
 
 \end{document}

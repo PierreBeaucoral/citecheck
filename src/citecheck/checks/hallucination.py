@@ -52,6 +52,7 @@ import httpx
 from rapidfuzz import fuzz
 from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_exponential
 
+from citecheck import budget
 from citecheck.checks.cache import CacheStore
 from citecheck.models import (
     Author,
@@ -93,8 +94,9 @@ def _client(timeout_s: float) -> httpx.Client:
     stop=stop_after_attempt(3),
     reraise=True,
 )
-def _get(client: httpx.Client, url: str, **params: Any) -> httpx.Response:
-    return client.get(url, params=params)
+def _get(client: httpx.Client, url: str, **params: Any) -> httpx.Response | None:
+    """Wrap client.get with budget circuit + metrics; None when budget exhausted."""
+    return budget.openalex_get(client, url, **params)
 
 
 # ----- Layer 1: DOI integrity -------------------------------------------------
@@ -217,7 +219,8 @@ def _openalex_author_lookup(
     except httpx.RequestError as exc:
         log.warning("hallucination L3: author lookup failed for %r: %s", query, exc)
         return None  # network error: leave the layer to give benefit of doubt
-    if resp.status_code != 200:
+    if resp is None or resp.status_code != 200:
+        # Budget exhausted (None) or upstream error: give benefit of doubt.
         return None
 
     items = (resp.json() or {}).get("results") or []
@@ -302,7 +305,8 @@ def _openalex_source_exists(
     except httpx.RequestError as exc:
         log.warning("hallucination L4: venue lookup failed for %r: %s", journal, exc)
         return True
-    if resp.status_code != 200:
+    if resp is None or resp.status_code != 200:
+        # Budget exhausted or upstream error: benefit of the doubt (don't flag).
         return True
 
     items = (resp.json() or {}).get("results") or []
@@ -385,7 +389,8 @@ def _author_published_title(
     except httpx.RequestError as exc:
         log.warning("hallucination L5: author-title lookup failed: %s", exc)
         return True  # network error → don't flag
-    if resp.status_code != 200:
+    if resp is None or resp.status_code != 200:
+        # Budget exhausted or upstream error: don't flag.
         return True
 
     items = (resp.json() or {}).get("results") or []

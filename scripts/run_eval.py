@@ -114,6 +114,11 @@ def main() -> int:
             pkey = "pos" if predicted_pos else "neg"
             confusion[(ekey, pkey)] += 1
 
+            # Per-layer flag info enables the firing-rate analysis the
+            # writer-critic flagged as missing. We store {layer_name: flagged}
+            # so the per-layer table can be computed from this output without
+            # re-running the eval.
+            layer_flags = {s.layer: bool(s.flagged) for s in check.signals}
             predictions.append(
                 {
                     "id": row["id"],
@@ -121,6 +126,7 @@ def main() -> int:
                     "expected_verdict": row["expected_verdict"],
                     "predicted_verdict": check.verdict.value,
                     "red_flag_count": check.red_flag_count,
+                    "layer_flags": layer_flags,
                     "resolution_status": ref.status.value,
                     "resolved_doi": ref.resolved_doi,
                     "title_truncated": (raw.title or raw.raw_text)[:100],

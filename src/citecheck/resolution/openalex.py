@@ -26,6 +26,7 @@ from tenacity import (
     wait_exponential,
 )
 
+from citecheck import budget
 from citecheck.models import RawReference, Reference, ResolutionStatus
 from citecheck.resolution.crossref import (
     AMBIGUOUS_THRESHOLD,
@@ -53,15 +54,17 @@ def _client(timeout_s: float) -> httpx.Client:
     )
 
 
-def _retryable_get(client: httpx.Client, url: str, **params: Any) -> httpx.Response:
+def _retryable_get(client: httpx.Client, url: str, **params: Any) -> httpx.Response | None:
+    """Retry on network errors; return None when OpenAlex budget is exhausted."""
+
     @retry(
         retry=retry_if_exception_type(httpx.RequestError),
         wait=wait_exponential(multiplier=1, min=1, max=10),
         stop=stop_after_attempt(3),
         reraise=True,
     )
-    def _do() -> httpx.Response:
-        return client.get(url, params=params)
+    def _do() -> httpx.Response | None:
+        return budget.openalex_get(client, url, **params)
 
     return _do()
 
@@ -125,6 +128,13 @@ def resolve_by_openalex(raw: RawReference, *, timeout_s: float = DEFAULT_TIMEOUT
                 status=ResolutionStatus.ERROR,
                 notes=[f"resolve_by_openalex: network error: {exc}"],
             )
+
+    if resp is None:
+        return Reference(
+            raw=raw,
+            status=ResolutionStatus.UNRESOLVED,
+            notes=["resolve_by_openalex: OpenAlex daily budget exhausted; skipped"],
+        )
 
     if resp.status_code != 200:
         return Reference(

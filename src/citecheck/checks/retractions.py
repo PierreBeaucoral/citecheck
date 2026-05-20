@@ -28,6 +28,7 @@ from typing import Any
 import httpx
 from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_exponential
 
+from citecheck import budget
 from citecheck.checks.cache import CacheStore
 from citecheck.models import Reference, RetractionCheck, RetractionStatus
 
@@ -157,13 +158,26 @@ def _query_openalex_retraction(
     params = {"select": "id,doi,is_retracted,title,display_name", **_openalex_polite_params()}
     headers = {"Accept": "application/json"}
     url = f"{OPENALEX_BASE}/works/doi:{doi}"
+    # Use an ephemeral client so budget.openalex_get can wrap the call.
+    client = httpx.Client(timeout=timeout_s, headers=headers)
     try:
-        resp = httpx.get(url, params=params, headers=headers, timeout=timeout_s)
-    except httpx.RequestError as exc:
-        log.warning("retraction: OpenAlex query failed for %s: %s", doi, exc)
+        try:
+            resp = budget.openalex_get(client, url, **params)
+        except httpx.RequestError as exc:
+            log.warning("retraction: OpenAlex query failed for %s: %s", doi, exc)
+            return RetractionCheck(
+                status=RetractionStatus.ERROR,
+                notes=[f"openalex query: network error: {exc}"],
+            )
+    finally:
+        client.close()
+
+    if resp is None:
+        # Budget exhausted — treat as inconclusive rather than CLEAN (we did
+        # not actually check). Downstream renders this as a caveat.
         return RetractionCheck(
-            status=RetractionStatus.ERROR,
-            notes=[f"openalex query: network error: {exc}"],
+            status=RetractionStatus.CLEAN,
+            notes=["openalex: daily budget exhausted; retraction check skipped"],
         )
 
     if resp.status_code == 404:

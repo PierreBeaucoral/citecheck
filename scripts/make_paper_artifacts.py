@@ -299,6 +299,115 @@ def _emit_bypubtype_clean(predictions: list[dict], labels_by_id: dict[str, dict]
     (TABLES_DIR / "eval_bypubtype.tex").write_text(body, encoding="utf-8")
 
 
+def _emit_per_layer_firing_rate(predictions: list[dict]) -> None:
+    """Per-layer flag rate broken out by true class.
+
+    Requires results.json to carry `layer_flags` per row (added in run_eval.py).
+    Falls back to an explanatory note when the field is absent (older eval).
+    """
+    if not predictions or "layer_flags" not in predictions[0]:
+        body = (
+            "\\begin{tabular}{lcc}\n\\toprule\n"
+            "Layer & Real refs & Fabricated refs \\\\\n"
+            "\\midrule\n"
+            "\\multicolumn{3}{l}{\\textit{Per-layer firing rates not stored in this eval pass}} \\\\\n"
+            "\\multicolumn{3}{l}{\\textit{(see scripts/run\\_eval.py layer\\_flags field)}} \\\\\n"
+            "\\bottomrule\n\\end{tabular}\n"
+        )
+        (TABLES_DIR / "eval_per_layer.tex").write_text(body, encoding="utf-8")
+        return
+
+    real = [p for p in predictions if p["expected_verdict"] != "likely_hallucinated"]
+    fab = [p for p in predictions if p["expected_verdict"] == "likely_hallucinated"]
+    layers = ["L1_doi_integrity", "L2_cross_db", "L3_authors", "L4_venue", "L5_author_title"]
+    nice_names = {
+        "L1_doi_integrity": "L1 DOI integrity",
+        "L2_cross_db": "L2 Cross-DB existence",
+        "L3_authors": "L3 Author plausibility",
+        "L4_venue": "L4 Venue plausibility",
+        "L5_author_title": "L5 Author--title coherence",
+    }
+
+    rows = []
+    for layer in layers:
+        real_flag_rate = (
+            sum(1 for p in real if p.get("layer_flags", {}).get(layer)) / len(real)
+            if real
+            else 0.0
+        )
+        fab_flag_rate = (
+            sum(1 for p in fab if p.get("layer_flags", {}).get(layer)) / len(fab)
+            if fab
+            else 0.0
+        )
+        rows.append(
+            f"{nice_names[layer]:<32} & {_fmt(real_flag_rate)} & {_fmt(fab_flag_rate)} \\\\"
+        )
+
+    body = (
+        "\\begin{tabular}{lcc}\n\\toprule\n"
+        "Layer                          & Flag rate (real) & Flag rate (fab) \\\\\n"
+        "\\midrule\n"
+        + "\n".join(rows)
+        + "\n\\bottomrule\n\\end{tabular}\n"
+    )
+    (TABLES_DIR / "eval_per_layer.tex").write_text(body, encoding="utf-8")
+
+
+def _emit_bypubtype_barchart(predictions: list[dict], labels_by_id: dict[str, dict]) -> None:
+    """Grouped bar chart: precision / recall / FPR per publication type."""
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    walters = [
+        p
+        for p in predictions
+        if labels_by_id.get(p["id"], {}).get("labeler", "").startswith("walters")
+    ]
+    by_type: dict[str, list[dict]] = {}
+    for p in walters:
+        row = labels_by_id.get(p["id"], {})
+        m_ = re.search(r"type=([ABCW])", row.get("notes", ""))
+        if m_:
+            by_type.setdefault(m_.group(1), []).append(p)
+
+    type_order = ["A", "B", "C", "W"]
+    type_labels = ["Articles", "Books", "Chapters", "Websites"]
+    precision: list[float] = []
+    recall: list[float] = []
+    fpr: list[float] = []
+    for code in type_order:
+        preds_t = by_type.get(code, [])
+        if not preds_t:
+            precision.append(0.0)
+            recall.append(0.0)
+            fpr.append(0.0)
+            continue
+        tp, fn, fp, tn = _confusion(preds_t)
+        m = _metrics_from_confusion(tp, fn, fp, tn)
+        precision.append(0.0 if m["precision"] != m["precision"] else m["precision"])
+        recall.append(0.0 if m["recall"] != m["recall"] else m["recall"])
+        fpr.append(0.0 if m["fpr"] != m["fpr"] else m["fpr"])
+
+    x = list(range(len(type_order)))
+    width = 0.27
+    fig, ax = plt.subplots(figsize=(8.0, 4.5))
+    ax.bar([xi - width for xi in x], precision, width, label="Precision", color="#4c8bd9")
+    ax.bar(x, recall, width, label="Recall", color="#67ad5b")
+    ax.bar([xi + width for xi in x], fpr, width, label="FPR", color="#d9534f")
+    ax.set_xticks(x)
+    ax.set_xticklabels(type_labels)
+    ax.set_ylabel("Rate")
+    ax.set_ylim(0.0, 1.05)
+    ax.axhline(0.5, color="#999", linewidth=0.5, linestyle="--", alpha=0.5)
+    ax.legend(frameon=False, loc="upper right")
+    fig.tight_layout()
+    fig.savefig(FIGURES_DIR / "metrics_by_pubtype.pdf")
+    plt.close(fig)
+
+
 def _emit_predicted_by_class_fig(predictions: list[dict]) -> None:
     import matplotlib
 
@@ -406,6 +515,8 @@ def main() -> int:
     _emit_combined_headline(predictions)
     _emit_combined_bysource(predictions, labels_by_id)
     _emit_bypubtype_clean(predictions, labels_by_id)
+    _emit_per_layer_firing_rate(predictions)
+    _emit_bypubtype_barchart(predictions, labels_by_id)
 
     tp, fn, fp, tn = _confusion(predictions)
     m = _metrics_from_confusion(tp, fn, fp, tn)

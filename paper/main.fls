@@ -347,6 +347,11 @@ INPUT tables/eval_bysource.tex
 INPUT ./tables/eval_bypubtype.tex
 INPUT ./tables/eval_bypubtype.tex
 INPUT tables/eval_bypubtype.tex
+INPUT ./figures/metrics_by_pubtype.pdf
+INPUT ./figures/metrics_by_pubtype.pdf
+INPUT ./figures/metrics_by_pubtype.pdf
+INPUT ./figures/metrics_by_pubtype.pdf
+INPUT ./figures/metrics_by_pubtype.pdf
 INPUT ./figures/predicted_by_class.pdf
 INPUT ./figures/predicted_by_class.pdf
 INPUT ./figures/predicted_by_class.pdf
@@ -358,6 +363,9 @@ INPUT ./figures/red_flag_distribution.pdf
 INPUT ./figures/red_flag_distribution.pdf
 INPUT ./figures/red_flag_distribution.pdf
 INPUT /Users/pierrebeaucoral/Library/TinyTeX/texmf-dist/fonts/tfm/public/lm/ec-lmcsc10.tfm
+INPUT ./tables/eval_per_layer.tex
+INPUT ./tables/eval_per_layer.tex
+INPUT tables/eval_per_layer.tex
 INPUT main.aux
 INPUT ./main.out
 INPUT ./main.out
