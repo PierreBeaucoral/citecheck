@@ -7,9 +7,15 @@ from pathlib import Path
 
 from citecheck.checks.cache import CacheStore
 from citecheck.checks.hallucination import check_hallucination
+from citecheck.checks.journal_quality import check_journal_quality
 from citecheck.checks.retractions import check_retraction
 from citecheck.extraction.fulltext import extract_claims
-from citecheck.models import CheckedReference, HallucinationCheck, RetractionCheck
+from citecheck.models import (
+    CheckedReference,
+    HallucinationCheck,
+    JournalQualityCheck,
+    RetractionCheck,
+)
 from citecheck.pipeline.extract import run as run_extract
 
 log = logging.getLogger(__name__)
@@ -21,6 +27,7 @@ def run(
     use_cache: bool = True,
     skip_retraction: bool = False,
     skip_hallucination: bool = False,
+    skip_journal_quality: bool = False,
     verify_claims: bool = False,
 ) -> list[CheckedReference]:
     """Extract references, resolve them, and run per-reference checks.
@@ -54,6 +61,11 @@ def run(
                 if skip_hallucination
                 else check_hallucination(ref, cache=cache)
             )
+            jq = (
+                JournalQualityCheck()
+                if skip_journal_quality
+                else check_journal_quality(ref, cache=cache)
+            )
             claim_results = []
             if verify_claims and ref.raw.ref_id in claims_by_ref:
                 # Lazy import: keeps the regular pipeline free of heavy deps.
@@ -65,6 +77,7 @@ def run(
                     reference=ref,
                     retraction=retr,
                     hallucination=hall,
+                    journal_quality=jq,
                     claims=claim_results,
                 )
             )

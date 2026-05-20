@@ -37,7 +37,7 @@ def test_no_citations_returns_empty() -> None:
 
 
 def test_ref_without_target_skipped() -> None:
-    body = '<p>Stray ref <ref>X</ref> with no target attribute.</p>'
+    body = "<p>Stray ref <ref>X</ref> with no target attribute.</p>"
     assert parse_fulltext(_tei(body)) == []
 
 

@@ -17,6 +17,7 @@ from citecheck.extraction.grobid_client import is_alive
 from citecheck.models import (
     CheckedReference,
     HallucinationVerdict,
+    JournalRiskLevel,
     Reference,
     ResolutionStatus,
     RetractionStatus,
@@ -160,34 +161,45 @@ _HALL_LABELS = {
     HallucinationVerdict.UNCHECKED: "unchecked",
 }
 
+_JQ_STYLES = {
+    JournalRiskLevel.HIGH: "bold red",
+    JournalRiskLevel.MEDIUM: "yellow",
+    JournalRiskLevel.LOW: "green",
+    JournalRiskLevel.UNCHECKED: "dim",
+}
+
 
 def _render_check_table(checked: list[CheckedReference]) -> Table:
     table = Table(title="Reference check report", show_lines=False)
     table.add_column("#", justify="right", style="dim")
-    table.add_column("Title", overflow="fold", max_width=48)
+    table.add_column("Title", overflow="fold", max_width=44)
     table.add_column("Year", justify="right")
     table.add_column("Resolution")
     table.add_column("Retraction")
     table.add_column("Hallucination")
-    table.add_column("DOI", overflow="fold", max_width=32)
+    table.add_column("Journal")
+    table.add_column("DOI", overflow="fold", max_width=28)
 
     for i, item in enumerate(checked, 1):
         ref = item.reference
         retr = item.retraction
         hall = item.hallucination
+        jq = item.journal_quality
         res_style = _STATUS_STYLES[ref.status]
         retr_style = _RETRACTION_STYLES[retr.status]
         hall_style = _HALLUCINATION_STYLES[hall.verdict]
+        jq_style = _JQ_STYLES[jq.risk_level]
         title = ref.raw.title or ref.raw.raw_text
         year = str(ref.raw.year) if ref.raw.year else "—"
         doi = ref.resolved_doi or ref.raw.doi or ""
         table.add_row(
             str(i),
-            _truncate(title, 48),
+            _truncate(title, 44),
             year,
             f"[{res_style}]{ref.status.value}[/{res_style}]",
             f"[{retr_style}]{retr.status.value}[/{retr_style}]",
             f"[{hall_style}]{_HALL_LABELS[hall.verdict]}[/{hall_style}]",
+            f"[{jq_style}]{jq.risk_level.value}[/{jq_style}]",
             doi,
         )
     return table

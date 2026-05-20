@@ -26,7 +26,6 @@ from citecheck.models import (
     ResolutionStatus,
 )
 
-
 # ---- chunking ---------------------------------------------------------------
 
 
@@ -109,7 +108,7 @@ class _FakeEmbedder:
         # Fall back to zero vector — caller's cosine sim will be 0.
         return np.zeros(len(next(iter(self.mapping.values()))), dtype=float)
 
-    def encode(self, texts, normalize_embeddings: bool = False):  # noqa: ARG002, ANN001
+    def encode(self, texts, normalize_embeddings: bool = False):
         try:
             import numpy as np
         except ImportError:
@@ -234,9 +233,7 @@ class TestVerifyClaim:
             patch("citecheck.checks.claims.fetch_pdf", return_value=fake_pdf),
             patch("citecheck.checks.claims._read_pdf_text", return_value="text"),
         ):
-            result = verify_claim(
-                ref, "claim", embedder=embedder, ollama_call=garbage_ollama
-            )
+            result = verify_claim(ref, "claim", embedder=embedder, ollama_call=garbage_ollama)
         assert result.status == ClaimStatus.ERROR
 
 

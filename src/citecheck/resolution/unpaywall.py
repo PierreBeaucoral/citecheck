@@ -151,19 +151,19 @@ def fetch_pdf(
             httpx.Client(timeout=timeout_s, follow_redirects=True) as client,
             client.stream("GET", url) as resp,
         ):
-                if resp.status_code != 200:
-                    log.warning("unpaywall: PDF fetch %s for %s -> %s", resp.status_code, doi, url)
+            if resp.status_code != 200:
+                log.warning("unpaywall: PDF fetch %s for %s -> %s", resp.status_code, doi, url)
+                return None
+            content_type = resp.headers.get("content-type", "").lower()
+            if "pdf" not in content_type and not url.lower().endswith(".pdf"):
+                log.warning("unpaywall: not a PDF (content-type=%s) for %s", content_type, doi)
+                return None
+            buf = bytearray()
+            for chunk in resp.iter_bytes(chunk_size=64 * 1024):
+                buf.extend(chunk)
+                if len(buf) > MAX_PDF_BYTES:
+                    log.warning("unpaywall: PDF too large (>%d) for %s", MAX_PDF_BYTES, doi)
                     return None
-                content_type = resp.headers.get("content-type", "").lower()
-                if "pdf" not in content_type and not url.lower().endswith(".pdf"):
-                    log.warning("unpaywall: not a PDF (content-type=%s) for %s", content_type, doi)
-                    return None
-                buf = bytearray()
-                for chunk in resp.iter_bytes(chunk_size=64 * 1024):
-                    buf.extend(chunk)
-                    if len(buf) > MAX_PDF_BYTES:
-                        log.warning("unpaywall: PDF too large (>%d) for %s", MAX_PDF_BYTES, doi)
-                        return None
     except httpx.RequestError as exc:
         log.warning("unpaywall: PDF download failed for %s: %s", doi, exc)
         return None

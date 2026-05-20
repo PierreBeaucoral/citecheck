@@ -247,12 +247,42 @@ class ClaimCheck(BaseModel):
     notes: list[str] = Field(default_factory=list)
 
 
+class JournalRiskLevel(StrEnum):
+    """Crude risk classification for the cited venue."""
+
+    LOW = "low"  # in DOAJ and not on any concern list
+    MEDIUM = "medium"  # not in DOAJ, not flagged — likely a small or non-OA journal
+    HIGH = "high"  # publisher name matches a known predatory list
+    UNCHECKED = "unchecked"  # no journal field to look up
+
+
+class JournalQualityCheck(BaseModel):
+    """Per-reference assessment of the cited journal's reputational signals."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    risk_level: JournalRiskLevel = JournalRiskLevel.UNCHECKED
+    doaj_listed: bool | None = Field(
+        default=None,
+        description="True if DOAJ indexes the journal; None if not checked.",
+    )
+    on_concern_list: bool = Field(
+        default=False,
+        description="True if the journal/publisher matches our hard-coded predatory list.",
+    )
+    matched_publisher: str | None = Field(
+        default=None,
+        description="The concern-list entry that matched, if any.",
+    )
+    notes: list[str] = Field(default_factory=list)
+
+
 class CheckedReference(BaseModel):
     """A Reference paired with all the per-reference check results.
 
     Phase 2 introduces `retraction`. Phase 3 adds `hallucination`.
-    Phase 5 adds `claims` (a list because a reference may be cited at
-    multiple claim sentences). Phase 4 will add `journal_quality`.
+    Phase 4 adds `journal_quality`. Phase 5 adds `claims` (a list because
+    a reference may be cited at multiple claim sentences).
     """
 
     model_config = ConfigDict(extra="forbid")
@@ -260,6 +290,7 @@ class CheckedReference(BaseModel):
     reference: Reference
     retraction: RetractionCheck = Field(default_factory=RetractionCheck)
     hallucination: HallucinationCheck = Field(default_factory=HallucinationCheck)
+    journal_quality: JournalQualityCheck = Field(default_factory=JournalQualityCheck)
     claims: list[ClaimCheck] = Field(
         default_factory=list,
         description="One entry per place this reference is cited in the source PDF.",
