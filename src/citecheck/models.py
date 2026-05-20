@@ -135,3 +135,56 @@ class Reference(BaseModel):
     @classmethod
     def _normalize_resolved_doi(cls, v: Any) -> str | None:
         return normalize_doi(v) if isinstance(v, str) else None
+
+
+class RetractionStatus(StrEnum):
+    """Outcome of a per-reference retraction check.
+
+    Values map to Crossref's `update-to` / `relation` types. We treat
+    `withdrawal` as a synonym of `retracted` (Crossref uses both) and group
+    `correction` separately because it does not invalidate the cited work.
+    """
+
+    CLEAN = "clean"
+    RETRACTED = "retracted"
+    EXPRESSION_OF_CONCERN = "expression_of_concern"
+    CORRECTION = "correction"
+    UNCHECKED = "unchecked"  # no DOI to look up
+    ERROR = "error"  # upstream lookup failed
+
+
+class RetractionCheck(BaseModel):
+    """Verdict for a single reference's retraction check."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    status: RetractionStatus = RetractionStatus.UNCHECKED
+    notice_doi: str | None = Field(
+        default=None,
+        description="DOI of the retraction notice (or expression of concern / correction).",
+    )
+    notice_date: str | None = Field(
+        default=None,
+        description="ISO date of the notice when Crossref provides it.",
+    )
+    reason: str | None = None
+    source_url: str | None = None
+    notes: list[str] = Field(default_factory=list)
+
+    @field_validator("notice_doi", mode="before")
+    @classmethod
+    def _normalize_notice_doi(cls, v: Any) -> str | None:
+        return normalize_doi(v) if isinstance(v, str) else None
+
+
+class CheckedReference(BaseModel):
+    """A Reference paired with all the per-reference check results.
+
+    Phase 2 introduces `retraction`. Phases 3+ will append `hallucination`,
+    `journal_quality`, `claim` to this model.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    reference: Reference
+    retraction: RetractionCheck = Field(default_factory=RetractionCheck)

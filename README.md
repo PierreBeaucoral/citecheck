@@ -6,9 +6,12 @@ Free, open-source, runs locally. No accounts, no API keys required for the core 
 
 ## Status
 
-Pre-alpha. Setup + Phase 1 complete: PDF → resolved references via GROBID, Crossref,
-and OpenAlex fallback. On test fixtures (econ arXiv preprints), 89–96% of references
-resolve to canonical DOIs. Phase 2 (retraction check) is the next milestone.
+Pre-alpha. Setup + Phase 1 + Phase 2 complete:
+
+- **Phase 1** — PDF → resolved references via GROBID, Crossref, and OpenAlex fallback. 89–96% of refs resolve to canonical DOIs on test fixtures.
+- **Phase 2** — Retraction check via Crossref `update-to` + OpenAlex `is_retracted` (which integrates the Retraction Watch dataset). Confirmed end-to-end against Wakefield's MMR paper.
+
+Phase 3 (hallucinated citation detection) is the next milestone.
 
 ## What it does (when finished)
 
@@ -46,6 +49,11 @@ docker compose up -d grobid                       # ~30s startup; healthcheck on
 uv run python scripts/fetch_test_fixtures.py 1803.09015     # or any arXiv ID
 uv run citecheck extract data/fixtures/1803.09015.pdf       # Rich table output
 uv run citecheck extract data/fixtures/1803.09015.pdf --json  # JSON for piping
+
+# Phase 2 — extract + resolve + retraction check
+uv run citecheck check data/fixtures/1803.09015.pdf         # adds Retraction column
+uv run citecheck check data/fixtures/1803.09015.pdf --no-cache  # bypass ~/.citecheck/cache.db
+
 docker compose down                               # when finished
 ```
 
@@ -66,8 +74,8 @@ citecheck/
   src/citecheck/
     extraction/   # PDF -> raw references (GROBID, phase 1)
     resolution/   # Reference -> canonical metadata (Crossref/OpenAlex, phase 1)
-    checks/       # Retraction, hallucination, journal-quality, claims (phases 2-5)
-    pipeline/     # Orchestration (phases 2+)
+    checks/       # cache.py + retractions.py (phase 2); hallucination, etc. in 3-5
+    pipeline/     # Orchestrators: extract (phase 1) + check (phase 2)
     models.py     # Pydantic schemas
     cli.py        # Typer CLI entry
   tests/

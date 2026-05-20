@@ -14,7 +14,8 @@ from rich.table import Table
 
 from citecheck import __version__
 from citecheck.extraction.grobid_client import is_alive
-from citecheck.models import Reference, ResolutionStatus
+from citecheck.models import CheckedReference, Reference, ResolutionStatus, RetractionStatus
+from citecheck.pipeline.check import run as run_check
 from citecheck.pipeline.extract import run as run_extract
 
 # Load .env from the current working directory if present. Idempotent; safe in tests.
@@ -92,6 +93,115 @@ def _render_summary(refs: list[Reference]) -> str:
         f"[dim]unresolved:[/dim] {pct(counts[ResolutionStatus.UNRESOLVED])}  "
         f"[red]errors:[/red] {pct(counts[ResolutionStatus.ERROR])}"
     )
+
+
+_RETRACTION_STYLES = {
+    RetractionStatus.RETRACTED: "bold red",
+    RetractionStatus.EXPRESSION_OF_CONCERN: "bold yellow",
+    RetractionStatus.CORRECTION: "yellow",
+    RetractionStatus.CLEAN: "green",
+    RetractionStatus.UNCHECKED: "dim",
+    RetractionStatus.ERROR: "red",
+}
+
+
+def _render_check_table(checked: list[CheckedReference]) -> Table:
+    table = Table(title="Reference check report", show_lines=False)
+    table.add_column("#", justify="right", style="dim")
+    table.add_column("Title", overflow="fold", max_width=50)
+    table.add_column("Year", justify="right")
+    table.add_column("Resolution")
+    table.add_column("Retraction")
+    table.add_column("DOI", overflow="fold", max_width=36)
+    table.add_column("Notice", overflow="fold", max_width=30)
+
+    for i, item in enumerate(checked, 1):
+        ref = item.reference
+        retr = item.retraction
+        res_style = _STATUS_STYLES[ref.status]
+        retr_style = _RETRACTION_STYLES[retr.status]
+        title = ref.raw.title or ref.raw.raw_text
+        year = str(ref.raw.year) if ref.raw.year else "—"
+        doi = ref.resolved_doi or ref.raw.doi or ""
+        notice = retr.notice_doi or ""
+        table.add_row(
+            str(i),
+            _truncate(title, 50),
+            year,
+            f"[{res_style}]{ref.status.value}[/{res_style}]",
+            f"[{retr_style}]{retr.status.value}[/{retr_style}]",
+            doi,
+            notice,
+        )
+    return table
+
+
+def _render_check_summary(checked: list[CheckedReference]) -> str:
+    total = len(checked)
+    if not total:
+        return "[dim]No references found.[/dim]"
+    counts = dict.fromkeys(RetractionStatus, 0)
+    for c in checked:
+        counts[c.retraction.status] += 1
+    pct = lambda n: f"{n}/{total} ({n / total:.0%})"  # noqa: E731
+    return (
+        f"[bold]Retraction status:[/bold]  "
+        f"[green]clean:[/green] {pct(counts[RetractionStatus.CLEAN])}  "
+        f"[bold red]retracted:[/bold red] {pct(counts[RetractionStatus.RETRACTED])}  "
+        f"[bold yellow]EOC:[/bold yellow] {pct(counts[RetractionStatus.EXPRESSION_OF_CONCERN])}  "
+        f"[yellow]correction:[/yellow] {pct(counts[RetractionStatus.CORRECTION])}  "
+        f"[dim]unchecked:[/dim] {pct(counts[RetractionStatus.UNCHECKED])}  "
+        f"[red]error:[/red] {pct(counts[RetractionStatus.ERROR])}"
+    )
+
+
+@app.command()
+def check(
+    pdf_path: Annotated[Path, typer.Argument(help="Path to the PDF to scan.")],
+    as_json: Annotated[
+        bool, typer.Option("--json", help="Emit JSON to stdout instead of a table.")
+    ] = False,
+    no_cache: Annotated[
+        bool,
+        typer.Option(
+            "--no-cache",
+            help="Bypass the on-disk cache (~/.citecheck/cache.db). Forces fresh API calls.",
+        ),
+    ] = False,
+    skip_liveness: Annotated[
+        bool, typer.Option("--skip-liveness", help="Skip the GROBID liveness probe.")
+    ] = False,
+) -> None:
+    """Extract references, resolve them, and run retraction checks."""
+    if not pdf_path.is_file():
+        typer.secho(f"File not found: {pdf_path}", err=True, fg=typer.colors.RED)
+        raise typer.Exit(code=2)
+
+    if not skip_liveness and not is_alive():
+        typer.secho(
+            "GROBID is not reachable at http://localhost:8070. "
+            "Start it with: docker compose up -d grobid",
+            err=True,
+            fg=typer.colors.RED,
+        )
+        raise typer.Exit(code=3)
+
+    checked = run_check(pdf_path, use_cache=not no_cache)
+
+    if as_json:
+        sys.stdout.write(
+            json.dumps(
+                [c.model_dump(mode="json") for c in checked],
+                ensure_ascii=False,
+                indent=2,
+            )
+        )
+        sys.stdout.write("\n")
+        return
+
+    console.print(_render_check_table(checked))
+    console.print()
+    console.print(_render_check_summary(checked))
 
 
 @app.command()
