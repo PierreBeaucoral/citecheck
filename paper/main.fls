@@ -362,6 +362,9 @@ INPUT ./figures/red_flag_distribution.pdf
 INPUT ./figures/red_flag_distribution.pdf
 INPUT ./figures/red_flag_distribution.pdf
 INPUT ./figures/red_flag_distribution.pdf
+INPUT ./tables/eval_journal_quality.tex
+INPUT ./tables/eval_journal_quality.tex
+INPUT tables/eval_journal_quality.tex
 INPUT /Users/pierrebeaucoral/Library/TinyTeX/texmf-dist/fonts/tfm/public/lm/ec-lmcsc10.tfm
 INPUT ./tables/eval_per_layer.tex
 INPUT ./tables/eval_per_layer.tex

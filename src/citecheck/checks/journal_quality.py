@@ -47,24 +47,56 @@ DEFAULT_TIMEOUT_S = 30.0
 # journal/publisher field. Conservative by design — false negatives are
 # preferred over false accusations.
 _KNOWN_CONCERN_PUBLISHERS: tuple[str, ...] = (
+    # OMICS — classic Beall's-list case; FTC settled $50M with parent in 2019.
     "omics international",
     "omics publishing",
+    # SCIRP — on Beall's list since 2010.
     "scientific research publishing",
     "scirp",
-    "academic journals",
-    "international scholarly research network",
-    "isrn",
-    "hindawi",  # debated; included because of high APC + journal-flood pattern
-    "mdpi",  # debated; included with same caveat — user can override
-    "frontiers",  # debated; same
+    # Bentham — Bentham Open was a flagship Beall's-list example.
+    "bentham open",
+    "bentham science",
+    # Allied Academies — Beall's list.
+    "allied academies",
+    "alliedacademies",
+    # Lupine — multi-source predatory documentation.
+    "lupine publishers",
+    "lupine online",
+    # Juniper Publishers — multi-source.
+    "juniper publishers",
+    # Imedpub, Longdom, Scholarena — multi-source.
     "imedpub",
     "longdom",
-    "alliedacademies",
     "scholarena",
-    "juniper publishers",
+    # Scientific Federation — multi-source.
     "scientific federation",
+    # Biocore — multi-source.
     "biocore group",
-    "lupine publishers",
+    # ISRN — Beall's list; predates Hindawi acquisition.
+    "international scholarly research network",
+    "isrn",
+    # Academic Journals — on Beall's list (distinct from American Academic Journals).
+    "academic journals",
+    # Additional well-documented cases:
+    "scires literature",
+    "scires-literature",
+    "avens publishing",
+    "crimson publishers",
+    "pulsus group",
+    "open access text",
+    "heighten science",
+    "annex publishers",
+    "longdom publishing",
+    "peertechz",
+    "remedy publications",
+    "gavin publishers",
+    "symbiosis online",
+    # Contested entries: included because of high APC + journal-flood pattern,
+    # but reasonable researchers disagree. Users can override the concern list
+    # via a future flag.
+    "hindawi",  # acquired by Wiley 2021; mixed reputation pre/post-acquisition
+    "mdpi",  # debated; quality varies sharply across journal portfolio
+    "frontiers",  # debated; review-process complaints documented
 )
 
 

@@ -1,0 +1,51 @@
+id,journal_name,expected_risk_level,source,notes
+pred_001,OMICS International Journal of Foo,high,beall_2017,classic predatory publisher; OMICS featured by Beall and FTC settlement 2019
+pred_002,Scientific Research Publishing,high,beall_2017,"SCIRP, on Beall's list since 2010"
+pred_003,Bentham Open,high,beall_2017,Bentham Open was a flagship Beall's-list example
+pred_004,Academic Journals,high,beall_2017,"unrelated to American Academic Journals; on Beall's list"
+pred_005,International Scholarly Research Network,high,beall_2017,ISRN; on Beall's list before Hindawi acquired it
+pred_006,Lupine Publishers,high,multiple,documented in Retraction Watch and Cabells
+pred_007,Juniper Publishers,high,multiple,documented by multiple academic-integrity sources
+pred_008,Imedpub,high,beall_2017,
+pred_009,Longdom Publishing,high,multiple,
+pred_010,Allied Academies,high,beall_2017,
+pred_011,Scholarena,high,multiple,
+pred_012,Lupine Online Journal of Foo,high,multiple,Lupine umbrella
+pred_013,Scientific Federation Journals,high,multiple,
+pred_014,SciRes Literature,high,multiple,
+pred_015,Avens Publishing Group,high,multiple,
+pred_016,Crimson Publishers,high,multiple,
+pred_017,Pulsus Group,high,multiple,
+pred_018,Open Access Text,high,multiple,
+pred_019,Heighten Science Publications,high,multiple,
+pred_020,Annex Publishers,high,multiple,
+oa_001,PLOS ONE,low,doaj_top,major OA journal
+oa_002,eLife,low,doaj_top,major OA journal
+oa_003,Scientific Reports,low,doaj_top,Nature OA journal
+oa_004,BMJ Open,low,doaj_top,BMJ OA journal
+oa_005,Journal of Open Source Software,low,doaj_top,JOSS
+oa_006,PeerJ,low,doaj_top,PeerJ OA
+oa_007,F1000Research,low,doaj_top,
+oa_008,Open Library of Humanities,low,doaj_top,humanities OA
+oa_009,Royal Society Open Science,low,doaj_top,Royal Society OA
+oa_010,Quantitative Economics,low,doaj_top,Econometric Society OA
+oa_011,Theoretical Economics,low,doaj_top,Econometric Society OA
+oa_012,Journal of Statistical Software,low,doaj_top,JSS
+oa_013,Cogent Economics & Finance,low,doaj_top,
+oa_014,SAGE Open,low,doaj_top,
+oa_015,Open Mind: Discoveries in Cognitive Science,low,doaj_top,MIT Press OA
+oa_016,Climate of the Past,low,doaj_top,Copernicus OA
+oa_017,Geoscientific Model Development,low,doaj_top,Copernicus OA
+oa_018,Open Quaternary,low,doaj_top,
+oa_019,Empirical Software Engineering,low,doaj_top,
+oa_020,Wellcome Open Research,low,doaj_top,
+legit_001,Quarterly Journal of Economics,medium,scimago_econ_top10,top econ journal; non-OA so not in DOAJ
+legit_002,American Economic Review,medium,scimago_econ_top10,AEA flagship; non-OA
+legit_003,Journal of Political Economy,medium,scimago_econ_top10,UChicago Press; non-OA
+legit_004,Econometrica,medium,scimago_econ_top10,Econometric Society flagship; non-OA
+legit_005,Review of Economic Studies,medium,scimago_econ_top10,Oxford; non-OA
+legit_006,Nature,medium,nature_family,Nature is hybrid OA; not in DOAJ for the flagship
+legit_007,Science,medium,aaas,AAAS flagship
+legit_008,Cell,medium,cell_press,
+legit_009,The Lancet,medium,elsevier,
+legit_010,New England Journal of Medicine,medium,nejm,

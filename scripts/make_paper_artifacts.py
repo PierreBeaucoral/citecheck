@@ -29,6 +29,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent
 RESULTS_JSON = REPO_ROOT / "data" / "eval" / "results.json"
 LABELS_CSV = REPO_ROOT / "data" / "eval" / "labels.csv"
+JOURNAL_RESULTS_JSON = REPO_ROOT / "data" / "eval" / "journal_results.json"
 TABLES_DIR = REPO_ROOT / "paper" / "tables"
 FIGURES_DIR = REPO_ROOT / "paper" / "figures"
 
@@ -400,6 +401,44 @@ def _emit_bypubtype_barchart(predictions: list[dict], labels_by_id: dict[str, di
     plt.close(fig)
 
 
+def _emit_journal_quality_table() -> None:
+    """Phase 4 (journal-quality) eval: combined confusion + metrics table.
+
+    Reads data/eval/journal_results.json if present; otherwise emits a
+    placeholder fragment so main.tex still compiles before run_journal_eval.py
+    has been run.
+    """
+    if not JOURNAL_RESULTS_JSON.is_file():
+        body = (
+            "\\begin{tabular}{lc}\n\\toprule\nMetric & Value \\\\\n\\midrule\n"
+            "\\multicolumn{2}{l}{\\textit{Run scripts/run\\_journal\\_eval.py to populate}} \\\\\n"
+            "\\bottomrule\n\\end{tabular}\n"
+        )
+        (TABLES_DIR / "eval_journal_quality.tex").write_text(body, encoding="utf-8")
+        return
+    data = json.loads(JOURNAL_RESULTS_JSON.read_text(encoding="utf-8"))
+    s = data["summary"]
+    body = (
+        "\\begin{tabular}{lc}\n\\toprule\n Metric & Value \\\\\n\\midrule\n"
+        f" References evaluated & {s['n']:,} \\\\\n"
+        " True positive (predatory caught) & "
+        f"{s['tp']:,} \\\\\n"
+        " False negative (predatory missed) & "
+        f"{s['fn']:,} \\\\\n"
+        " False positive (legit flagged) & "
+        f"{s['fp']:,} \\\\\n"
+        " True negative (legit passed) & "
+        f"{s['tn']:,} \\\\\n"
+        "\\midrule\n"
+        f" Precision & {_fmt(s['precision'])} \\\\\n"
+        f" Recall & {_fmt(s['recall'])} \\\\\n"
+        f" False-positive rate & {_fmt(s['fpr'])} \\\\\n"
+        f" $F_1$ & {_fmt(s['f1'])} \\\\\n"
+        "\\bottomrule\n\\end{tabular}\n"
+    )
+    (TABLES_DIR / "eval_journal_quality.tex").write_text(body, encoding="utf-8")
+
+
 def _emit_predicted_by_class_fig(predictions: list[dict]) -> None:
     import matplotlib
 
@@ -509,6 +548,7 @@ def main() -> int:
     _emit_bypubtype_clean(predictions, labels_by_id)
     _emit_per_layer_firing_rate(predictions)
     _emit_bypubtype_barchart(predictions, labels_by_id)
+    _emit_journal_quality_table()
 
     tp, fn, fp, tn = _confusion(predictions)
     m = _metrics_from_confusion(tp, fn, fp, tn)

@@ -1,0 +1,522 @@
+{
+  "summary": {
+    "n": 50,
+    "tp": 20,
+    "fn": 0,
+    "fp": 0,
+    "tn": 30,
+    "precision": 1.0,
+    "recall": 1.0,
+    "fpr": 0.0,
+    "f1": 1.0,
+    "confusion_3x3": {
+      "high->high": 20,
+      "low->low": 18,
+      "low->medium": 2,
+      "medium->low": 6,
+      "medium->medium": 4
+    }
+  },
+  "predictions": [
+    {
+      "id": "pred_001",
+      "journal_name": "OMICS International Journal of Foo",
+      "expected": "high",
+      "predicted": "high",
+      "doaj_listed": null,
+      "on_concern_list": true,
+      "matched_publisher": "omics international",
+      "match": true
+    },
+    {
+      "id": "pred_002",
+      "journal_name": "Scientific Research Publishing",
+      "expected": "high",
+      "predicted": "high",
+      "doaj_listed": null,
+      "on_concern_list": true,
+      "matched_publisher": "scientific research publishing",
+      "match": true
+    },
+    {
+      "id": "pred_003",
+      "journal_name": "Bentham Open",
+      "expected": "high",
+      "predicted": "high",
+      "doaj_listed": null,
+      "on_concern_list": true,
+      "matched_publisher": "bentham open",
+      "match": true
+    },
+    {
+      "id": "pred_004",
+      "journal_name": "Academic Journals",
+      "expected": "high",
+      "predicted": "high",
+      "doaj_listed": null,
+      "on_concern_list": true,
+      "matched_publisher": "academic journals",
+      "match": true
+    },
+    {
+      "id": "pred_005",
+      "journal_name": "International Scholarly Research Network",
+      "expected": "high",
+      "predicted": "high",
+      "doaj_listed": null,
+      "on_concern_list": true,
+      "matched_publisher": "international scholarly research network",
+      "match": true
+    },
+    {
+      "id": "pred_006",
+      "journal_name": "Lupine Publishers",
+      "expected": "high",
+      "predicted": "high",
+      "doaj_listed": null,
+      "on_concern_list": true,
+      "matched_publisher": "lupine publishers",
+      "match": true
+    },
+    {
+      "id": "pred_007",
+      "journal_name": "Juniper Publishers",
+      "expected": "high",
+      "predicted": "high",
+      "doaj_listed": null,
+      "on_concern_list": true,
+      "matched_publisher": "juniper publishers",
+      "match": true
+    },
+    {
+      "id": "pred_008",
+      "journal_name": "Imedpub",
+      "expected": "high",
+      "predicted": "high",
+      "doaj_listed": null,
+      "on_concern_list": true,
+      "matched_publisher": "imedpub",
+      "match": true
+    },
+    {
+      "id": "pred_009",
+      "journal_name": "Longdom Publishing",
+      "expected": "high",
+      "predicted": "high",
+      "doaj_listed": null,
+      "on_concern_list": true,
+      "matched_publisher": "longdom",
+      "match": true
+    },
+    {
+      "id": "pred_010",
+      "journal_name": "Allied Academies",
+      "expected": "high",
+      "predicted": "high",
+      "doaj_listed": null,
+      "on_concern_list": true,
+      "matched_publisher": "allied academies",
+      "match": true
+    },
+    {
+      "id": "pred_011",
+      "journal_name": "Scholarena",
+      "expected": "high",
+      "predicted": "high",
+      "doaj_listed": null,
+      "on_concern_list": true,
+      "matched_publisher": "scholarena",
+      "match": true
+    },
+    {
+      "id": "pred_012",
+      "journal_name": "Lupine Online Journal of Foo",
+      "expected": "high",
+      "predicted": "high",
+      "doaj_listed": null,
+      "on_concern_list": true,
+      "matched_publisher": "lupine online",
+      "match": true
+    },
+    {
+      "id": "pred_013",
+      "journal_name": "Scientific Federation Journals",
+      "expected": "high",
+      "predicted": "high",
+      "doaj_listed": null,
+      "on_concern_list": true,
+      "matched_publisher": "scientific federation",
+      "match": true
+    },
+    {
+      "id": "pred_014",
+      "journal_name": "SciRes Literature",
+      "expected": "high",
+      "predicted": "high",
+      "doaj_listed": null,
+      "on_concern_list": true,
+      "matched_publisher": "scires literature",
+      "match": true
+    },
+    {
+      "id": "pred_015",
+      "journal_name": "Avens Publishing Group",
+      "expected": "high",
+      "predicted": "high",
+      "doaj_listed": null,
+      "on_concern_list": true,
+      "matched_publisher": "avens publishing",
+      "match": true
+    },
+    {
+      "id": "pred_016",
+      "journal_name": "Crimson Publishers",
+      "expected": "high",
+      "predicted": "high",
+      "doaj_listed": null,
+      "on_concern_list": true,
+      "matched_publisher": "crimson publishers",
+      "match": true
+    },
+    {
+      "id": "pred_017",
+      "journal_name": "Pulsus Group",
+      "expected": "high",
+      "predicted": "high",
+      "doaj_listed": null,
+      "on_concern_list": true,
+      "matched_publisher": "pulsus group",
+      "match": true
+    },
+    {
+      "id": "pred_018",
+      "journal_name": "Open Access Text",
+      "expected": "high",
+      "predicted": "high",
+      "doaj_listed": null,
+      "on_concern_list": true,
+      "matched_publisher": "open access text",
+      "match": true
+    },
+    {
+      "id": "pred_019",
+      "journal_name": "Heighten Science Publications",
+      "expected": "high",
+      "predicted": "high",
+      "doaj_listed": null,
+      "on_concern_list": true,
+      "matched_publisher": "heighten science",
+      "match": true
+    },
+    {
+      "id": "pred_020",
+      "journal_name": "Annex Publishers",
+      "expected": "high",
+      "predicted": "high",
+      "doaj_listed": null,
+      "on_concern_list": true,
+      "matched_publisher": "annex publishers",
+      "match": true
+    },
+    {
+      "id": "oa_001",
+      "journal_name": "PLOS ONE",
+      "expected": "low",
+      "predicted": "low",
+      "doaj_listed": true,
+      "on_concern_list": false,
+      "matched_publisher": null,
+      "match": true
+    },
+    {
+      "id": "oa_002",
+      "journal_name": "eLife",
+      "expected": "low",
+      "predicted": "low",
+      "doaj_listed": true,
+      "on_concern_list": false,
+      "matched_publisher": null,
+      "match": true
+    },
+    {
+      "id": "oa_003",
+      "journal_name": "Scientific Reports",
+      "expected": "low",
+      "predicted": "low",
+      "doaj_listed": true,
+      "on_concern_list": false,
+      "matched_publisher": null,
+      "match": true
+    },
+    {
+      "id": "oa_004",
+      "journal_name": "BMJ Open",
+      "expected": "low",
+      "predicted": "low",
+      "doaj_listed": true,
+      "on_concern_list": false,
+      "matched_publisher": null,
+      "match": true
+    },
+    {
+      "id": "oa_005",
+      "journal_name": "Journal of Open Source Software",
+      "expected": "low",
+      "predicted": "low",
+      "doaj_listed": true,
+      "on_concern_list": false,
+      "matched_publisher": null,
+      "match": true
+    },
+    {
+      "id": "oa_006",
+      "journal_name": "PeerJ",
+      "expected": "low",
+      "predicted": "low",
+      "doaj_listed": true,
+      "on_concern_list": false,
+      "matched_publisher": null,
+      "match": true
+    },
+    {
+      "id": "oa_007",
+      "journal_name": "F1000Research",
+      "expected": "low",
+      "predicted": "low",
+      "doaj_listed": true,
+      "on_concern_list": false,
+      "matched_publisher": null,
+      "match": true
+    },
+    {
+      "id": "oa_008",
+      "journal_name": "Open Library of Humanities",
+      "expected": "low",
+      "predicted": "low",
+      "doaj_listed": true,
+      "on_concern_list": false,
+      "matched_publisher": null,
+      "match": true
+    },
+    {
+      "id": "oa_009",
+      "journal_name": "Royal Society Open Science",
+      "expected": "low",
+      "predicted": "low",
+      "doaj_listed": true,
+      "on_concern_list": false,
+      "matched_publisher": null,
+      "match": true
+    },
+    {
+      "id": "oa_010",
+      "journal_name": "Quantitative Economics",
+      "expected": "low",
+      "predicted": "low",
+      "doaj_listed": true,
+      "on_concern_list": false,
+      "matched_publisher": null,
+      "match": true
+    },
+    {
+      "id": "oa_011",
+      "journal_name": "Theoretical Economics",
+      "expected": "low",
+      "predicted": "low",
+      "doaj_listed": true,
+      "on_concern_list": false,
+      "matched_publisher": null,
+      "match": true
+    },
+    {
+      "id": "oa_012",
+      "journal_name": "Journal of Statistical Software",
+      "expected": "low",
+      "predicted": "low",
+      "doaj_listed": true,
+      "on_concern_list": false,
+      "matched_publisher": null,
+      "match": true
+    },
+    {
+      "id": "oa_013",
+      "journal_name": "Cogent Economics & Finance",
+      "expected": "low",
+      "predicted": "low",
+      "doaj_listed": true,
+      "on_concern_list": false,
+      "matched_publisher": null,
+      "match": true
+    },
+    {
+      "id": "oa_014",
+      "journal_name": "SAGE Open",
+      "expected": "low",
+      "predicted": "low",
+      "doaj_listed": true,
+      "on_concern_list": false,
+      "matched_publisher": null,
+      "match": true
+    },
+    {
+      "id": "oa_015",
+      "journal_name": "Open Mind: Discoveries in Cognitive Science",
+      "expected": "low",
+      "predicted": "medium",
+      "doaj_listed": false,
+      "on_concern_list": false,
+      "matched_publisher": null,
+      "match": false
+    },
+    {
+      "id": "oa_016",
+      "journal_name": "Climate of the Past",
+      "expected": "low",
+      "predicted": "low",
+      "doaj_listed": true,
+      "on_concern_list": false,
+      "matched_publisher": null,
+      "match": true
+    },
+    {
+      "id": "oa_017",
+      "journal_name": "Geoscientific Model Development",
+      "expected": "low",
+      "predicted": "low",
+      "doaj_listed": true,
+      "on_concern_list": false,
+      "matched_publisher": null,
+      "match": true
+    },
+    {
+      "id": "oa_018",
+      "journal_name": "Open Quaternary",
+      "expected": "low",
+      "predicted": "low",
+      "doaj_listed": true,
+      "on_concern_list": false,
+      "matched_publisher": null,
+      "match": true
+    },
+    {
+      "id": "oa_019",
+      "journal_name": "Empirical Software Engineering",
+      "expected": "low",
+      "predicted": "medium",
+      "doaj_listed": false,
+      "on_concern_list": false,
+      "matched_publisher": null,
+      "match": false
+    },
+    {
+      "id": "oa_020",
+      "journal_name": "Wellcome Open Research",
+      "expected": "low",
+      "predicted": "low",
+      "doaj_listed": true,
+      "on_concern_list": false,
+      "matched_publisher": null,
+      "match": true
+    },
+    {
+      "id": "legit_001",
+      "journal_name": "Quarterly Journal of Economics",
+      "expected": "medium",
+      "predicted": "medium",
+      "doaj_listed": false,
+      "on_concern_list": false,
+      "matched_publisher": null,
+      "match": true
+    },
+    {
+      "id": "legit_002",
+      "journal_name": "American Economic Review",
+      "expected": "medium",
+      "predicted": "low",
+      "doaj_listed": true,
+      "on_concern_list": false,
+      "matched_publisher": null,
+      "match": false
+    },
+    {
+      "id": "legit_003",
+      "journal_name": "Journal of Political Economy",
+      "expected": "medium",
+      "predicted": "low",
+      "doaj_listed": true,
+      "on_concern_list": false,
+      "matched_publisher": null,
+      "match": false
+    },
+    {
+      "id": "legit_004",
+      "journal_name": "Econometrica",
+      "expected": "medium",
+      "predicted": "medium",
+      "doaj_listed": false,
+      "on_concern_list": false,
+      "matched_publisher": null,
+      "match": true
+    },
+    {
+      "id": "legit_005",
+      "journal_name": "Review of Economic Studies",
+      "expected": "medium",
+      "predicted": "medium",
+      "doaj_listed": false,
+      "on_concern_list": false,
+      "matched_publisher": null,
+      "match": true
+    },
+    {
+      "id": "legit_006",
+      "journal_name": "Nature",
+      "expected": "medium",
+      "predicted": "low",
+      "doaj_listed": true,
+      "on_concern_list": false,
+      "matched_publisher": null,
+      "match": false
+    },
+    {
+      "id": "legit_007",
+      "journal_name": "Science",
+      "expected": "medium",
+      "predicted": "low",
+      "doaj_listed": true,
+      "on_concern_list": false,
+      "matched_publisher": null,
+      "match": false
+    },
+    {
+      "id": "legit_008",
+      "journal_name": "Cell",
+      "expected": "medium",
+      "predicted": "low",
+      "doaj_listed": true,
+      "on_concern_list": false,
+      "matched_publisher": null,
+      "match": false
+    },
+    {
+      "id": "legit_009",
+      "journal_name": "The Lancet",
+      "expected": "medium",
+      "predicted": "low",
+      "doaj_listed": true,
+      "on_concern_list": false,
+      "matched_publisher": null,
+      "match": false
+    },
+    {
+      "id": "legit_010",
+      "journal_name": "New England Journal of Medicine",
+      "expected": "medium",
+      "predicted": "medium",
+      "doaj_listed": false,
+      "on_concern_list": false,
+      "matched_publisher": null,
+      "match": true
+    }
+  ]
+}
