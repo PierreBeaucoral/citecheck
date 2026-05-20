@@ -87,6 +87,11 @@ def _chunk_text(
     words = (text or "").split()
     if not words:
         return []
+    if len(words) <= tokens:
+        # Short text: one chunk, no sliding. Saves the sliding-window logic
+        # from emitting near-duplicate chunks on small inputs (and makes the
+        # function obvious to reason about in tests).
+        return [" ".join(words)]
     out: list[str] = []
     i = 0
     step = max(1, tokens - overlap)

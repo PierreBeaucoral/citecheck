@@ -6,11 +6,13 @@ Free, open-source, runs locally. No accounts, no API keys required for the core 
 
 ## Status
 
-Pre-alpha. Setup + Phases 1, 2, 3 complete:
+Pre-alpha. Phases 1–3 complete; Phase 5 scaffolded.
 
-- **Phase 1** — PDF → resolved references via GROBID, Crossref, and OpenAlex fallback. 89–96% of refs resolve to canonical DOIs on test fixtures.
-- **Phase 2** — Retraction check via Crossref `update-to` + OpenAlex `is_retracted` (which integrates the Retraction Watch dataset). Confirmed end-to-end against Wakefield's MMR paper.
-- **Phase 3** — Five-layer hallucination detector: DOI integrity, cross-DB existence, author plausibility (OpenAlex `/authors`), venue plausibility (OpenAlex `/sources`), and a rule-based aggregator. Asymmetric low-coverage caveat (books, pre-2000) prevents false positives on legitimate older / un-indexed references. 0% FPR on the Callaway/Sant'Anna fixture; correctly flags fully-fabricated test references.
+- **Phase 1** — PDF → resolved references via GROBID, Crossref, and OpenAlex fallback.
+- **Phase 2** — Retraction check via Crossref `update-to` + OpenAlex `is_retracted`.
+- **Phase 3** — Five-layer hallucination detector with rule-based aggregator. 770-row labeled eval; companion paper at `paper/main.tex`.
+- **Phase 5** (scaffolded) — Claim verification via local LLM (Ollama qwen2.5:7b) + RAG over the cited paper's full text. Opt-in via `--verify-claims`; requires `uv sync --extra claims`.
+- **Budget hardening** — OpenAlex circuit-breaker auto-detects "Insufficient budget" 429s and falls back to Crossref-only mode until midnight UTC. `citecheck stats` shows daily API consumption.
 
 Phase 4 (predatory-journal / journal-quality flags) is the next milestone.
 
@@ -57,6 +59,15 @@ uv run citecheck check data/fixtures/1803.09015.pdf --json     # machine-readabl
 uv run citecheck check <pdf> --only-hallucination              # skip retraction (faster)
 uv run citecheck check <pdf> --skip-hallucination              # skip the 4 OpenAlex calls per ref
 uv run citecheck check <pdf> --no-cache                        # bypass ~/.citecheck/cache.db
+
+# Phase 5 — claim verification (opt-in; requires the `claims` extra and Ollama)
+uv sync --extra claims                                          # ~1.5 GB: torch + bge-small + ollama-python
+docker compose up -d ollama
+docker compose exec ollama ollama pull qwen2.5:7b-instruct      # 4 GB model
+uv run citecheck check <pdf> --verify-claims                    # slow; runs ~minutes per paper
+
+# Budget monitoring
+uv run citecheck stats                                          # daily OpenAlex / Crossref consumption
 
 docker compose down                               # when finished
 ```

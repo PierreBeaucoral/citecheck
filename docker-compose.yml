@@ -9,6 +9,22 @@
 # Bound to 127.0.0.1 so it is never exposed beyond this machine.
 
 services:
+  ollama:
+    # Phase 5 — claim verification needs a local LLM. We default to qwen2.5:7b
+    # (qwen3:8b also works; the prompt is generic). Pull the model AFTER the
+    # container is up with:  docker compose exec ollama ollama pull qwen2.5:7b-instruct
+    # Without that, citecheck check --verify-claims errors at the first call.
+    image: ollama/ollama:latest
+    container_name: citecheck-ollama
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:11434:11434"
+    volumes:
+      - ollama-models:/root/.ollama
+    # Apple Silicon: Docker uses x86_64 emulation here; native performance via
+    # `ollama` installed directly is faster. The compose service is provided
+    # for parity with the GROBID setup and for headless / linux deployments.
+
   grobid:
     # CRF-only variant: CPU-only, ~2GB, faster startup than the full DL image
     # and adequate for reference parsing (Phase 1).
@@ -29,3 +45,6 @@ services:
     # The Lopez image accepts JAVA_OPTS via environment to tune memory.
     environment:
       - JAVA_OPTS=-Xmx4g
+
+volumes:
+  ollama-models:
