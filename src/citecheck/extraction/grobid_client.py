@@ -220,6 +220,55 @@ def extract_references(
     return parse_tei_references(tei)
 
 
+@retry(
+    retry=retry_if_exception_type((httpx.RequestError, GrobidError)),
+    wait=wait_exponential(multiplier=1, min=1, max=10),
+    stop=stop_after_attempt(3),
+    reraise=True,
+)
+def _post_citation(citation: str, *, host: str, timeout_s: float) -> str:
+    """POST a single citation string to /api/processCitation."""
+    url = f"{host}/api/processCitation"
+    data = {"citations": citation, "consolidateCitations": "0"}
+    resp = httpx.post(url, data=data, timeout=timeout_s)
+    if resp.status_code >= 500:
+        raise GrobidError(f"GROBID returned {resp.status_code}: {resp.text[:200]}")
+    if resp.status_code != 200:
+        raise GrobidError(f"GROBID returned {resp.status_code}: {resp.text[:200]}")
+    return resp.text
+
+
+def parse_citation_string(
+    citation: str, *, host: str | None = None, timeout_s: float = 60.0
+) -> RawReference:
+    """Parse a single plain-text citation via GROBID's /api/processCitation.
+
+    Used by the eval-set builder (scripts/build_eval_set.py) to convert raw
+    citation strings into RawReference objects without needing a full PDF.
+    The returned TEI is a single <biblStruct>; we wrap it in a minimal TEI
+    document so the existing parser can handle it.
+    """
+    tei_fragment = _post_citation(citation, host=host or _grobid_host(), timeout_s=timeout_s)
+    wrapped = (
+        '<?xml version="1.0" encoding="UTF-8"?>'
+        '<TEI xmlns="http://www.tei-c.org/ns/1.0">'
+        "<text><back><div><listBibl>" + tei_fragment + "</listBibl></div></back></text></TEI>"
+    )
+    refs = parse_tei_references(wrapped)
+    if not refs:
+        # GROBID returned a bare biblStruct outside the TEI root we synthesized;
+        # try parsing the fragment directly.
+        refs = parse_tei_references(tei_fragment)
+    if not refs:
+        # Fallback: return a RawReference with raw_text only so downstream resolution
+        # can still try metadata search on the original string.
+        return RawReference(raw_text=citation)
+    out = refs[0]
+    # Preserve the original citation string verbatim — GROBID's raw_reference note
+    # is sometimes empty when input was a free-text citation.
+    return out.model_copy(update={"raw_text": citation or out.raw_text})
+
+
 def is_alive(host: str | None = None, *, timeout_s: float = 5.0) -> bool:
     """Quick liveness probe — used by the CLI to give a friendly error if GROBID is down."""
     url = f"{(host or _grobid_host())}/api/isalive"

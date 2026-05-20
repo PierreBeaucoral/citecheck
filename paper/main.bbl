@@ -1,0 +1,258 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nyt/global//global/global/global}
+    \entry{borusyak_jaravel_spiess_2024_preprint}{misc}{}{}
+      \name{author}{3}{}{%
+        {{hash=bd786f74596fee4b3890f929e06a0f8a}{%
+           family={Borusyak},
+           familyi={B\bibinitperiod},
+           given={Kirill},
+           giveni={K\bibinitperiod}}}%
+        {{hash=bf9f59745c80d75e4b28c948d6b49032}{%
+           family={Jaravel},
+           familyi={J\bibinitperiod},
+           given={Xavier},
+           giveni={X\bibinitperiod}}}%
+        {{hash=2e249611355f88583165432eab0ba4e1}{%
+           family={Spiess},
+           familyi={S\bibinitperiod},
+           given={Jann},
+           giveni={J\bibinitperiod}}}%
+      }
+      \strng{namehash}{088786d88490d4ebdcd781569cc02694}
+      \strng{fullhash}{088786d88490d4ebdcd781569cc02694}
+      \strng{fullhashraw}{088786d88490d4ebdcd781569cc02694}
+      \strng{bibnamehash}{088786d88490d4ebdcd781569cc02694}
+      \strng{authorbibnamehash}{088786d88490d4ebdcd781569cc02694}
+      \strng{authornamehash}{088786d88490d4ebdcd781569cc02694}
+      \strng{authorfullhash}{088786d88490d4ebdcd781569cc02694}
+      \strng{authorfullhashraw}{088786d88490d4ebdcd781569cc02694}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprinttype}{arXiv}
+      \field{note}{Used as a real-reference fixture in this paper}
+      \field{title}{Revisiting Event Study Designs: Robust and Efficient Estimation}
+      \field{year}{2024}
+      \verb{eprint}
+      \verb 2108.12419
+      \endverb
+    \endentry
+    \entry{buchanan_hill_shapoval_2024}{article}{}{}
+      \name{author}{3}{}{%
+        {{hash=8200b1290f4545a741384e91b2c7e9c7}{%
+           family={Buchanan},
+           familyi={B\bibinitperiod},
+           given={Joy},
+           giveni={J\bibinitperiod}}}%
+        {{hash=43ec69dc0bf45d0bd1718b8510152bf2}{%
+           family={Hill},
+           familyi={H\bibinitperiod},
+           given={Stephen},
+           giveni={S\bibinitperiod}}}%
+        {{hash=dec79bcb4d2f792e012a773221d2208d}{%
+           family={Shapoval},
+           familyi={S\bibinitperiod},
+           given={Olga},
+           giveni={O\bibinitperiod}}}%
+      }
+      \strng{namehash}{063c734e926af3d369ff2dfbe498d6b5}
+      \strng{fullhash}{063c734e926af3d369ff2dfbe498d6b5}
+      \strng{fullhashraw}{063c734e926af3d369ff2dfbe498d6b5}
+      \strng{bibnamehash}{063c734e926af3d369ff2dfbe498d6b5}
+      \strng{authorbibnamehash}{063c734e926af3d369ff2dfbe498d6b5}
+      \strng{authornamehash}{063c734e926af3d369ff2dfbe498d6b5}
+      \strng{authorfullhash}{063c734e926af3d369ff2dfbe498d6b5}
+      \strng{authorfullhashraw}{063c734e926af3d369ff2dfbe498d6b5}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{The American Economist}
+      \field{number}{1}
+      \field{title}{{ChatGPT} Hallucinates Nonexistent Citations: Evidence from Economics}
+      \field{volume}{69}
+      \field{year}{2024}
+      \field{pages}{80\bibrangedash 87}
+      \range{pages}{8}
+      \verb{doi}
+      \verb 10.1177/05694345231218454
+      \endverb
+    \endentry
+    \entry{callaway_santanna_2021_preprint}{misc}{}{}
+      \name{author}{2}{}{%
+        {{hash=4a5a67b3788b4a3653a14d9ab03fba0e}{%
+           family={Callaway},
+           familyi={C\bibinitperiod},
+           given={Brantly},
+           giveni={B\bibinitperiod}}}%
+        {{hash=f90144f1e670fa40bee88166593b00ea}{%
+           family={Sant'Anna},
+           familyi={S\bibinitperiod},
+           given={Pedro\bibnamedelimb H.\bibnamedelimi C.},
+           giveni={P\bibinitperiod\bibinitdelim H\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+      }
+      \strng{namehash}{ad085d57563a91bbe53422c59ebffdd2}
+      \strng{fullhash}{ad085d57563a91bbe53422c59ebffdd2}
+      \strng{fullhashraw}{ad085d57563a91bbe53422c59ebffdd2}
+      \strng{bibnamehash}{ad085d57563a91bbe53422c59ebffdd2}
+      \strng{authorbibnamehash}{ad085d57563a91bbe53422c59ebffdd2}
+      \strng{authornamehash}{ad085d57563a91bbe53422c59ebffdd2}
+      \strng{authorfullhash}{ad085d57563a91bbe53422c59ebffdd2}
+      \strng{authorfullhashraw}{ad085d57563a91bbe53422c59ebffdd2}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprinttype}{arXiv}
+      \field{note}{Used as a real-reference fixture in this paper}
+      \field{title}{Difference-in-Differences with multiple time periods}
+      \field{year}{2021}
+      \verb{eprint}
+      \verb 1803.09015
+      \endverb
+    \endentry
+    \entry{grobid}{misc}{}{}
+      \name{author}{1}{}{%
+        {{hash=af70cc8cd687a85066b43aa794ae28f5}{%
+           family={Lopez},
+           familyi={L\bibinitperiod},
+           given={Patrice},
+           giveni={P\bibinitperiod}}}%
+      }
+      \strng{namehash}{af70cc8cd687a85066b43aa794ae28f5}
+      \strng{fullhash}{af70cc8cd687a85066b43aa794ae28f5}
+      \strng{fullhashraw}{af70cc8cd687a85066b43aa794ae28f5}
+      \strng{bibnamehash}{af70cc8cd687a85066b43aa794ae28f5}
+      \strng{authorbibnamehash}{af70cc8cd687a85066b43aa794ae28f5}
+      \strng{authornamehash}{af70cc8cd687a85066b43aa794ae28f5}
+      \strng{authorfullhash}{af70cc8cd687a85066b43aa794ae28f5}
+      \strng{authorfullhashraw}{af70cc8cd687a85066b43aa794ae28f5}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://github.com/kermitt2/grobid}}
+      \field{note}{Apache 2.0}
+      \field{title}{{GROBID}: {A} Machine Learning Software for Extracting Information from Scholarly Documents}
+      \field{year}{2008--2025}
+    \endentry
+    \entry{openalex}{misc}{}{}
+      \name{author}{1}{}{%
+        {{hash=0fb8b8588ed112ccdcba3fad064985af}{%
+           family={{OurResearch}},
+           familyi={O\bibinitperiod}}}%
+      }
+      \strng{namehash}{0fb8b8588ed112ccdcba3fad064985af}
+      \strng{fullhash}{0fb8b8588ed112ccdcba3fad064985af}
+      \strng{fullhashraw}{0fb8b8588ed112ccdcba3fad064985af}
+      \strng{bibnamehash}{0fb8b8588ed112ccdcba3fad064985af}
+      \strng{authorbibnamehash}{0fb8b8588ed112ccdcba3fad064985af}
+      \strng{authornamehash}{0fb8b8588ed112ccdcba3fad064985af}
+      \strng{authorfullhash}{0fb8b8588ed112ccdcba3fad064985af}
+      \strng{authorfullhashraw}{0fb8b8588ed112ccdcba3fad064985af}
+      \field{sortinit}{O}
+      \field{sortinithash}{2cd7140a07aea5341f9e2771efe90aae}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://openalex.org}}
+      \field{note}{CC0; includes Retraction Watch dataset via Crossref/RW partnership since 2023}
+      \field{title}{{OpenAlex}: A Fully-Open Index of Scholarly Works, Authors, Sources, Institutions, Concepts, and Citations}
+      \field{year}{2022--2025}
+    \endentry
+    \entry{retraction_watch}{misc}{}{}
+      \name{author}{1}{}{%
+        {{hash=4e9d3e26c46b1773cab07aca79a44233}{%
+           family={{The Center for Scientific Integrity}},
+           familyi={T\bibinitperiod}}}%
+      }
+      \strng{namehash}{4e9d3e26c46b1773cab07aca79a44233}
+      \strng{fullhash}{4e9d3e26c46b1773cab07aca79a44233}
+      \strng{fullhashraw}{4e9d3e26c46b1773cab07aca79a44233}
+      \strng{bibnamehash}{4e9d3e26c46b1773cab07aca79a44233}
+      \strng{authorbibnamehash}{4e9d3e26c46b1773cab07aca79a44233}
+      \strng{authornamehash}{4e9d3e26c46b1773cab07aca79a44233}
+      \strng{authorfullhash}{4e9d3e26c46b1773cab07aca79a44233}
+      \strng{authorfullhashraw}{4e9d3e26c46b1773cab07aca79a44233}
+      \field{sortinit}{T}
+      \field{sortinithash}{9af77f0292593c26bde9a56e688eaee9}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://retractionwatch.com/retraction-watch-database-user-guide/}}
+      \field{note}{Public via Crossref since September 2023}
+      \field{title}{Retraction Watch Database}
+      \field{year}{2023}
+    \endentry
+    \entry{walters_wilder_2023}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=313a377c331ed76b6c51495181b6a8fd}{%
+           family={Walters},
+           familyi={W\bibinitperiod},
+           given={William\bibnamedelima H.},
+           giveni={W\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
+        {{hash=626df6ff41ad4993e4b5c02e0d590ad3}{%
+           family={Wilder},
+           familyi={W\bibinitperiod},
+           given={Esther\bibnamedelima Isabelle},
+           giveni={E\bibinitperiod\bibinitdelim I\bibinitperiod}}}%
+      }
+      \strng{namehash}{f7487405f83bd4ffd89e954ce59baa43}
+      \strng{fullhash}{f7487405f83bd4ffd89e954ce59baa43}
+      \strng{fullhashraw}{f7487405f83bd4ffd89e954ce59baa43}
+      \strng{bibnamehash}{f7487405f83bd4ffd89e954ce59baa43}
+      \strng{authorbibnamehash}{f7487405f83bd4ffd89e954ce59baa43}
+      \strng{authornamehash}{f7487405f83bd4ffd89e954ce59baa43}
+      \strng{authorfullhash}{f7487405f83bd4ffd89e954ce59baa43}
+      \strng{authorfullhashraw}{f7487405f83bd4ffd89e954ce59baa43}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Scientific Reports}
+      \field{note}{CC-BY 4.0}
+      \field{title}{Fabrication and errors in the bibliographic citations generated by {ChatGPT}}
+      \field{volume}{13}
+      \field{year}{2023}
+      \field{pages}{14045}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1038/s41598-023-41032-5
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

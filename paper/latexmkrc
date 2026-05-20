@@ -1,0 +1,7 @@
+$pdf_mode = 1;          # use pdflatex
+$pdflatex = 'pdflatex -interaction=nonstopmode -halt-on-error -shell-escape %O %S';
+$bibtex_use = 2;        # always run biber
+# Prefer TinyTeX's biber (2.21) over the system one (2.19) — the newer biblatex
+# from TinyTeX writes a control-file format only the matching biber understands.
+$biber = "$ENV{HOME}/Library/TinyTeX/bin/universal-darwin/biber %O %B";
+$clean_ext = 'bbl run.xml synctex.gz';

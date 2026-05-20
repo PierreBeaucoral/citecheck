@@ -223,9 +223,9 @@ class TestLayer4Venue:
 
 
 def _signals(*flag_layers: str) -> list[LayerSignal]:
-    """Build a 4-signal list (L1-L4) flagging only the named layers."""
+    """Build a 5-signal list (L1-L5) flagging only the named layers."""
     out = []
-    for name in ["L1_doi_integrity", "L2_cross_db", "L3_authors", "L4_venue"]:
+    for name in ["L1_doi_integrity", "L2_cross_db", "L3_authors", "L4_venue", "L5_author_title"]:
         out.append(LayerSignal(layer=name, flagged=name in flag_layers, reasoning=""))
     return out
 
@@ -318,6 +318,155 @@ class TestDowngrade:
             _downgrade(HallucinationVerdict.LIKELY_HALLUCINATED)
             == HallucinationVerdict.LIKELY_HALLUCINATED
         )
+
+
+# ----- Layer 5 (author-title coherence) ---------------------------------------
+
+
+class TestLayer5AuthorTitleCoherence:
+    """The whole point of L5: catch real-author + fabricated-title combinations."""
+
+    @staticmethod
+    def _mock_authors_known(respx_mock, author_id: str = "https://openalex.org/A111") -> None:
+        """L3 must find at least one author or L5 short-circuits as not applicable."""
+        respx_mock.get("https://api.openalex.org/authors").mock(
+            return_value=httpx.Response(
+                200,
+                json={
+                    "results": [
+                        {"id": author_id, "display_name": "Jane Smith"},
+                    ]
+                },
+            )
+        )
+
+    @staticmethod
+    def _mock_sources_known(respx_mock) -> None:
+        respx_mock.get("https://api.openalex.org/sources").mock(
+            return_value=httpx.Response(
+                200, json={"results": [{"display_name": "Important Journal"}]}
+            )
+        )
+
+    def test_author_published_title_not_flagged(self, respx_mock) -> None:
+        self._mock_authors_known(respx_mock)
+        self._mock_sources_known(respx_mock)
+        respx_mock.get("https://api.openalex.org/works").mock(
+            return_value=httpx.Response(
+                200,
+                json={
+                    "results": [
+                        {
+                            "id": "https://openalex.org/W1",
+                            "title": "A real paper",  # matches the reference's claimed title
+                            "display_name": "A real paper",
+                        }
+                    ]
+                },
+            )
+        )
+        ref = _ref(status=ResolutionStatus.RESOLVED)
+        result = check_hallucination(ref)
+        layers = {s.layer: s.flagged for s in result.signals}
+        assert layers["L5_author_title"] is False
+
+    def test_author_did_not_publish_title_flagged(self, respx_mock) -> None:
+        self._mock_authors_known(respx_mock)
+        self._mock_sources_known(respx_mock)
+        # Author exists but the works endpoint returns a clearly different title.
+        respx_mock.get("https://api.openalex.org/works").mock(
+            return_value=httpx.Response(
+                200,
+                json={
+                    "results": [
+                        {
+                            "id": "https://openalex.org/W2",
+                            "title": "A wholly different topic in chemistry",
+                            "display_name": "A wholly different topic in chemistry",
+                        }
+                    ]
+                },
+            )
+        )
+        ref = _ref(
+            title="On the role of institutions in growth",  # claimed
+            status=ResolutionStatus.RESOLVED,
+        )
+        result = check_hallucination(ref)
+        layers = {s.layer: s.flagged for s in result.signals}
+        assert layers["L5_author_title"] is True
+
+    def test_layer5_skipped_when_no_authors_found(self, respx_mock) -> None:
+        # L3 finds NO authors -> L5 is not applicable (avoids redundant flag).
+        respx_mock.get("https://api.openalex.org/authors").mock(
+            return_value=httpx.Response(200, json={"results": []})
+        )
+        self._mock_sources_known(respx_mock)
+        ref = _ref(status=ResolutionStatus.RESOLVED)
+        result = check_hallucination(ref)
+        layers = {s.layer: s.flagged for s in result.signals}
+        # L3 flagged (both authors missing); L5 not applicable, not flagged.
+        assert layers["L5_author_title"] is False
+        assert layers["L3_authors"] is True
+
+
+# ----- Strong-flag aggregator rules -------------------------------------------
+
+
+class TestStrongFlagRules:
+    """The new aggregator: a single L1 or L5 flag is enough for SUSPICIOUS."""
+
+    def test_l1_alone_is_suspicious(self) -> None:
+        ref = _ref(
+            doi="10.1234/x",
+            resolved_doi="10.1234/x",
+            status=ResolutionStatus.RESOLVED,
+            year=2020,
+        )
+        result = _aggregate(ref, _signals("L1_doi_integrity"))
+        assert result.verdict == HallucinationVerdict.SUSPICIOUS
+
+    def test_l5_alone_is_suspicious(self) -> None:
+        ref = _ref(status=ResolutionStatus.RESOLVED, year=2020)
+        result = _aggregate(ref, _signals("L5_author_title"))
+        assert result.verdict == HallucinationVerdict.SUSPICIOUS
+
+    def test_weak_flag_alone_stays_low(self) -> None:
+        # A single L3 flag is NOT strong -> verdict stays at real_*_confidence.
+        ref = _ref(status=ResolutionStatus.UNRESOLVED, year=2020)
+        result = _aggregate(ref, _signals("L3_authors"))
+        assert result.verdict == HallucinationVerdict.REAL_LOW_CONFIDENCE
+
+    def test_three_flags_with_strong_is_likely(self) -> None:
+        ref = _ref(status=ResolutionStatus.UNRESOLVED, year=2020)
+        result = _aggregate(ref, _signals("L1_doi_integrity", "L2_cross_db", "L3_authors"))
+        assert result.verdict == HallucinationVerdict.LIKELY_HALLUCINATED
+
+    def test_no_journal_caveat_blocks_coherence_only_escalation(self) -> None:
+        # Book reference (no journal). L5 flags but L2 did NOT. The asymmetric
+        # caveat extension downgrades from SUSPICIOUS back to REAL_LOW so we
+        # don't false-flag obscure books on coherence alone.
+        ref = _ref(
+            journal=None,
+            doi=None,
+            status=ResolutionStatus.RESOLVED,
+            year=2008,
+        )
+        result = _aggregate(ref, _signals("L5_author_title"))
+        assert result.verdict == HallucinationVerdict.REAL_LOW_CONFIDENCE
+        assert any("downgraded" in c for c in result.caveats)
+
+    def test_no_journal_caveat_does_not_block_when_l2_fires(self) -> None:
+        # Same book ref, but now L2 ALSO fired — that's evidence beyond pure
+        # coherence, so the downgrade does NOT apply.
+        ref = _ref(
+            journal=None,
+            doi=None,
+            status=ResolutionStatus.UNRESOLVED,
+            year=2008,
+        )
+        result = _aggregate(ref, _signals("L2_cross_db", "L5_author_title"))
+        assert result.verdict == HallucinationVerdict.SUSPICIOUS
 
 
 # ----- End-to-end with all layers ---------------------------------------------

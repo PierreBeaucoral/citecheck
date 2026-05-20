@@ -83,4 +83,6 @@ dev = [
     "pytest>=8.0",
     "ruff>=0.5",
     "respx>=0.21",
+    "openpyxl>=3.1",  # used by scripts/build_eval_set.py to parse the Walters & Wilder XLSX
+    "matplotlib>=3.8",  # used by scripts/make_paper_artifacts.py to render figures
 ]

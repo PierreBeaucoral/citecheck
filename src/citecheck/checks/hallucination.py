@@ -54,6 +54,7 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 
 from citecheck.checks.cache import CacheStore
 from citecheck.models import (
+    Author,
     HallucinationCheck,
     HallucinationVerdict,
     LayerSignal,
@@ -190,81 +191,95 @@ def _layer2_cross_db(reference: Reference) -> LayerSignal:
 # ----- Layer 3: author plausibility ------------------------------------------
 
 
-def _openalex_author_exists(
+def _openalex_author_lookup(
     family: str, given: str | None, *, client: httpx.Client, cache: CacheStore | None
-) -> bool:
-    """True if OpenAlex returns a high-confidence author candidate.
+) -> dict | None:
+    """Return the best-matching OpenAlex author record, or None if not found.
 
-    Conservative: we accept any candidate whose family name fuzzy-matches at >=85
-    on rapidfuzz. The point is to catch fully fabricated names like
-    "Q. Anthropic" rather than to disambiguate real-but-obscure researchers.
+    Replaces the old `_openalex_author_exists` so layer 5 can re-use the resolved
+    OpenAlex ID to check whether that specific author has a work matching the
+    citation's claimed title.
     """
     family = (family or "").strip()
     if not family:
-        return False
+        return None
     query = f"{given} {family}".strip() if given else family
-    cache_key = f"openalex:authors:{query.lower()}"
+    cache_key = f"openalex:author_lookup:{query.lower()}"
     if cache is not None:
         cached = cache.get(cache_key)
         if cached is not None:
-            return bool(cached)
+            # We cache `False` for known-misses (JSON-serialisable, distinct from None
+            # which would re-trigger the lookup).
+            return cached if cached else None
 
     try:
         resp = _get(client, "/authors", search=query, **_polite_params())
     except httpx.RequestError as exc:
         log.warning("hallucination L3: author lookup failed for %r: %s", query, exc)
-        return True  # benefit of the doubt: don't flag on network error
+        return None  # network error: leave the layer to give benefit of doubt
     if resp.status_code != 200:
-        return True
+        return None
 
     items = (resp.json() or {}).get("results") or []
-    exists = False
+    best: dict | None = None
     for item in items[:5]:
         candidate_family = (item.get("display_name") or "").split()[-1]
         if fuzz.ratio(family.lower(), candidate_family.lower()) >= AUTHOR_FAMILY_THRESHOLD:
-            exists = True
+            best = {"id": item.get("id"), "display_name": item.get("display_name")}
             break
     if cache is not None:
-        cache.set(cache_key, exists)
-    return exists
+        cache.set(cache_key, best if best else False)
+    return best
 
 
 def _layer3_authors(
     reference: Reference, *, client: httpx.Client, cache: CacheStore | None
-) -> LayerSignal:
-    """Flag references whose first two authors are both absent from OpenAlex."""
+) -> tuple[LayerSignal, list[tuple[Author, dict]]]:
+    """Flag references whose first two authors are both absent from OpenAlex.
+
+    Returns (signal, found_authors). `found_authors` is consumed by L5 to query
+    each found author's works without re-doing the /authors lookup.
+    """
     authors = reference.raw.authors[:2]
     if not authors:
         return LayerSignal(
             layer="L3_authors",
             flagged=False,
             reasoning="No author names extracted; cannot check.",
-        )
+        ), []
 
     misses: list[str] = []
+    found: list[tuple[Author, dict]] = []
     for author in authors:
-        if not _openalex_author_exists(author.family, author.given, client=client, cache=cache):
+        record = _openalex_author_lookup(author.family, author.given, client=client, cache=cache)
+        if record is None:
             misses.append(author.display())
+        else:
+            found.append((author, record))
 
     if not misses:
-        return LayerSignal(
+        signal = LayerSignal(
             layer="L3_authors",
             flagged=False,
             reasoning=f"All {len(authors)} checked authors found in OpenAlex.",
         )
-    if len(misses) == len(authors):
+    elif len(misses) == len(authors):
         # Require BOTH to miss before flagging. Sparse coverage on a single author
         # is too common to treat as a red flag on its own.
-        return LayerSignal(
+        signal = LayerSignal(
             layer="L3_authors",
             flagged=True,
-            reasoning=f"None of the first {len(authors)} authors found in OpenAlex: {', '.join(misses)}.",
+            reasoning=(
+                f"None of the first {len(authors)} authors found in OpenAlex: " + ", ".join(misses)
+            ),
         )
-    return LayerSignal(
-        layer="L3_authors",
-        flagged=False,
-        reasoning=f"Partial match — {len(authors) - len(misses)}/{len(authors)} authors found.",
-    )
+    else:
+        signal = LayerSignal(
+            layer="L3_authors",
+            flagged=False,
+            reasoning=f"Partial match — {len(authors) - len(misses)}/{len(authors)} authors found.",
+        )
+    return signal, found
 
 
 # ----- Layer 4: venue plausibility -------------------------------------------
@@ -330,7 +345,124 @@ def _layer4_venue(
     )
 
 
-# ----- Layer 5: aggregate verdict --------------------------------------------
+# ----- Layer 5: author-title coherence ---------------------------------------
+
+
+def _author_published_title(
+    author_id: str | None,
+    claimed_title: str,
+    *,
+    client: httpx.Client,
+    cache: CacheStore | None,
+) -> bool:
+    """True if OpenAlex shows the author with `author_id` published a work whose
+    title fuzzy-matches `claimed_title`.
+
+    ChatGPT's modal failure on articles is pairing a real author with an
+    invented title. This check directly attacks that pattern. We query the
+    /works endpoint filtered to the author's OpenAlex ID, with a free-text
+    search on the claimed title, then fuzzy-match the top results.
+
+    Returns True (no flag) on network/HTTP failure: give benefit of the doubt.
+    """
+    if not author_id or not claimed_title:
+        return False
+    short_id = (author_id or "").removeprefix("https://openalex.org/")
+    cache_key = f"openalex:author_title:{short_id}:{claimed_title.lower()[:80]}"
+    if cache is not None:
+        cached = cache.get(cache_key)
+        if cached is not None:
+            return bool(cached)
+
+    try:
+        resp = _get(
+            client,
+            "/works",
+            filter=f"authorships.author.id:{short_id}",
+            search=claimed_title,
+            **{"per-page": "5", **_polite_params()},
+        )
+    except httpx.RequestError as exc:
+        log.warning("hallucination L5: author-title lookup failed: %s", exc)
+        return True  # network error → don't flag
+    if resp.status_code != 200:
+        return True
+
+    items = (resp.json() or {}).get("results") or []
+    match = False
+    for item in items[:5]:
+        item_title = item.get("title") or item.get("display_name") or ""
+        if fuzz.token_set_ratio(claimed_title.lower(), item_title.lower()) >= TITLE_MATCH_THRESHOLD:
+            match = True
+            break
+    if cache is not None:
+        cache.set(cache_key, match)
+    return match
+
+
+def _layer5_author_title_coherence(
+    reference: Reference,
+    found_authors: list[tuple[Author, dict]],
+    *,
+    client: httpx.Client,
+    cache: CacheStore | None,
+) -> LayerSignal:
+    """Verify that at least one listed author published a work matching the title.
+
+    Skip when:
+    - The citation has no claimed title (nothing to match against).
+    - L3 found no authors at all (L3 already flagged; this would be redundant).
+    """
+    if not reference.raw.title:
+        return LayerSignal(
+            layer="L5_author_title",
+            flagged=False,
+            reasoning="No claimed title; layer not applicable.",
+        )
+    if not found_authors:
+        return LayerSignal(
+            layer="L5_author_title",
+            flagged=False,
+            reasoning="No authors found in L3; layer not applicable.",
+        )
+    if not reference.raw.journal:
+        # L5 is article-only. Books and grey literature are indexed too sparsely
+        # in OpenAlex for the "author has this work" signal to be reliable, and
+        # empirically the layer drives book false-positive rate above 0.6. We
+        # accept the loss of recall on book fabrications in exchange.
+        return LayerSignal(
+            layer="L5_author_title",
+            flagged=False,
+            reasoning="No journal field (book / grey lit) — L5 not applicable.",
+        )
+
+    matched_authors: list[str] = []
+    for input_author, record in found_authors:
+        if _author_published_title(
+            record.get("id"), reference.raw.title, client=client, cache=cache
+        ):
+            matched_authors.append(input_author.display())
+
+    if matched_authors:
+        return LayerSignal(
+            layer="L5_author_title",
+            flagged=False,
+            reasoning=(
+                "Listed author(s) have a published work matching the claimed title: "
+                + ", ".join(matched_authors)
+            ),
+        )
+    return LayerSignal(
+        layer="L5_author_title",
+        flagged=True,
+        reasoning=(
+            "Listed authors exist but none of their indexed works match the "
+            "claimed title — real-author / invented-title pattern."
+        ),
+    )
+
+
+# ----- Layer 6: aggregate verdict --------------------------------------------
 
 
 _VERDICT_RANK = {
@@ -363,15 +495,28 @@ def _low_coverage_caveats(reference: Reference) -> list[str]:
     return caveats
 
 
+# L1 (DOI integrity) and L5 (author-title coherence) are *coherence* checks:
+# they compare fields against each other. They are stronger signals than the
+# *existence* checks (L2, L3, L4), which only ask whether a field appears in
+# any database. A single coherence flag alone is enough to elevate to suspicious.
+_STRONG_LAYERS = {"L1_doi_integrity", "L5_author_title"}
+
+
 def _aggregate(reference: Reference, signals: list[LayerSignal]) -> HallucinationCheck:
     red_flags = sum(1 for s in signals if s.flagged)
+    strong_flags = sum(1 for s in signals if s.flagged and s.layer in _STRONG_LAYERS)
+    l2_fired = any(s.layer == "L2_cross_db" and s.flagged for s in signals)
     has_doi_resolution = (
         reference.resolved_doi is not None and reference.status == ResolutionStatus.RESOLVED
     )
 
-    if red_flags >= 4:
+    # Verdict rules:
+    # - 4+ total flags, OR 3+ total with at least one strong → likely_hallucinated
+    # - 2+ total flags, OR any single strong flag → suspicious
+    # - else: real_*_confidence by whether the DOI resolved
+    if red_flags >= 4 or (red_flags >= 3 and strong_flags >= 1):
         verdict = HallucinationVerdict.LIKELY_HALLUCINATED
-    elif red_flags >= 2:
+    elif red_flags >= 2 or strong_flags >= 1:
         verdict = HallucinationVerdict.SUSPICIOUS
     elif has_doi_resolution:
         verdict = HallucinationVerdict.REAL_HIGH_CONFIDENCE
@@ -379,16 +524,24 @@ def _aggregate(reference: Reference, signals: list[LayerSignal]) -> Hallucinatio
         verdict = HallucinationVerdict.REAL_LOW_CONFIDENCE
 
     caveats = _low_coverage_caveats(reference)
+    no_journal_caveat = any("no journal" in c for c in caveats)
+
+    # Asymmetric caveat handling, two rules:
+    # 1) real_high → real_low when any caveat applies.
+    # 2) suspicious → real_low when the no-journal caveat applies AND L2 did not
+    #    fire. This protects legitimate books / grey-literature whose L5 misses
+    #    are driven by sparse OpenAlex coverage rather than by fabrication.
     if caveats and verdict == HallucinationVerdict.REAL_HIGH_CONFIDENCE:
-        # Asymmetric: a high-confidence verdict drops to low-confidence when
-        # caveats apply (we should be less sure about old / un-journaled refs).
-        # But a low-confidence verdict does NOT escalate to "suspicious" — that
-        # would falsely flag legitimate books and pre-2000 papers.
         verdict = _downgrade(verdict)
+    elif no_journal_caveat and verdict == HallucinationVerdict.SUSPICIOUS and not l2_fired:
+        verdict = HallucinationVerdict.REAL_LOW_CONFIDENCE
+        caveats.append("downgraded: book / grey-lit; coherence-only flag insufficient evidence")
 
     flagged_names = [s.layer for s in signals if s.flagged]
+    n_layers = len(signals) or 1
     reasoning_lines = [
-        f"{red_flags} red flag(s) across 4 active layers: " + (", ".join(flagged_names) or "none"),
+        f"{red_flags} red flag(s) across {n_layers} active layers: "
+        + (", ".join(flagged_names) or "none"),
         f"Verdict: {verdict.value}.",
     ]
     if caveats:
@@ -413,7 +566,7 @@ def check_hallucination(
     timeout_s: float = DEFAULT_TIMEOUT_S,
     skip_network_layers: bool = False,
 ) -> HallucinationCheck:
-    """Run the full 5-layer hallucination check on a single reference.
+    """Run the full five-layer hallucination check on a single reference.
 
     Set `skip_network_layers=True` to run only L1 + L2 (no OpenAlex calls).
     Useful for fast smoke checks and unit tests.
@@ -432,10 +585,19 @@ def check_hallucination(
                     flagged=False,
                     reasoning="Skipped (network layers disabled).",
                 ),
+                LayerSignal(
+                    layer="L5_author_title",
+                    flagged=False,
+                    reasoning="Skipped (network layers disabled).",
+                ),
             ]
         )
     else:
         with _client(timeout_s) as client:
-            signals.append(_layer3_authors(reference, client=client, cache=cache))
+            l3_signal, found_authors = _layer3_authors(reference, client=client, cache=cache)
+            signals.append(l3_signal)
             signals.append(_layer4_venue(reference, client=client, cache=cache))
+            signals.append(
+                _layer5_author_title_coherence(reference, found_authors, client=client, cache=cache)
+            )
     return _aggregate(reference, signals)
