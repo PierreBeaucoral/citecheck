@@ -1,0 +1,31 @@
+# GROBID service for reference extraction.
+#
+# Quick start:
+#   docker compose up -d grobid
+#   docker compose logs -f grobid    # wait for "Server running" before issuing requests
+#   docker compose down              # when finished
+#
+# The CRF variant is ~2 GB, CPU-only, and starts in ~30s on Apple Silicon.
+# Bound to 127.0.0.1 so it is never exposed beyond this machine.
+
+services:
+  grobid:
+    # CRF-only variant: CPU-only, ~2GB, faster startup than the full DL image
+    # and adequate for reference parsing (Phase 1).
+    image: lfoppiano/grobid:0.8.2-crf
+    # The image is amd64-only; on Apple Silicon Docker Desktop emulates via Rosetta.
+    # Pinning the platform silences the warning and documents the trade-off.
+    platform: linux/amd64
+    container_name: citecheck-grobid
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8070:8070"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8070/api/isalive"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 60s
+    # The Lopez image accepts JAVA_OPTS via environment to tune memory.
+    environment:
+      - JAVA_OPTS=-Xmx4g

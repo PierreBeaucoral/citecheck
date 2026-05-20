@@ -6,7 +6,9 @@ Free, open-source, runs locally. No accounts, no API keys required for the core 
 
 ## Status
 
-Pre-alpha. Setup phase complete. Phase 1 (reference extraction) is the next milestone.
+Pre-alpha. Setup + Phase 1 complete: PDF → resolved references via GROBID, Crossref,
+and OpenAlex fallback. On test fixtures (econ arXiv preprints), 89–96% of references
+resolve to canonical DOIs. Phase 2 (retraction check) is the next milestone.
 
 ## What it does (when finished)
 
@@ -32,14 +34,30 @@ Pre-alpha. Setup phase complete. Phase 1 (reference extraction) is the next mile
 
 ```bash
 # Install
-uv sync
+uv sync --all-extras
 
 # Verify
 uv run pytest
 uv run citecheck version
+
+# Phase 1 — extract references from a PDF
+cp .env.example .env                              # then edit to set CITECHECK_CONTACT_EMAIL
+docker compose up -d grobid                       # ~30s startup; healthcheck on :8070
+uv run python scripts/fetch_test_fixtures.py 1803.09015     # or any arXiv ID
+uv run citecheck extract data/fixtures/1803.09015.pdf       # Rich table output
+uv run citecheck extract data/fixtures/1803.09015.pdf --json  # JSON for piping
+docker compose down                               # when finished
 ```
 
-Phase 1+ commands will be added as functionality lands.
+The CLI exits with code 3 if GROBID is unreachable (with a hint on how to start
+it). Pass `--skip-liveness` to bypass the probe in CI.
+
+**Resolution flow** (see [`src/citecheck/resolution/__init__.py`](src/citecheck/resolution/__init__.py)):
+1. If the reference has a DOI (from GROBID's TEI or regex-extracted from raw text), query Crossref `/works/{doi}`.
+2. Otherwise — or if (1) misses — query Crossref `/works?query.bibliographic=...` and score candidates against the input.
+3. If Crossref returns no confident match, fall back to OpenAlex `/works?search=...` for independent indexing.
+
+OpenAlex needs no API key. Crossref's polite pool is enabled when `CITECHECK_CONTACT_EMAIL` is set in `.env`.
 
 ## Repository layout
 

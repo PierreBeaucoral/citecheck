@@ -32,6 +32,7 @@ dependencies = [
 dev = [
     "pytest>=8.0",
     "ruff>=0.5",
+    "respx>=0.21",
 ]
 
 [project.scripts]
@@ -80,4 +81,5 @@ ignore = [
 dev = [
     "pytest>=8.0",
     "ruff>=0.5",
+    "respx>=0.21",
 ]
