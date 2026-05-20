@@ -57,7 +57,10 @@ def _get_conn() -> sqlite3.Connection | None:
             "PRIMARY KEY (date, source, endpoint, cache_hit, status))"
         )
         _CONN.commit()
-    except sqlite3.Error as exc:
+    except (sqlite3.Error, OSError) as exc:
+        # Any failure to open the metrics DB is best-effort: don't break the
+        # caller. Filesystem errors (read-only path) and sqlite3 errors both
+        # land us in the same "metrics unavailable" state.
         log.warning("metrics: cannot open metrics.db: %s", exc)
         _CONN = None
     return _CONN
