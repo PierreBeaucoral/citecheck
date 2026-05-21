@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Job {{ job.job_id[:8] }} — {{ settings.site_title }}{% endblock %}
+{% block content %}
+
+<section class="job">
+  <h2>Processing your PDF</h2>
+  <p class="muted">Job ID: <code>{{ job.job_id }}</code></p>
+
+  <div id="job-status"
+       hx-get="/api/jobs/{{ job.job_id }}/status"
+       hx-trigger="load, every 3s"
+       hx-swap="outerHTML">
+    Loading status…
+  </div>
+
+  <p class="small muted">
+    This page auto-refreshes every 3 seconds. You can also bookmark it and come back later
+    — the report URL is stable.
+  </p>
+</section>
+
+{% endblock %}

@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block title %}Report {{ job.job_id[:8] }} — {{ settings.site_title if settings else 'citecheck' }}{% endblock %}
+{% block content %}
+
+<section class="report-header">
+  <h2>Citation-integrity report</h2>
+  <p class="muted">
+    Job <code>{{ job.job_id }}</code> ·
+    {{ report.n_references }} references ·
+    <a href="/api/reports/{{ job.job_id }}.json">Download JSON</a>
+  </p>
+</section>
+
+{# Aggregate counters across the four checks #}
+{% set retracted_n = 0 %}
+{% set fab_n = 0 %}
+{% set high_jq_n = 0 %}
+{% set claim_not_supported_n = 0 %}
+{% for r in report.references %}
+  {% if r.retraction.status in ('retracted', 'expression_of_concern') %}{% set retracted_n = retracted_n + 1 %}{% endif %}
+  {% if r.hallucination.verdict in ('suspicious', 'likely_hallucinated') %}{% set fab_n = fab_n + 1 %}{% endif %}
+  {% if r.journal_quality.risk_level == 'high' %}{% set high_jq_n = high_jq_n + 1 %}{% endif %}
+  {% for c in r.claims %}
+    {% if c.status == 'not_supported' %}{% set claim_not_supported_n = claim_not_supported_n + 1 %}{% endif %}
+  {% endfor %}
+{% endfor %}
+
+<section class="summary">
+  <div class="summary-grid">
+    <div class="summary-card {% if retracted_n %}flag{% endif %}">
+      <h3>{{ retracted_n }}</h3>
+      <p>retracted citations</p>
+    </div>
+    <div class="summary-card {% if fab_n %}flag{% endif %}">
+      <h3>{{ fab_n }}</h3>
+      <p>fabricated / suspicious</p>
+    </div>
+    <div class="summary-card {% if high_jq_n %}flag{% endif %}">
+      <h3>{{ high_jq_n }}</h3>
+      <p>predatory venue (HIGH)</p>
+    </div>
+    <div class="summary-card {% if claim_not_supported_n %}flag{% endif %}">
+      <h3>{{ claim_not_supported_n }}</h3>
+      <p>claims not supported</p>
+    </div>
+  </div>
+
+  {% if report.phase5.partial %}
+    <div class="info-banner">
+      <strong>Phase 5 partial.</strong> {{ report.phase5.skipped_reason or "" }}
+      {{ report.phase5.claims_verified }} of {{ report.phase5.claims_verified + report.phase5.claims_skipped_quota }} claims verified.
+    </div>
+  {% elif not report.phase5.enabled %}
+    <div class="info-banner muted">
+      Claim verification was not requested for this report.  The four metadata checks above completed normally.
+    </div>
+  {% endif %}
+</section>
+
+<section class="references">
+  <h3>Per-reference detail</h3>
+  {% for r in report.references %}
+    <article class="ref-card">
+      <header>
+        <h4>{{ loop.index }}. {{ (r.raw.title or r.raw.raw_text)[:120] }}</h4>
+      </header>
+      <dl>
+        <dt>Retraction</dt>
+        <dd class="status-{{ r.retraction.status }}">
+          {{ r.retraction.status | replace('_', ' ') }}
+          {% if r.retraction.notice_doi %} (notice DOI: {{ r.retraction.notice_doi }}){% endif %}
+        </dd>
+
+        <dt>Fabrication</dt>
+        <dd class="verdict-{{ r.hallucination.verdict }}">
+          {{ r.hallucination.verdict | replace('_', ' ') }}
+          ({{ r.hallucination.red_flag_count }} flag{{ 's' if r.hallucination.red_flag_count != 1 else '' }})
+        </dd>
+
+        <dt>Journal quality</dt>
+        <dd class="risk-{{ r.journal_quality.risk_level }}">
+          {{ r.journal_quality.risk_level }}
+          {% if r.journal_quality.matched_publisher %}
+            — matched concern list: <code>{{ r.journal_quality.matched_publisher }}</code>
+          {% endif %}
+        </dd>
+
+        {% if r.claims %}
+          <dt>Claim verification</dt>
+          <dd>
+            {% for c in r.claims %}
+              <div class="claim claim-{{ c.status }}">
+                <p><strong>{{ c.status | replace('_', ' ') }}</strong>
+                  {% if c.confidence %}(confidence: {{ c.confidence }}){% endif %}
+                </p>
+                {% if c.reasoning %}<p class="muted">{{ c.reasoning }}</p>{% endif %}
+                {% if c.quote %}<blockquote>{{ c.quote }}</blockquote>{% endif %}
+              </div>
+            {% endfor %}
+          </dd>
+        {% endif %}
+      </dl>
+    </article>
+  {% endfor %}
+</section>
+
+{% endblock %}

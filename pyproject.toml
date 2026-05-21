@@ -45,6 +45,18 @@ claims = [
     "ollama>=0.4",
     "pypdf>=4.0",
 ]
+# Phase 6: FastAPI web app with HTMX templates, slowapi rate-limit middleware,
+# uvicorn for serving, and pydantic-settings for env-var loading.  Install
+# with: uv sync --extra web.  Combined with --extra claims to get the full
+# deployed-app dependency stack.
+web = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.30",
+    "jinja2>=3.1",
+    "python-multipart>=0.0.9",
+    "slowapi>=0.1.9",
+    "pydantic-settings>=2.4",
+]
 
 [project.scripts]
 citecheck = "citecheck.cli:app"

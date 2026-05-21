@@ -1,0 +1,36 @@
+{# HTMX-polled partial.  Re-rendered every 3s; swaps `outerHTML` of #job-status.
+
+   Three branches:
+   - done  — show a redirect-link partial that HTMX follows by swapping
+             the entire page to /reports/{job_id}.
+   - error — show the error message and disable the polling trigger.
+   - pending/running — show progress + keep polling.
+#}
+{% if done %}
+  <div id="job-status" class="job-done">
+    <p>✅ <strong>Report ready.</strong></p>
+    <p>
+      <a href="/reports/{{ job.job_id }}" class="cta">View report →</a>
+    </p>
+  </div>
+{% elif error %}
+  <div id="job-status" class="job-error">
+    <p>❌ <strong>Job failed.</strong></p>
+    <p>{{ job.error_message or "Unknown error." }}</p>
+    <p><a href="/">Try another PDF</a>.</p>
+  </div>
+{% else %}
+  <div id="job-status"
+       class="job-running"
+       hx-get="/api/jobs/{{ job.job_id }}/status"
+       hx-trigger="every 3s"
+       hx-swap="outerHTML">
+    <p>
+      <span class="spinner">⏳</span>
+      <strong>Stage:</strong> {{ job.progress_stage or job.status }}
+    </p>
+    {% if job.progress_text %}
+      <p class="muted">{{ job.progress_text }}</p>
+    {% endif %}
+  </div>
+{% endif %}

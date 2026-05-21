@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}{{ settings.site_title }} — upload a PDF{% endblock %}
+{% block content %}
+
+{% if error_message %}
+  <div class="error-banner">{{ error_message }}</div>
+{% endif %}
+
+<section class="upload">
+  <h2>Check a paper's citations</h2>
+  <p>
+    Upload a PDF and citecheck will scan its reference list for four classes of issue:
+    retracted citations, fabricated citations, predatory or low-quality venues, and
+    (optionally) claims that the cited paper does not in fact support.
+  </p>
+
+  <form method="post" action="/api/check" enctype="multipart/form-data" class="upload-form">
+    <label class="file-field">
+      <span>PDF file (≤ 25 MB)</span>
+      <input type="file" name="pdf" accept="application/pdf,.pdf" required>
+    </label>
+
+    {% if settings.enable_phase5_toggle %}
+      <label class="checkbox-field">
+        <input type="checkbox" name="verify_claims" value="on"
+               {% if settings.phase5_default_on %}checked{% endif %}>
+        <span>
+          Verify in-text claims against the cited paper (Phase 5)
+          — adds ~30 s per claim; uses the deployed LLM.
+        </span>
+      </label>
+    {% endif %}
+
+    <button type="submit">Run citecheck</button>
+  </form>
+
+  <details class="quota-state">
+    <summary>Live LLM quota</summary>
+    <p>
+      Provider: <code>{{ quota.provider }}</code> ·
+      Today (UTC {{ quota.date_utc }}):
+      {{ quota.requests }} requests,
+      {{ "{:,}".format(quota.input_tokens + quota.output_tokens) }} tokens.
+      Remaining today: {{ "{:,}".format(quota.remaining) }} tokens
+      ({% if quota.is_exhausted %}<strong>exhausted</strong> — claim verification will be deferred until 00:00 UTC{% else %}≈ {{ quota.remaining // 4500 }} more claims{% endif %}).
+    </p>
+  </details>
+</section>
+
+<section class="explainer">
+  <h3>What it does</h3>
+  <ul>
+    <li><strong>Retraction check.</strong> Combines Crossref's <code>update-to</code> with OpenAlex's <code>is_retracted</code> flag. Together they catch ~67% more retractions than either source alone.</li>
+    <li><strong>Fabrication detection.</strong> Five-signal rule-based detector. Articles: precision 0.779, recall 0.957 on a 770-reference labeled corpus.</li>
+    <li><strong>Journal quality.</strong> Eight-signal continuous risk score combining DOAJ membership, Scopus indexing, h-index, citations per article, journal-flood pattern, APC, publisher portfolio size, and a hand-curated concern list.</li>
+    <li><strong>Claim verification.</strong> RAG against the cited paper's full text. Precision 0.860, recall 0.977 on a 100-triple hand-labeled benchmark.</li>
+  </ul>
+  <p class="small">
+    Methods + numbers are documented in the
+    <a href="https://github.com/pierrebeaucoral/citecheck/blob/main/paper/main.pdf" target="_blank" rel="noopener">companion paper</a>.
+    Apache-2.0 OSS; reports are public-by-URL. No accounts; no tracking.
+  </p>
+</section>
+
+{% endblock %}
