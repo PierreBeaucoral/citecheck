@@ -188,13 +188,13 @@ The tool runs as a command-line interface over a six-stage pipeline. Each stage 
 % Place s4 first, then anchor s3 (left of s4), s5 (right of s4), s6 (right of s5).
 % Gap of 8mm + box width 30mm = 38mm centre-to-centre. Total row width = 144mm.
 \node[check] (s4) at ($(s2)+(0,-28mm)$)
-  {Stage 4\\fabrication (Phase 3)\\[1pt]{\scriptsize\itshape\color{gray!40!black}OpenAlex \texttt{/authors},}\\[-1pt]{\scriptsize\itshape\color{gray!40!black}\texttt{/sources}, \texttt{/works}}};
+  {Stage 4\\fabrication\\[1pt]{\scriptsize\itshape\color{gray!40!black}OpenAlex \texttt{/authors},}\\[-1pt]{\scriptsize\itshape\color{gray!40!black}\texttt{/sources}, \texttt{/works}}};
 \node[check, left=8mm of s4] (s3)
-  {Stage 3\\retraction (Phase 2)\\[1pt]{\scriptsize\itshape\color{gray!40!black}Crossref \texttt{update-to},}\\[-1pt]{\scriptsize\itshape\color{gray!40!black}OpenAlex \texttt{is\_retracted}}};
+  {Stage 3\\retraction\\[1pt]{\scriptsize\itshape\color{gray!40!black}Crossref \texttt{update-to},}\\[-1pt]{\scriptsize\itshape\color{gray!40!black}OpenAlex \texttt{is\_retracted}}};
 \node[check, right=8mm of s4] (s5)
-  {Stage 5\\journal qual.\ (Phase 4)\\[1pt]{\scriptsize\itshape\color{gray!40!black}DOAJ +}\\[-1pt]{\scriptsize\itshape\color{gray!40!black}OpenAlex \texttt{/sources}}};
+  {Stage 5\\journal quality\\[1pt]{\scriptsize\itshape\color{gray!40!black}DOAJ +}\\[-1pt]{\scriptsize\itshape\color{gray!40!black}OpenAlex \texttt{/sources}}};
 \node[check, right=8mm of s5] (s6)
-  {Stage 6\\claim verif.\ (Phase 5)\\[1pt]{\scriptsize\itshape\color{gray!40!black}Unpaywall / PMC}\\[-1pt]{\scriptsize\itshape\color{gray!40!black}+ local-or-cloud LLM}};
+  {Stage 6\\claim verification\\[1pt]{\scriptsize\itshape\color{gray!40!black}Unpaywall / PMC}\\[-1pt]{\scriptsize\itshape\color{gray!40!black}+ local-or-cloud LLM}};
 
 % --- Aggregated report at the bottom ---
 % Center the report between s4 and s5 (the midpoint of the four-box row)
