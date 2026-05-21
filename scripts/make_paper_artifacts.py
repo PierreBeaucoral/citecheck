@@ -684,6 +684,181 @@ def _emit_per_layer_flag_rate_fig(predictions: list[dict], labels_by_id: dict[st
     plt.close(fig)
 
 
+def _emit_per_layer_bar_fig(predictions: list[dict]) -> None:
+    """Per-layer flag-rate bar chart, grouped by class.
+
+    Visualises the App A table.  The L5-as-strongest finding and the L3
+    inversion are far easier to see in a bar chart than in the table.
+    """
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    layer_names = ["L1 DOI", "L2 Cross-DB", "L3 Authors", "L4 Venue", "L5 Coherence"]
+    layer_keys = [
+        "L1_doi_integrity",
+        "L2_cross_db",
+        "L3_authors",
+        "L4_venue",
+        "L5_author_title",
+    ]
+    real_rates: list[float] = []
+    fab_rates: list[float] = []
+    for k in layer_keys:
+        r_flag = sum(
+            1 for p in predictions
+            if p["expected_verdict"] != "likely_hallucinated"
+            and (p.get("layer_flags") or {}).get(k) is True
+        )
+        r_total = sum(1 for p in predictions if p["expected_verdict"] != "likely_hallucinated")
+        f_flag = sum(
+            1 for p in predictions
+            if p["expected_verdict"] == "likely_hallucinated"
+            and (p.get("layer_flags") or {}).get(k) is True
+        )
+        f_total = sum(1 for p in predictions if p["expected_verdict"] == "likely_hallucinated")
+        real_rates.append(r_flag / r_total if r_total else 0.0)
+        fab_rates.append(f_flag / f_total if f_total else 0.0)
+
+    x = list(range(len(layer_names)))
+    width = 0.36
+    fig, ax = plt.subplots(figsize=(7.5, 4.0))
+    ax.bar(
+        [xi - width / 2 for xi in x], real_rates, width, label="Real refs", color="#4c8bd9"
+    )
+    ax.bar(
+        [xi + width / 2 for xi in x], fab_rates, width, label="Fabricated refs", color="#d9534f"
+    )
+    ax.set_xticks(x)
+    ax.set_xticklabels(layer_names, rotation=15, ha="right")
+    ax.set_ylabel("Flag rate")
+    ax.set_ylim(0, 1.0)
+    ax.legend(frameon=False)
+    # Annotate L5 bars to highlight the strongest-discriminator finding.
+    ax.axhline(0.0, color="black", linewidth=0.5)
+    fig.tight_layout()
+    fig.savefig(FIGURES_DIR / "per_layer_flag_rate.pdf")
+    plt.close(fig)
+
+
+def _emit_retraction_coverage_fig() -> None:
+    """Crossref vs OpenAlex contribution among correctly-flagged retractions.
+
+    Reads data/eval/retraction_results.json.  Renders as a stacked horizontal
+    bar so the 40/60 split is immediately legible.
+    """
+    if not RETRACTION_RESULTS_JSON.is_file():
+        return
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    s = json.loads(RETRACTION_RESULTS_JSON.read_text(encoding="utf-8"))["summary"]
+    cov = s.get("coverage", {})
+    crossref_n = cov.get("with_crossref_update_to", 0)
+    openalex_n = cov.get("openalex_only", 0)
+    total = crossref_n + openalex_n
+    if total == 0:
+        return
+
+    fig, ax = plt.subplots(figsize=(7.5, 1.8))
+    ax.barh(
+        [0],
+        [crossref_n],
+        color="#4c8bd9",
+        label=f"Crossref update-to populated ({crossref_n})",
+    )
+    ax.barh(
+        [0],
+        [openalex_n],
+        left=[crossref_n],
+        color="#d9534f",
+        label=f"OpenAlex is_retracted only ({openalex_n})",
+    )
+    ax.set_yticks([])
+    ax.set_xlim(0, total)
+    ax.set_xlabel(f"Correctly-flagged retractions (n = {total})")
+    # Add inline percentage labels.
+    ax.text(crossref_n / 2, 0, f"{crossref_n / total:.0%}", ha="center", va="center", color="white", fontsize=12)
+    ax.text(
+        crossref_n + openalex_n / 2,
+        0,
+        f"{openalex_n / total:.0%}",
+        ha="center",
+        va="center",
+        color="white",
+        fontsize=12,
+    )
+    ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.4), frameon=False, ncol=2)
+    fig.tight_layout()
+    fig.savefig(FIGURES_DIR / "retraction_source_coverage.pdf")
+    plt.close(fig)
+
+
+def _emit_claim_stratified_fig() -> None:
+    """Phase 5 stratified recall: severity + error-type panels.
+
+    Reads data/eval/claim_results.json.  Side-by-side bar panels match the
+    table layout (Panel A: severity, Panel B: error type).
+    """
+    if not CLAIM_RESULTS_JSON.is_file():
+        return
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    s = json.loads(CLAIM_RESULTS_JSON.read_text(encoding="utf-8"))["summary"]
+    sev_data = s.get("recall_by_severity", {})
+    err_data = s.get("recall_by_error_type", {})
+
+    sev_labels = ["subtle", "moderate", "blatant"]
+    sev_recall = [(sev_data.get(k) or {}).get("recall", 0) for k in sev_labels]
+    sev_n = [(sev_data.get(k) or {}).get("n", 0) for k in sev_labels]
+
+    err_order = (
+        "distortion",
+        "fabricated_specifics",
+        "overstatement",
+        "cherry_picking",
+        "citation_claim_mismatch",
+    )
+    err_labels: list[str] = []
+    err_recall: list[float] = []
+    err_n: list[int] = []
+    for k in err_order:
+        bucket = err_data.get(k)
+        if not bucket:
+            continue
+        err_labels.append(k.replace("_", " "))
+        err_recall.append(bucket.get("recall", 0))
+        err_n.append(bucket.get("n", 0))
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(8.5, 3.6), gridspec_kw={"width_ratios": [1, 1.5]})
+    color = "#1f6fbf"
+    bars1 = ax1.bar(sev_labels, sev_recall, color=color)
+    for bar, n in zip(bars1, sev_n, strict=False):
+        ax1.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.02, f"n={n}", ha="center", fontsize=9)
+    ax1.set_ylim(0, 1.1)
+    ax1.set_ylabel("Recall")
+    ax1.set_title("(a) by severity", fontsize=10)
+
+    bars2 = ax2.bar(err_labels, err_recall, color=color)
+    for bar, n in zip(bars2, err_n, strict=False):
+        ax2.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.02, f"n={n}", ha="center", fontsize=9)
+    ax2.set_ylim(0, 1.1)
+    ax2.tick_params(axis="x", rotation=20)
+    for tl in ax2.get_xticklabels():
+        tl.set_horizontalalignment("right")
+    ax2.set_title("(b) by error type", fontsize=10)
+
+    fig.tight_layout()
+    fig.savefig(FIGURES_DIR / "claim_stratified_recall.pdf")
+    plt.close(fig)
+
+
 def main() -> int:
     TABLES_DIR.mkdir(parents=True, exist_ok=True)
     FIGURES_DIR.mkdir(parents=True, exist_ok=True)
@@ -709,6 +884,10 @@ def main() -> int:
     _emit_journal_quality_table()
     _emit_claim_quality_tables()
     _emit_retraction_table()
+    # New figures (May 2026) — one per check.
+    _emit_per_layer_bar_fig(predictions)
+    _emit_retraction_coverage_fig()
+    _emit_claim_stratified_fig()
 
     tp, fn, fp, tn = _confusion(predictions)
     m = _metrics_from_confusion(tp, fn, fp, tn)

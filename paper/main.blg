@@ -1,18 +1,18 @@
 [0] Config.pm:328> INFO - This is Biber 2.21
 [0] Config.pm:331> INFO - Logfile is 'main.blg'
-[46] biber-darwin:342> INFO - === Thu May 21, 2026, 08:51:16
-[59] Biber.pm:421> INFO - Reading 'main.bcf'
-[113] Biber.pm:1002> INFO - Found 7 citekeys in bib section 0
-[123] Biber.pm:4487> INFO - Processing section 0
-[130] Biber.pm:4678> INFO - Looking for bibtex file 'references.bib' for section 0
-[131] bibtex.pm:1713> INFO - LaTeX decoding ...
-[136] bibtex.pm:1519> INFO - Found BibTeX data source 'references.bib'
-[184] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[184] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
-[184] Biber.pm:4307> INFO - Sorting list 'nyt/global//global/global/global' of type 'entry' with template 'nyt' and locale 'en-US'
-[184] Biber.pm:4313> INFO - No sort tailoring available for locale 'en-US'
-[190] bbl.pm:676> INFO - Writing 'main.bbl' with encoding 'UTF-8'
-[192] bbl.pm:779> INFO - Output to main.bbl
-[193] Biber.pm:132> WARN - legacy year field '2008--2025' in entry 'grobid' is not an integer - this will probably not sort properly.
-[193] Biber.pm:132> WARN - legacy year field '2022--2025' in entry 'openalex' is not an integer - this will probably not sort properly.
-[193] Biber.pm:134> INFO - WARNINGS: 2
+[34] biber-darwin:342> INFO - === Thu May 21, 2026, 11:36:51
+[43] Biber.pm:421> INFO - Reading 'main.bcf'
+[82] Biber.pm:1002> INFO - Found 7 citekeys in bib section 0
+[90] Biber.pm:4487> INFO - Processing section 0
+[95] Biber.pm:4678> INFO - Looking for bibtex file 'references.bib' for section 0
+[95] bibtex.pm:1713> INFO - LaTeX decoding ...
+[100] bibtex.pm:1519> INFO - Found BibTeX data source 'references.bib'
+[134] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[134] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[134] Biber.pm:4307> INFO - Sorting list 'nyt/global//global/global/global' of type 'entry' with template 'nyt' and locale 'en-US'
+[134] Biber.pm:4313> INFO - No sort tailoring available for locale 'en-US'
+[138] bbl.pm:676> INFO - Writing 'main.bbl' with encoding 'UTF-8'
+[140] bbl.pm:779> INFO - Output to main.bbl
+[140] Biber.pm:132> WARN - legacy year field '2008--2025' in entry 'grobid' is not an integer - this will probably not sort properly.
+[140] Biber.pm:132> WARN - legacy year field '2022--2025' in entry 'openalex' is not an integer - this will probably not sort properly.
+[140] Biber.pm:134> INFO - WARNINGS: 2

@@ -147,21 +147,38 @@ CLAIM (from the citing paper):
 PASSAGES (from the cited paper; these are the chunks most semantically similar to the claim):
 {passages}
 
-TASK: Decide whether any of the passages above supports the claim. Reply ONLY with a JSON object with these fields:
+TASK: Decide whether the passages above support the claim, paying close attention to qualifiers, quantifiers, and strength of language.
+
+A claim is NOT supported when the citing paper inflates or drops a qualifier the cited paper actually uses. Common patterns of misrepresentation:
+
+- The claim says "large" / "strong" / "dramatic" but the paper says "moderate" / "small" / "modest".
+- The claim says "proved" / "established" / "showed" but the paper says "preliminary" / "suggests" / "may indicate".
+- The claim says "all" / "every" / "always" but the paper says "most" / "many" / "in most cases".
+- The claim asserts causation but the paper reports an association or correlation.
+- The claim presents a finding as universal but the paper restricts it to a subgroup.
+- The claim omits an exception the paper explicitly states (e.g., "no effect on X" where X was the one null result).
+- The claim invents specific numbers (effect sizes, percentages, sample sizes) the paper does not report.
+
+Procedure:
+
+1. First, list any qualifier / quantifier / strength mismatches you detect between the claim and the passages, in the `discrepancies_found` array. Use one short sentence per mismatch. Use an empty array `[]` only when you have actively checked and found none.
+2. Then set `supported`:
+   - "yes" only if the passages clearly state the claim or a direct consequence AND `discrepancies_found` is empty.
+   - "partial" if the passages are topically consistent with the claim but do not state it directly, AND `discrepancies_found` is empty.
+   - "no" whenever `discrepancies_found` is non-empty, OR none of the passages support the claim.
+
+Reply ONLY with this JSON object:
 
 {{
+  "discrepancies_found": ["short sentence per mismatch, or empty array"],
   "supported": "yes" | "partial" | "no",
   "quote": "<exact text from one passage that supports the claim, or null>",
   "confidence": "low" | "medium" | "high",
   "reasoning": "<one short sentence explaining your decision>"
 }}
 
-- "yes" means a passage clearly states the claim or a direct consequence of it.
-- "partial" means a passage is consistent with the claim but does not state it directly.
-- "no" means none of the passages support the claim.
 - "quote" must be EXACT text from the passages; if no good quote, use null.
-
-Reply with only the JSON. No prose before or after."""
+- Reply with only the JSON. No prose before or after."""
 
 
 def _call_ollama(
@@ -200,6 +217,20 @@ def _parse_verdict(raw: str) -> dict[str, Any] | None:
 
 def _status_from_verdict(parsed: dict[str, Any]) -> ClaimStatus:
     s = (parsed.get("supported") or "").lower().strip()
+    # Guard rail for the overstatement failure mode observed in the v1 Phase 5
+    # eval: when the model fills `discrepancies_found` with a non-empty list
+    # (i.e., it detected a qualifier/strength mismatch in its own reasoning)
+    # but still sets `supported = yes`, force the verdict to NOT_SUPPORTED.
+    # The reasoning/label misalignment was the cause of the 0.600 recall on
+    # overstatement items; the prompt now explicitly instructs the model to
+    # set supported = no whenever discrepancies are found, and this guard is
+    # a safety net for models that follow the field convention but miss the
+    # rule about how it should map to `supported`.
+    discrepancies = parsed.get("discrepancies_found") or []
+    if isinstance(discrepancies, list) and any(
+        isinstance(d, str) and d.strip() for d in discrepancies
+    ):
+        return ClaimStatus.NOT_SUPPORTED
     if s == "yes":
         return ClaimStatus.SUPPORTED
     if s == "partial":

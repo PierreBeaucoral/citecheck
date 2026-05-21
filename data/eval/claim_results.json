@@ -5,26 +5,26 @@
     "n_excluded_no_text": 10,
     "n_excluded_other": 0,
     "model": "gemma4:31b-cloud",
-    "tp": 40,
-    "fp": 2,
-    "fn": 4,
-    "tn": 44,
-    "precision": 0.9523809523809523,
-    "recall": 0.9090909090909091,
-    "fpr": 0.043478260869565216,
-    "f1": 0.9302325581395349,
+    "tp": 43,
+    "fp": 7,
+    "fn": 1,
+    "tn": 39,
+    "precision": 0.86,
+    "recall": 0.9772727272727273,
+    "fpr": 0.15217391304347827,
+    "f1": 0.9148936170212766,
     "recall_by_severity": {
       "blatant": {
         "n": 7,
-        "recall": 0.8571428571428571
+        "recall": 1.0
       },
       "moderate": {
         "n": 20,
-        "recall": 0.9
+        "recall": 0.95
       },
       "subtle": {
         "n": 17,
-        "recall": 0.9411764705882353
+        "recall": 1.0
       }
     },
     "recall_by_error_type": {
@@ -38,7 +38,7 @@
       },
       "distortion": {
         "n": 22,
-        "recall": 0.9545454545454546
+        "recall": 1.0
       },
       "fabricated_specifics": {
         "n": 13,
@@ -46,7 +46,7 @@
       },
       "overstatement": {
         "n": 5,
-        "recall": 0.6
+        "recall": 1.0
       }
     }
   },
@@ -61,11 +61,11 @@
       "severity": "none",
       "field": "Clinical Psychology",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 4.47,
+      "elapsed_s": 2.73,
       "match": true,
       "quote": "While all treatments were largely comparable in their effects at post-treatment (week 8), the treatments differed in their long-term effects, rapidity of response and pattern of deteriorations.",
       "confidence": "high",
-      "reasoning": "The cited paper explicitly confirms that the three treatments (FA, OM, and MBCT) had comparable effects immediately after the 8-week program but diverged in terms of long-term effects, speed of improvement, and deterioration patterns."
+      "reasoning": "The cited paper explicitly confirms that the three arms (FA, OM, and MBCT) had comparable effects immediately post-treatment but diverged in terms of long-term effects, speed of improvement, and deterioration patterns."
     },
     {
       "id": "002",
@@ -77,11 +77,11 @@
       "severity": "moderate",
       "field": "Clinical Psychology",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 1.86,
+      "elapsed_s": 2.99,
       "match": true,
       "quote": null,
       "confidence": "high",
-      "reasoning": "The cited paper explicitly contradicts the claim, stating that the combination of FA and OM in MBCT 'did not confer a clear advantage over either component alone' and that neither MBCT nor OM 'clearly outperformed FA on any measure or timepoint'."
+      "reasoning": "The claim asserts a finding of superiority for the combined treatment (MBCT) that is directly contradicted by the results of the cited paper."
     },
     {
       "id": "003",
@@ -93,27 +93,27 @@
       "severity": "none",
       "field": "Clinical Psychology",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 2.53,
+      "elapsed_s": 2.0,
       "match": true,
       "quote": "FA showed the fastest rate of improvement and the fewest deteriorations on stress, anxiety and depression during treatment",
       "confidence": "high",
-      "reasoning": "The cited paper explicitly states that Focused Attention (FA) had the fastest rate of improvement and the fewest deteriorations for stress, anxiety, and depression during the treatment period."
+      "reasoning": "The cited paper explicitly states that Focused Attention (FA) showed the fastest rate of improvement and the fewest deteriorations for stress, anxiety, and depression during treatment."
     },
     {
       "id": "004",
       "source_id": "S1",
       "expected": "incorrect",
-      "predicted_status": "partial",
-      "predicted_label": "correct",
+      "predicted_status": "not_supported",
+      "predicted_label": "incorrect",
       "error_type": "overstatement",
       "severity": "blatant",
       "field": "Clinical Psychology",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 2.58,
-      "match": false,
+      "elapsed_s": 6.33,
+      "match": true,
       "quote": "OM, which directs attention toward threat and increases excitation and arousal, was the least effective for and caused many deteriorations in stress and anxiety.",
-      "confidence": "medium",
-      "reasoning": "The paper indicates that Open Monitoring (OM) was the least effective and caused deteriorations in anxiety, but it does not use the absolute language that it is 'harmful' or 'should never be used'."
+      "confidence": "high",
+      "reasoning": "The citing paper uses absolute and definitive language ('proved', 'harmful', 'should never be used') that significantly inflates the nuanced findings and cautious conclusions of the cited study."
     },
     {
       "id": "005",
@@ -125,11 +125,11 @@
       "severity": "none",
       "field": "Clinical Psychology",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 29.27,
+      "elapsed_s": 2.48,
       "match": false,
       "quote": null,
       "confidence": "high",
-      "reasoning": "The provided passages describe the study's methods, results, and a comparison to CBT dismantling trials, but they do not contain any cautionary statements about the findings being preliminary, the lack of a non-meditation control group, or the need for replication."
+      "reasoning": "The provided passages describe the study's methods, results, and a comparison to a CBT trial, but they do not contain the specific cautionary statement regarding the lack of a non-meditation control group or the explicit call for replication as claimed."
     },
     {
       "id": "006",
@@ -141,11 +141,11 @@
       "severity": "blatant",
       "field": "Clinical Psychology",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 1.87,
+      "elapsed_s": 3.03,
       "match": true,
       "quote": null,
       "confidence": "high",
-      "reasoning": "The provided passages describe the study design and general results, but none of them mention a 62% complete remission rate for depression in the focused attention group."
+      "reasoning": "The provided text describes the study design and general results (medium to large improvements) but does not contain the specific percentage (62%) or the term 'complete remission' mentioned in the claim."
     },
     {
       "id": "007",
@@ -157,27 +157,27 @@
       "severity": "none",
       "field": "Clinical Psychology",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 1.67,
+      "elapsed_s": 2.51,
       "match": true,
       "quote": "MBCT showed the most favorable pattern for long-term treatment of depression.",
       "confidence": "high",
-      "reasoning": "The cited paper explicitly states that MBCT showed the most favorable pattern for long-term treatment of depression."
+      "reasoning": "The cited paper contains a sentence that matches the claim almost word-for-word."
     },
     {
       "id": "008",
       "source_id": "S2",
       "expected": "correct",
-      "predicted_status": "supported",
-      "predicted_label": "correct",
+      "predicted_status": "not_supported",
+      "predicted_label": "incorrect",
       "error_type": "none",
       "severity": "none",
       "field": "Environmental Psychology",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 4.38,
-      "match": true,
-      "quote": "We undertook detailed narrative synthesis of the 50 studies which met the review inclusion criteria... There was adequate evidence for associations between the amount of local-area greenspace and life satisfaction (hedonic wellbeing), but not personal flourishing (eudaimonic wellbeing). Evidence for associations between mental wellbeing and visits to greenspace, accessibility, and types of greenspace was limited. There was inadequate evidence for associations with views of greenspace and nature",
+      "elapsed_s": 4.76,
+      "match": false,
+      "quote": null,
       "confidence": "high",
-      "reasoning": "The cited paper confirms it reviewed 50 studies and found adequate evidence for life satisfaction and GHQ (distress), but limited or inadequate evidence for other wellbeing measures and greenspace characteristics."
+      "reasoning": "The claim misrepresents the number of studies (50 vs 52) and incorrectly characterizes the findings for life satisfaction as inadequate/inconsistent when the paper explicitly labels them as 'adequate'."
     },
     {
       "id": "009",
@@ -189,11 +189,11 @@
       "severity": "subtle",
       "field": "Environmental Psychology",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 2.87,
+      "elapsed_s": 3.59,
       "match": true,
       "quote": null,
       "confidence": "high",
-      "reasoning": "The cited paper explicitly contradicts the claim, stating that evidence for most greenspace characteristics was 'limited or inadequate' and that evidence for associations with 'personal flourishing (eudaimonic wellbeing)' was not found."
+      "reasoning": "The citing paper significantly overstates the strength, universality, and certainty of the findings, ignoring the cited paper's explicit mentions of limited evidence and small effect sizes."
     },
     {
       "id": "010",
@@ -205,11 +205,11 @@
       "severity": "none",
       "field": "Environmental Psychology",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 2.54,
+      "elapsed_s": 2.84,
       "match": true,
       "quote": "Dzhambov et al. also found a significant association between subjective accessibility (time to walk to nearest greenspace) and lower GHQ, although associations for objectively measured Euclidean distance were not statistically significant [45].",
       "confidence": "high",
-      "reasoning": "The cited paper describes a study (Dzhambov et al.) that found no association with objective distance (objective greenspace amount/accessibility) but did find a significant association with subjective accessibility (perceived greenness/access) and lower GHQ (distress)."
+      "reasoning": "The cited paper explicitly mentions a study (Dzhambov et al.) that found a significant association with subjective accessibility (perceived greenness/access) but no significant association with objective Euclidean distance, which aligns with the claim's summary of the review's findings."
     },
     {
       "id": "011",
@@ -221,11 +221,11 @@
       "severity": "moderate",
       "field": "Environmental Psychology",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 2.56,
+      "elapsed_s": 3.63,
       "match": true,
       "quote": null,
       "confidence": "high",
-      "reasoning": "The cited paper explicitly states that 'methodological heterogeneity precluded meta-analysis', which directly contradicts the claim that the authors were able to pool studies in a meta-analysis."
+      "reasoning": "The cited paper explicitly contradicts the claim by stating that a meta-analysis was not possible due to methodological heterogeneity."
     },
     {
       "id": "012",
@@ -237,11 +237,11 @@
       "severity": "blatant",
       "field": "Environmental Psychology",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 2.25,
+      "elapsed_s": 5.02,
       "match": true,
       "quote": null,
       "confidence": "high",
-      "reasoning": "The cited paper is a systematic review of existing literature, not a 3-armed randomized trial, and it does not mention focused attention training or a direct comparison between greenspace and meditation."
+      "reasoning": "The citing paper describes the source as a specific randomized trial with a specific comparison, but the cited paper is actually a systematic review of existing literature."
     },
     {
       "id": "013",
@@ -253,11 +253,11 @@
       "severity": "none",
       "field": "Public Health",
       "provenance": "pmc_xml",
-      "elapsed_s": 8.94,
+      "elapsed_s": 8.01,
       "match": true,
       "quote": "In a randomized controlled trial involving 134 participants from a local university in Hong Kong, subjects were randomly assigned to either the intervention group (n = 67) or the inactive control group (n = 67). ... Outcomes were measured via an online platform using standardized assessment scales, including the Beck Anxiety Inventory and the Chinese Five Facets Mindfulness Questionnaire, at three different time points: pre-intervention, post-intervention and at a three-month follow-up.",
       "confidence": "high",
-      "reasoning": "The cited text explicitly confirms the study design (RCT), the sample size (134), the population (university students in Hong Kong), the groups (low-intensity iMBI vs inactive control), the outcome measured (anxiety), and the three time points including a 3-month follow-up."
+      "reasoning": "The cited paper explicitly confirms the study design (RCT), the sample size (134), the population (university students in Hong Kong), the groups (low-intensity online mindfulness vs. inactive control), the outcome measure (anxiety), and the timing of measurements (three points including a 3-month follow-up)."
     },
     {
       "id": "014",
@@ -269,11 +269,11 @@
       "severity": "blatant",
       "field": "Public Health",
       "provenance": "pmc_xml",
-      "elapsed_s": 8.7,
+      "elapsed_s": 2.76,
       "match": true,
       "quote": null,
       "confidence": "high",
-      "reasoning": "The claim misrepresents the study in multiple ways: it was an online intervention (iMBI), not an in-person retreat; it involved 134 university students in Hong Kong, not 5,000 working adults across Europe; and it showed a 'significant reduction' in anxiety, not that it 'eliminated' anxiety in the majority of participants."
+      "reasoning": "The claim completely misrepresents the sample size, population, location, delivery method, and the magnitude of the results reported in the cited paper."
     },
     {
       "id": "015",
@@ -285,11 +285,11 @@
       "severity": "none",
       "field": "Public Health",
       "provenance": "pmc_xml",
-      "elapsed_s": 2.15,
+      "elapsed_s": 3.85,
       "match": true,
       "quote": "Participants were excluded if they had a psychotic disorder, substance use disorder, severe anxiety or depression, or were at risk of suicide.",
       "confidence": "high",
-      "reasoning": "The cited paper explicitly lists the exact exclusion criteria mentioned in the claim."
+      "reasoning": "The cited paper contains a sentence that exactly matches the exclusion criteria listed in the claim."
     },
     {
       "id": "016",
@@ -301,11 +301,11 @@
       "severity": "none",
       "field": "Cognitive Neuroscience",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 2.4,
+      "elapsed_s": 2.74,
       "match": true,
       "quote": "Overall, however, Subjective Alertness and Sustained Attention were more affected by both partial and total sleep deprivation than other cognitive domains and tasks including n-back tasks of Working Memory, even when implemented with a high executive load.",
       "confidence": "high",
-      "reasoning": "The cited paper explicitly states that both partial and total sleep deprivation degraded performance, and that sustained attention was more affected than higher-order cognitive tasks like working memory/executive functions."
+      "reasoning": "The cited paper explicitly states that both partial and total sleep deprivation degraded performance and that sustained attention was more affected than higher-order cognitive domains like working memory/executive functions."
     },
     {
       "id": "017",
@@ -317,11 +317,11 @@
       "severity": "moderate",
       "field": "Cognitive Neuroscience",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 2.32,
+      "elapsed_s": 5.34,
       "match": true,
       "quote": null,
       "confidence": "high",
-      "reasoning": "The cited paper explicitly contradicts the claim, stating that cognitive domains are differentially affected and that Subjective Alertness and Sustained Attention are more affected than Working Memory/Executive Functions."
+      "reasoning": "The claim is a direct contradiction of the cited paper's findings, which emphasize that different cognitive domains are affected to different degrees."
     },
     {
       "id": "018",
@@ -333,7 +333,7 @@
       "severity": "none",
       "field": "Cognitive Neuroscience",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 4.11,
+      "elapsed_s": 2.06,
       "match": true,
       "quote": "The sample was stratified for the rs57875989 polymorphism in PER3, which confers cognitive susceptibility to total sleep deprivation.",
       "confidence": "high",
@@ -349,11 +349,11 @@
       "severity": "blatant",
       "field": "Cognitive Neuroscience",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 2.05,
+      "elapsed_s": 2.56,
       "match": true,
       "quote": null,
       "confidence": "high",
-      "reasoning": "The provided text mentions seven cognitive domains and various performance changes, but it never mentions a specific average reduction of 'exactly 34%' across those domains."
+      "reasoning": "The provided text mentions seven cognitive domains and various performance changes, but the specific figure of 'exactly 34%' is nowhere to be found in the provided passages."
     },
     {
       "id": "020",
@@ -365,11 +365,11 @@
       "severity": "blatant",
       "field": "Cognitive Neuroscience",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 3.0,
+      "elapsed_s": 2.42,
       "match": true,
       "quote": null,
       "confidence": "high",
-      "reasoning": "The cited paper states that sleep deprivation impairs sustained attention and has little effect on executive function, whereas the claim incorrectly asserts that sleep deprivation 'improved' sustained attention."
+      "reasoning": "The citing paper claims an improvement in sustained attention, whereas the cited paper explicitly reports that sustained attention deteriorated and was more negatively affected by sleep deprivation than executive functions."
     },
     {
       "id": "021",
@@ -381,11 +381,11 @@
       "severity": "none",
       "field": "Cognitive Neuroscience",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 2.48,
+      "elapsed_s": 8.67,
       "match": true,
-      "quote": "The \u2018vigilance hypothesis\u2019 states that Sustained Attention is much affected by sleep deprivation and that Sustained Attention is very important to higher aspects of cognition [20]. Although our data show the sensitivity of Sustained Attention tasks to sleep deprivation, they also demonstrate that at the same time, higher aspects of cognition are not very much affected.",
+      "quote": "Although our data show the sensitivity of Sustained Attention tasks to sleep deprivation, they also demonstrate that at the same time, higher aspects of cognition are not very much affected.",
       "confidence": "high",
-      "reasoning": "The cited paper explicitly defines the 'vigilance hypothesis' and states that their data contradicts it because higher cognitive functions were not as affected as sustained attention."
+      "reasoning": "The cited paper explicitly states that while sustained attention was sensitive to sleep deprivation, higher aspects of cognition were not very much affected, which directly supports the claim's argument against the 'vigilance hypothesis'."
     },
     {
       "id": "022",
@@ -462,11 +462,11 @@
       "severity": "none",
       "field": "Public Health",
       "provenance": "pmc_xml",
-      "elapsed_s": 2.5,
+      "elapsed_s": 2.74,
       "match": true,
       "quote": "Sleep deprivation led to performance impairments in attention, arithmetic ability, episodic memory, and working memory. No effect of sleep deprivation was observed in the Stroop test.",
       "confidence": "high",
-      "reasoning": "The cited paper explicitly states that sleep deprivation impaired the four mentioned cognitive domains and had no effect on the Stroop test, using 2-minute smartphone-based tests (KWA)."
+      "reasoning": "The cited paper explicitly confirms that one night of sleep deprivation impaired the four specified cognitive domains and had no effect on the Stroop test, using smartphone-based tests."
     },
     {
       "id": "028",
@@ -478,11 +478,11 @@
       "severity": "subtle",
       "field": "Public Health",
       "provenance": "pmc_xml",
-      "elapsed_s": 2.44,
+      "elapsed_s": 2.51,
       "match": true,
       "quote": null,
       "confidence": "high",
-      "reasoning": "The cited paper explicitly states that 'No effect of sleep deprivation was observed in the Stroop test,' which directly contradicts the claim that sleep deprivation impaired performance on every test including the Stroop task."
+      "reasoning": "The cited paper explicitly contradicts the claim by stating that the Stroop test showed no effect of sleep deprivation."
     },
     {
       "id": "029",
@@ -494,11 +494,11 @@
       "severity": "none",
       "field": "Public Health",
       "provenance": "pmc_xml",
-      "elapsed_s": 3.27,
+      "elapsed_s": 10.91,
       "match": true,
       "quote": "After three nights of normal sleep, participants (N = 182) were randomised to either one night of sleep deprivation or a fourth night of normal sleep. Using the Karolinska WakeApp (KWA), participants completed a battery of 2-min cognitive tests, including measures of attention, arithmetic ability, episodic memory, working memory, and a Stroop test for cognitive conflict and behavioural adjustment. A baseline measurement was completed at 22:30 h, followed by three measurements the following day at approximately 08:00 h, 12:30 h, and 16:30 h.",
       "confidence": "high",
-      "reasoning": "The cited paper explicitly confirms the sample size (182), the randomization into sleep deprivation vs. normal sleep after three nights of normal sleep, and the testing of cognition at multiple times the following day."
+      "reasoning": "The cited paper explicitly confirms the sample size (182), the randomization into sleep deprivation vs. normal sleep after three nights of normal sleep, and the timing of cognitive testing the following day."
     },
     {
       "id": "030",
@@ -510,11 +510,11 @@
       "severity": "blatant",
       "field": "Public Health",
       "provenance": "pmc_xml",
-      "elapsed_s": 2.34,
+      "elapsed_s": 6.24,
       "match": true,
       "quote": null,
       "confidence": "high",
-      "reasoning": "The cited paper explicitly states that sleep deprivation led to performance impairments in attention, arithmetic ability, episodic memory, and working memory, which directly contradicts the claim that it had no measurable effect."
+      "reasoning": "The claim asserts a null result, whereas the cited paper concludes that sleep deprivation caused significant cognitive impairments in most of the tests measured."
     },
     {
       "id": "031",
@@ -526,11 +526,11 @@
       "severity": "none",
       "field": "Sports Medicine",
       "provenance": "pmc_xml",
-      "elapsed_s": 2.86,
+      "elapsed_s": 2.98,
       "match": true,
       "quote": "Thirteen randomized controlled trials were eligible for this review, which comprised a total of 433 adolescents. Compared with the control treatment, the effect of exercise on adolescent depression was moderate (SMD = \u22120.65, 95%CI: \u22121.03 to \u22120.27, p < 0.01).",
       "confidence": "high",
-      "reasoning": "The cited paper explicitly confirms the number of RCTs (13), the number of participants (433), the moderate effect size, and the specific SMD value (-0.65)."
+      "reasoning": "The claim accurately reports the number of trials, the total number of participants, the effect size (SMD), and the qualitative description of the effect as 'moderate' exactly as stated in the cited paper."
     },
     {
       "id": "032",
@@ -542,27 +542,27 @@
       "severity": "none",
       "field": "Sports Medicine",
       "provenance": "pmc_xml",
-      "elapsed_s": 3.01,
+      "elapsed_s": 3.02,
       "match": true,
       "quote": "This study Heterogeneity was substantial (T2 = 0.30, I2 = 67%, p < 0.01). The moderating effects were described by subgroup analysis of the exercise variables and methodological features of included studies.",
       "confidence": "high",
-      "reasoning": "The cited paper explicitly states that heterogeneity was substantial and that it performed moderator analyses on exercise variables (which Table 2 shows include frequency, intensity, and type)."
+      "reasoning": "The cited paper explicitly states that heterogeneity was substantial and performed moderator analyses on exercise variables including type, frequency, and intensity, which aligns perfectly with the claim."
     },
     {
       "id": "033",
       "source_id": "S7",
       "expected": "correct",
-      "predicted_status": "partial",
-      "predicted_label": "correct",
+      "predicted_status": "not_supported",
+      "predicted_label": "incorrect",
       "error_type": "none",
       "severity": "none",
       "field": "Sports Medicine",
       "provenance": "pmc_xml",
-      "elapsed_s": 2.67,
-      "match": true,
-      "quote": "Table 3 shows follow-up data from the three included studies that reported the sustainability of effects after exercise intervention termination... After 40 weeks, no clinical symptoms of depression were found in all subjects.",
-      "confidence": "medium",
-      "reasoning": "The cited paper identifies three studies with follow-up data, and specifically mentions that one of them (Hughes et al., 2013) showed benefits up to 40 weeks, but the other two had shorter follow-up periods (2 and 6 months)."
+      "elapsed_s": 3.2,
+      "match": false,
+      "quote": "At post-intervention, Hughes et al. (2013) reported that the remission for all exercise group participant remained stable until 40 weeks after the end of exercise intervention.",
+      "confidence": "high",
+      "reasoning": "The citing paper incorrectly generalizes the 40-week timeframe to all three studies, whereas the cited paper specifies that only one study reached that duration."
     },
     {
       "id": "034",
@@ -574,11 +574,11 @@
       "severity": "none",
       "field": "Sports Medicine",
       "provenance": "pmc_xml",
-      "elapsed_s": 3.99,
+      "elapsed_s": 2.33,
       "match": true,
       "quote": "Following the GRADE framework, owing to the included studies contained some methodological limitations, we rated the certainty of evidence the primary meta-analysis as moderate evidence.",
       "confidence": "high",
-      "reasoning": "The cited paper explicitly states that the certainty of evidence was rated as moderate because the included studies had methodological limitations."
+      "reasoning": "The cited paper explicitly states that the certainty of evidence was rated as moderate due to methodological limitations in the included studies."
     },
     {
       "id": "035",
@@ -590,27 +590,27 @@
       "severity": "none",
       "field": "Oncology",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 2.63,
+      "elapsed_s": 2.07,
       "match": true,
       "quote": "We identified 40 exercise interventions including 2,929 cancer survivors. ... Exercise provided a small overall reduction in depressive symptoms compared to standard care among all types of cancer [d + = 20.13 (95% CI: 20.26, 20.01)].",
       "confidence": "high",
-      "reasoning": "The cited paper explicitly confirms the number of interventions (40), the number of participants (2,929), and the finding that exercise provided a small overall reduction in depressive symptoms."
+      "reasoning": "The claim accurately reflects the number of interventions, the sample size, the direction of the effect, and the magnitude ('small') as reported in the cited paper."
     },
     {
       "id": "036",
       "source_id": "S8",
       "expected": "correct",
-      "predicted_status": "supported",
-      "predicted_label": "correct",
+      "predicted_status": "not_supported",
+      "predicted_label": "incorrect",
       "error_type": "none",
       "severity": "none",
       "field": "Oncology",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 2.66,
-      "match": true,
+      "elapsed_s": 2.52,
+      "match": false,
       "quote": "Aerobic exercise reduced depressive symptoms in dose-response fashion such that as weekly minutes of aerobic exercise increased, so did reductions in depressive symptoms, a finding observed only in higher quality trials (Table 3).",
       "confidence": "high",
-      "reasoning": "The cited paper explicitly states that aerobic exercise reduced depressive symptoms in a dose-response fashion based on weekly minutes of exercise."
+      "reasoning": "The citing paper omits a critical qualifier: the dose-response relationship was only evident in high-quality studies, not across the entire analysis."
     },
     {
       "id": "037",
@@ -622,11 +622,11 @@
       "severity": "none",
       "field": "Oncology",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 1.81,
+      "elapsed_s": 201.12,
       "match": false,
-      "quote": null,
+      "quote": "Trials most often examined breast cancer survivors ( k = 24) [17,20,48\u201369].",
       "confidence": "high",
-      "reasoning": "The cited paper states that 24 of the 40 interventions focused on breast cancer survivors, whereas the claim asserts there were 26."
+      "reasoning": "The citing paper claims 26 interventions, but the main text of the cited paper explicitly states k = 24, creating a numerical discrepancy despite Table 1 listing 26."
     },
     {
       "id": "038",
@@ -638,11 +638,11 @@
       "severity": "none",
       "field": "Psychiatry",
       "provenance": "pmc_xml",
-      "elapsed_s": 2.77,
+      "elapsed_s": 5.24,
       "match": true,
-      "quote": "A total of 5 papers (5 RCTs with 796 patients) were included in this study. The results showed that exercise reduced depressive symptoms (SMD = \u20130.99, 95% CI [\u20131.95, \u20130.03], p = 0.04).",
+      "quote": "A total of 5 papers (5 RCTs with 796 patients) were included in this study. The results showed that exercise reduced depressive symptoms (SMD = \u22120.99, 95% CI [\u22121.95, \u22120.03], p = 0.04).",
       "confidence": "high",
-      "reasoning": "The cited paper explicitly states that a meta-analysis of 5 RCTs involving 796 patients found that exercise reduced depressive symptoms with a statistically significant p-value."
+      "reasoning": "The cited paper explicitly confirms the number of RCTs (5), the number of patients (796), and the finding that exercise significantly reduced depressive symptoms."
     },
     {
       "id": "039",
@@ -654,7 +654,7 @@
       "severity": "none",
       "field": "Psychiatry",
       "provenance": "pmc_xml",
-      "elapsed_s": 23.06,
+      "elapsed_s": 3.01,
       "match": true,
       "quote": "The results showed that exercise reduced depressive symptoms (SMD = \u20130.99, 95% CI [\u20131.95, \u20130.03], p = 0.04). But did not prevent suicidal ideation (SMD = \u20131.49, 95% CI [\u20134.33, 1.35], p = 0.30) and incidents of suicidal ideation in depressed patients (OR = 0.79, 95% CI [0.08, 7.67], p = 0.84).",
       "confidence": "high",
@@ -670,11 +670,11 @@
       "severity": "none",
       "field": "Psychiatry",
       "provenance": "pmc_xml",
-      "elapsed_s": 3.89,
+      "elapsed_s": 3.04,
       "match": true,
       "quote": "The results showed that exercise reduced depressive symptoms (SMD = \u22120.99, 95% CI [\u22121.95, \u22120.03], p = 0.04). But did not prevent suicidal ideation (SMD = \u22121.49, 95% CI [\u22124.33, 1.35], p = 0.30) and incidents of suicidal ideation in depressed patients (OR = 0.79, 95% CI [0.08, 7.67], p = 0.84).",
       "confidence": "high",
-      "reasoning": "The cited paper explicitly reports a statistically significant reduction in depressive symptoms but a lack of significant effect on suicidal ideation."
+      "reasoning": "The cited paper explicitly reports a statistically significant reduction in depressive symptoms while stating that exercise did not prevent suicidal ideation, directly supporting the claim's distinction."
     },
     {
       "id": "041",
@@ -686,11 +686,11 @@
       "severity": "none",
       "field": "Sports Medicine",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 2.63,
+      "elapsed_s": 3.21,
       "match": true,
-      "quote": "Eleven meta-analyses met the inclusion criteria, with the total sample consisting of 16.255 participants and 229 individual studies. ... The pooled results indicate a moderate clinical effect, suggesting the positive effect of exercise and physical activity in reducing depressive symptoms (SMD = -0.61, 95% CI [\u2013 0.78; -0.43], p = <0.01).",
+      "quote": "Eleven meta-analyses met the inclusion criteria, with the total sample consisting of 16.255 participants and 229 individual studies. ... The pooled results indicate a moderate clinical effect, suggesting the positive effect of exercise and physical activity in reducing depressive symptoms (SMD = -0.61, 95% CI [\u2212 0.78; -0.43], p = <0.01).",
       "confidence": "high",
-      "reasoning": "The cited paper explicitly confirms the number of meta-analyses (11), the number of studies (229), the number of participants (16,255), and the overall effect size (-0.61) for exercise on depression."
+      "reasoning": "The cited paper explicitly reports the number of meta-analyses (11), the number of studies (229), the number of participants (16,255), and the overall effect size (-0.61) exactly as stated in the claim."
     },
     {
       "id": "042",
@@ -702,11 +702,11 @@
       "severity": "none",
       "field": "Sports Medicine",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 2.21,
+      "elapsed_s": 3.07,
       "match": true,
       "quote": "The leave-one-out analysis showed that the overall effect size remained robust, with estimates ranging from -0.56 to -0.65, indicating that no single study had a major influence on the overall results (S2 Fig.).",
       "confidence": "high",
-      "reasoning": "The cited paper explicitly states that the leave-one-out analysis showed the overall effect size remained robust and that no single study had a major influence, with a narrow range of estimates."
+      "reasoning": "The cited paper explicitly states that the leave-one-out analysis showed the effect size remained robust and provides a narrow range of estimates (-0.56 to -0.65), directly supporting the claim."
     },
     {
       "id": "043",
@@ -718,11 +718,11 @@
       "severity": "none",
       "field": "Sports Medicine",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 3.54,
+      "elapsed_s": 14.71,
       "match": true,
       "quote": "Wegner et al. [24] reported that the meta-analyses that tended to use randomized controlled trials had higher effect sizes (ES = -0.65) than studies that did not exclusively use randomized controlled trials (ES = -0.45).",
       "confidence": "high",
-      "reasoning": "The cited paper explicitly attributes the finding that meta-analyses restricted to RCTs reported larger effect sizes than those including non-randomized designs to Wegner et al."
+      "reasoning": "The cited paper explicitly attributes the finding that meta-analyses restricted to RCTs report larger effect sizes than those including non-randomized designs to Wegner et al."
     },
     {
       "id": "044",
@@ -734,11 +734,11 @@
       "severity": "none",
       "field": "Digital Wellbeing",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 2.08,
+      "elapsed_s": 2.32,
       "match": true,
       "quote": "We find that participants in the treatment group substitute social media for instant messaging and do not decrease their total time spent on digital devices.",
       "confidence": "high",
-      "reasoning": "The cited paper explicitly states that the treatment group (restricted to 10 minutes of social media) substituted that time with instant messaging and did not reduce their overall digital device usage."
+      "reasoning": "The cited paper explicitly describes a randomized controlled trial where students were limited to 10 minutes of social media per day and found that they shifted usage to instant messaging without reducing overall digital device time."
     },
     {
       "id": "045",
@@ -750,11 +750,11 @@
       "severity": "none",
       "field": "Digital Wellbeing",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 3.93,
+      "elapsed_s": 2.11,
       "match": true,
       "quote": "Contrary to findings from previous correlational studies, we do not find any significant impact of social media usage as it was defined in our study on well-being and academic success.",
       "confidence": "high",
-      "reasoning": "The cited paper explicitly states that its randomized controlled trial found no significant impact of restricting social media on well-being and academic success, contrasting this with previous correlational research."
+      "reasoning": "The cited paper explicitly states that its RCT found no significant impact on well-being or academic success, contrasting this with previous correlational research, which aligns perfectly with the claim."
     },
     {
       "id": "046",
@@ -766,27 +766,27 @@
       "severity": "none",
       "field": "Digital Wellbeing",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 23.56,
+      "elapsed_s": 3.6,
       "match": true,
-      "quote": "Orben and Przybylski [9] rigorously analyze popular large scale social datasets (n = 350k) used in previous correlational studies studying the impact of technology use on well-being by conducting a specification curve analysis of the data... They find a small negative association between digital technology use and adolescent well-being.",
+      "quote": "They find a small negative association between digital technology use and adolescent well-being. However this effect is economically insignificant explaining at most 0.4% of the variation in well-being.",
       "confidence": "high",
-      "reasoning": "The cited paper explicitly mentions that it situates its own null results against large-scale correlational analyses (specifically citing Orben and Przybylski) which found only small negative associations between technology use and adolescent well-being."
+      "reasoning": "The cited paper explicitly discusses large-scale correlational analyses (referencing Orben and Przybylski) that found a small, economically insignificant negative association between technology use and adolescent well-being, which the authors then use to contextualize their own null result from an RCT."
     },
     {
       "id": "047",
       "source_id": "S1",
       "expected": "correct",
-      "predicted_status": "supported",
-      "predicted_label": "correct",
+      "predicted_status": "not_supported",
+      "predicted_label": "incorrect",
       "error_type": "none",
       "severity": "none",
       "field": "Clinical Psychology",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 2.3,
-      "match": true,
+      "elapsed_s": 2.72,
+      "match": false,
       "quote": "When assessed immediately post-treatment (week 8), all three treatments showed similar effects on all outcomes, with medium to large effects on both clinician-rated and self-reported depression, and stress, and small to medium effects on anxiety.",
       "confidence": "high",
-      "reasoning": "The cited paper explicitly states that at week 8, all three treatments had similar effects, with medium to large effects for depression and stress, and small to medium for anxiety."
+      "reasoning": "The citing paper overstates the effect size for anxiety, which the cited paper explicitly describes as 'small to medium' rather than 'medium-to-large'."
     },
     {
       "id": "048",
@@ -798,11 +798,11 @@
       "severity": "none",
       "field": "Clinical Psychology",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 2.32,
+      "elapsed_s": 2.19,
       "match": true,
       "quote": "At the week 20 follow-up, while treatments were largely comparable for stress, they diverged most clearly for anxiety. MBCT and FA maintained their medium to large treatment-related gains, while OM\u2019s gains were lost and anxiety scores returned to pre-treatment levels.",
       "confidence": "high",
-      "reasoning": "The cited paper explicitly states that by week 20, the open monitoring (OM) group's anxiety gains were lost and returned to pre-treatment levels, while the focused attention (FA) and combined (MBCT) groups maintained their gains."
+      "reasoning": "The cited paper explicitly states that by week 20, the open monitoring (OM) group's anxiety gains were lost and scores returned to pre-treatment levels, while the other two groups (FA and MBCT) maintained their gains."
     },
     {
       "id": "049",
@@ -814,11 +814,11 @@
       "severity": "none",
       "field": "Cognitive Neuroscience",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 2.79,
+      "elapsed_s": 3.74,
       "match": true,
-      "quote": "We conducted a 2 6 12-day laboratory protocol to characterize the interaction of repeated partial and acute total sleep deprivation and circadian phase on performance across seven cognitive domains in 36 individuals",
+      "quote": "We conducted a 2 \u00d7 12-day laboratory protocol to characterize the interaction of repeated partial and acute total sleep deprivation and circadian phase on performance across seven cognitive domains in 36 individuals",
       "confidence": "high",
-      "reasoning": "The paper explicitly states it examined performance across seven cognitive domains and found that the effects of sleep deprivation varied by domain, specifically noting that Subjective Alertness and Sustained Attention were more affected than Working Memory/Executive Functions."
+      "reasoning": "The cited paper explicitly states it examined seven cognitive domains and found that the effects of sleep deprivation varied across these domains, specifically noting that Subjective Alertness and Sustained Attention were more affected than Working Memory/Executive Functions."
     },
     {
       "id": "050",
@@ -830,7 +830,7 @@
       "severity": "none",
       "field": "Cognitive Neuroscience",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 2.23,
+      "elapsed_s": 5.04,
       "match": true,
       "quote": "We conducted a 2 \u00d7 12-day laboratory protocol to characterize the interaction of repeated partial and acute total sleep deprivation and circadian phase on performance across seven cognitive domains in 36 individuals",
       "confidence": "high",
@@ -866,17 +866,17 @@
       "id": "053",
       "source_id": "S2",
       "expected": "correct",
-      "predicted_status": "partial",
-      "predicted_label": "correct",
+      "predicted_status": "not_supported",
+      "predicted_label": "incorrect",
       "error_type": "none",
       "severity": "none",
       "field": "Environmental Psychology",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 2.42,
-      "match": true,
+      "elapsed_s": 3.23,
+      "match": false,
       "quote": "We conducted a narrative review of evidence, as methodological heterogeneity precluded meta-analysis.",
       "confidence": "high",
-      "reasoning": "The cited paper confirms it used a narrative review instead of meta-analysis (pooling results) due to methodological heterogeneity, although it identifies 52 included studies rather than 50."
+      "reasoning": "While the cited paper confirms the use of narrative synthesis due to heterogeneity, it reports 52 included studies, not 50, making the claim numerically inaccurate."
     },
     {
       "id": "054",
@@ -888,11 +888,11 @@
       "severity": "none",
       "field": "Environmental Psychology",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 2.23,
+      "elapsed_s": 5.55,
       "match": true,
       "quote": "Inverse association between urban greenspace with GHQ Adequate",
       "confidence": "high",
-      "reasoning": "The cited paper explicitly concludes there is 'adequate' evidence for an 'inverse association' (meaning more greenspace equals lower GHQ/distress) between urban greenspace and GHQ scores."
+      "reasoning": "The cited paper explicitly states there is 'adequate' evidence for an inverse association between urban greenspace and GHQ scores, and the provided text describes multiple studies with varying results and effect sizes, supporting the claim's mention of wide variation."
     },
     {
       "id": "055",
@@ -904,11 +904,11 @@
       "severity": "none",
       "field": "Public Health",
       "provenance": "pmc_xml",
-      "elapsed_s": 5.55,
+      "elapsed_s": 2.66,
       "match": true,
       "quote": "This intervention consisted of sixteen self-guided online modules... each participant in the intervention group was encouraged to attend two half-day online workshops on mindfulness via the Zoom app during the second and sixth weeks of the intervention period... totaled 16 h of mindfulness practice over an eight-week intervention period.",
       "confidence": "high",
-      "reasoning": "The cited paper explicitly mentions 16 online modules, two half-day online workshops, and an eight-week intervention period."
+      "reasoning": "The cited paper explicitly confirms the 16 online modules, the two half-day online workshops, and the eight-week duration of the intervention."
     },
     {
       "id": "056",
@@ -920,11 +920,11 @@
       "severity": "none",
       "field": "Public Health",
       "provenance": "pmc_xml",
-      "elapsed_s": 3.19,
+      "elapsed_s": 2.48,
       "match": true,
-      "quote": "The primary intervention outcome was the reduction of anxiety, as measured by the 21-item Chinese Beck Anxiety Inventory (BAI; Zhou et al., 2018). ... Abbreviations: BAI = Beck Anxiety Inventory; T0: pre-intervention; T1: post-intervention; T2: 3-month follow-up.",
+      "quote": "Abbreviations: BAI = Beck Anxiety Inventory; T0: pre-intervention; T1: post-intervention; T2: 3-month follow-up.",
       "confidence": "high",
-      "reasoning": "The passages explicitly state that anxiety was measured using the Beck Anxiety Inventory (BAI) and define the three timepoints as pre-intervention (T0), post-intervention (T1), and 3-month follow-up (T2)."
+      "reasoning": "The cited paper explicitly identifies the BAI as the tool used to measure anxiety and defines the three timepoints as pre-intervention (T0), post-intervention (T1), and 3-month follow-up (T2)."
     },
     {
       "id": "057",
@@ -936,11 +936,11 @@
       "severity": "none",
       "field": "Public Health",
       "provenance": "pmc_xml",
-      "elapsed_s": 3.03,
+      "elapsed_s": 2.52,
       "match": true,
       "quote": "Using the Karolinska WakeApp (KWA), participants completed a battery of 2-min cognitive tests, including measures of attention, arithmetic ability, episodic memory, working memory, and a Stroop test for cognitive conflict and behavioural adjustment.",
       "confidence": "high",
-      "reasoning": "The cited paper explicitly confirms the use of a 2-minute smartphone-based battery (KWA) measuring attention, arithmetic, memory, and cognitive conflict (Stroop test)."
+      "reasoning": "The cited paper explicitly describes the use of a 2-minute smartphone-based battery covering attention, arithmetic, memory, and cognitive conflict."
     },
     {
       "id": "058",
@@ -952,11 +952,11 @@
       "severity": "none",
       "field": "Public Health",
       "provenance": "pmc_xml",
-      "elapsed_s": 3.1,
+      "elapsed_s": 6.6,
       "match": true,
       "quote": "The KWA was completed on four occasions\u201422:30 h (representing a \u201cbaseline\u201d measurement point with both conditions having similar sleep history, similar time awake, and being in a similar circadian phase), 08:00 h, 12:30 h, and 16:30 h.",
       "confidence": "high",
-      "reasoning": "The text explicitly states that a baseline assessment was taken at 22:30 h (the night before) and further assessments were taken at 08:00, 12:30, and 16:30 h the following day."
+      "reasoning": "The cited paper explicitly states that a baseline assessment was taken at 22:30 h (the night before the test day) and further assessments were taken at 08:00, 12:30, and 16:30 the following day."
     },
     {
       "id": "059",
@@ -968,11 +968,11 @@
       "severity": "none",
       "field": "Cognitive Neuroscience",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 1.94,
+      "elapsed_s": 3.07,
       "match": true,
       "quote": "We observed a deterioration of performance during both repeated partial and acute total sleep deprivation.",
       "confidence": "high",
-      "reasoning": "The cited paper explicitly states that performance deteriorated during both repeated partial sleep deprivation and acute total sleep deprivation."
+      "reasoning": "The cited paper explicitly states that performance deteriorated during both repeated partial and acute total sleep deprivation, which directly supports the claim."
     },
     {
       "id": "060",
@@ -984,11 +984,11 @@
       "severity": "none",
       "field": "Sports Medicine",
       "provenance": "pmc_xml",
-      "elapsed_s": 2.51,
+      "elapsed_s": 5.98,
       "match": true,
       "quote": "The specific operation and writing process of this study followed the PRISMA 2020 guidelines and statement (Page et al., 2021; Supplementary Table 1). The protocol of this systematic review was registered in PROSPERO (CRD42022321683).",
       "confidence": "high",
-      "reasoning": "The text explicitly states that the study followed PRISMA 2020 guidelines and that the protocol was registered in PROSPERO."
+      "reasoning": "The cited paper explicitly states that it followed PRISMA 2020 guidelines and that its protocol was registered in PROSPERO."
     },
     {
       "id": "061",
@@ -1000,11 +1000,11 @@
       "severity": "none",
       "field": "Oncology",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 2.66,
+      "elapsed_s": 2.04,
       "match": true,
       "quote": "We conducted a systematic search identifying randomized controlled trials of exercise interventions among adult cancer survivors, examining depressive symptoms as an outcome.",
       "confidence": "high",
-      "reasoning": "The cited paper explicitly states that it identified randomized controlled trials of exercise interventions and compared them to control conditions (as mentioned in the 'Results Methodological Characteristics' section)."
+      "reasoning": "The cited paper explicitly states it identified randomized controlled trials comparing exercise interventions to control conditions (as seen in the Methods and Results sections)."
     },
     {
       "id": "062",
@@ -1016,11 +1016,11 @@
       "severity": "none",
       "field": "Psychiatry",
       "provenance": "pmc_xml",
-      "elapsed_s": 2.47,
+      "elapsed_s": 3.12,
       "match": true,
-      "quote": "But did not prevent suicidal ideation (SMD = \u20131.49, 95% CI [\u20134.33, 1.35], p = 0.30)",
+      "quote": "But did not prevent suicidal ideation (SMD = \u22121.49, 95% CI [\u22124.33, 1.35], p = 0.30)",
       "confidence": "high",
-      "reasoning": "The cited paper reports a 95% confidence interval for suicidal ideation that ranges from -4.33 to 1.35, which crosses zero (the line of no effect) and is statistically non-significant (p = 0.30)."
+      "reasoning": "The cited paper explicitly reports a 95% confidence interval for suicidal ideation that ranges from -4.33 to 1.35, which crosses zero (the line of no effect), supporting the claim."
     },
     {
       "id": "063",
@@ -1032,11 +1032,11 @@
       "severity": "none",
       "field": "Sports Medicine",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 3.4,
+      "elapsed_s": 2.58,
       "match": true,
-      "quote": "The present work is intended as an update to the report by Wegner et al. [24].",
+      "quote": "The present work is intended as an update to the report by Wegner et al. [24]. ... In contrast to Wegner et al. [24], only meta-analyses with randomized controlled trials are included in the present study.",
       "confidence": "high",
-      "reasoning": "The text explicitly states it is an update to Wegner et al. (2014) and specifies that, unlike that previous review, 'only meta-analyses with randomized controlled trials are included in the present study.'"
+      "reasoning": "The cited paper explicitly states it is an update to Wegner et al. (2014) and that it restricts its inclusion to meta-analyses of randomized controlled trials, unlike the previous review."
     },
     {
       "id": "064",
@@ -1048,11 +1048,11 @@
       "severity": "none",
       "field": "Digital Wellbeing",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 13.4,
+      "elapsed_s": 8.94,
       "match": true,
       "quote": "we conduct a randomized controlled trial among students in which we track participants\u2019 daily digital activities over the course of three quarters of an academic year.",
       "confidence": "high",
-      "reasoning": "The abstract explicitly states that the trial tracked participants' daily digital activities over three quarters of an academic year."
+      "reasoning": "The cited paper explicitly states in the abstract that they tracked participants' daily digital activities over three quarters of an academic year."
     },
     {
       "id": "065",
@@ -1064,11 +1064,11 @@
       "severity": "none",
       "field": "Clinical Psychology",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 3.01,
+      "elapsed_s": 13.51,
       "match": true,
       "quote": "On average, across all timepoints and measures, MBCT and OM had the higher average rate of deterioration (5.6% and 5.4%, respectively) than FA (1.2%).",
       "confidence": "high",
-      "reasoning": "The cited paper explicitly states that MBCT (combined) and OM (open monitoring) had higher average rates of deterioration across all timepoints and measures compared to FA (focused attention)."
+      "reasoning": "The cited paper explicitly states that MBCT (combined) and OM (open monitoring) had higher average rates of deterioration than FA (focused attention) across all timepoints and measures."
     },
     {
       "id": "066",
@@ -1080,11 +1080,11 @@
       "severity": "subtle",
       "field": "Clinical Psychology",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 2.05,
+      "elapsed_s": 3.39,
       "match": true,
       "quote": null,
       "confidence": "high",
-      "reasoning": "The cited paper explicitly contradicts the claim, stating that reliable improvements in anxiety were found in only 10\u201315% of participants and that more than 80% failed to show any clinically significant change."
+      "reasoning": "The claim directly contradicts the cited paper's finding that the vast majority of participants (over 80%) did not show clinically significant improvement in anxiety."
     },
     {
       "id": "067",
@@ -1096,11 +1096,11 @@
       "severity": "moderate",
       "field": "Clinical Psychology",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 3.52,
+      "elapsed_s": 2.23,
       "match": true,
-      "quote": null,
+      "quote": "FA showed the fastest rate of improvement and the fewest deteriorations on stress, anxiety and depression during treatment",
       "confidence": "high",
-      "reasoning": "The cited paper explicitly states the opposite: FA showed the 'fastest rate of improvement,' while OM showed the 'slowest rate of improvement.'"
+      "reasoning": "The claim directly contradicts the findings of the cited paper, which identifies Focused Attention (FA) as the fastest, not the slowest, intervention to produce improvement."
     },
     {
       "id": "068",
@@ -1112,11 +1112,11 @@
       "severity": "moderate",
       "field": "Clinical Psychology",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 6.8,
+      "elapsed_s": 8.34,
       "match": true,
       "quote": null,
       "confidence": "high",
-      "reasoning": "The cited paper describes a 3-armed 'dismantling trial' comparing three active meditation interventions (MBCT, FA, and OM), not a trial with a waitlist control group receiving no meditation."
+      "reasoning": "The cited paper explicitly states it was a '3-armed randomized dismantling trial' where participants were randomized into MBCT, FA, or OM; there is no mention of a waitlist or no-meditation control group."
     },
     {
       "id": "069",
@@ -1128,11 +1128,11 @@
       "severity": "subtle",
       "field": "Environmental Psychology",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 2.46,
+      "elapsed_s": 5.02,
       "match": true,
       "quote": null,
       "confidence": "high",
-      "reasoning": "The cited paper explicitly states that evidence was 'limited' or 'inadequate' for several greenspace characteristics and only 'adequate' for local-area urban greenspace and life satisfaction, contradicting the claim of 'consistent, strong evidence' across the included studies."
+      "reasoning": "The citing paper significantly overstates the strength and consistency of the findings, claiming strong evidence for quality of life when the cited paper explicitly labels evidence for quality of life as 'inadequate'."
     },
     {
       "id": "070",
@@ -1144,27 +1144,27 @@
       "severity": "subtle",
       "field": "Environmental Psychology",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 2.19,
+      "elapsed_s": 2.81,
       "match": true,
-      "quote": null,
+      "quote": "All but one [45] found an inverse association between the amount of greenspace and GHQ score [5, 17, 23\u201325, 47, 49, 50], implying reduced mental distress",
       "confidence": "high",
-      "reasoning": "The cited paper explicitly states that 'All but one [45] found an inverse association between the amount of greenspace and GHQ score', contradicting the claim that 'every one' of the studies found such an association."
+      "reasoning": "The citing paper uses the universal quantifier 'every one', while the cited paper explicitly identifies one study [45] that did not find a statistically significant association for objective greenspace quantities."
     },
     {
       "id": "071",
       "source_id": "S2",
       "expected": "incorrect",
-      "predicted_status": "partial",
-      "predicted_label": "correct",
+      "predicted_status": "not_supported",
+      "predicted_label": "incorrect",
       "error_type": "distortion",
       "severity": "moderate",
       "field": "Environmental Psychology",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 2.51,
-      "match": false,
+      "elapsed_s": 3.88,
+      "match": true,
       "quote": "Greenspace has positive associations with mental wellbeing (particularly hedonic wellbeing), but the evidence is not currently sufficient or specific enough to guide planning decisions.",
       "confidence": "high",
-      "reasoning": "The cited paper identifies 'positive associations' between greenspace and mental wellbeing, but it is a systematic review of associations, not a study proving that increasing greenspace 'causes' improvements."
+      "reasoning": "The citing paper incorrectly claims a causal relationship and a definitive conclusion, while the cited paper only reports associations and explicitly states the evidence is insufficient for planning."
     },
     {
       "id": "072",
@@ -1176,11 +1176,11 @@
       "severity": "subtle",
       "field": "Public Health",
       "provenance": "pmc_xml",
-      "elapsed_s": 2.06,
+      "elapsed_s": 2.16,
       "match": true,
       "quote": null,
       "confidence": "high",
-      "reasoning": "The cited paper describes a trial involving university students from a single 'local university in Hong Kong', whereas the claim incorrectly states that students from 'several countries' were enrolled."
+      "reasoning": "The cited paper describes a study conducted at a single local university in Hong Kong, contradicting the claim that it enrolled students from several countries."
     },
     {
       "id": "073",
@@ -1192,11 +1192,11 @@
       "severity": "subtle",
       "field": "Public Health",
       "provenance": "pmc_xml",
-      "elapsed_s": 2.2,
+      "elapsed_s": 2.79,
       "match": true,
-      "quote": null,
+      "quote": "All participants completed identical online outcome assessment scales at three time points: pre- intervention (T0), post- intervention (T1) and three months after the completion of the intervention (T2).",
       "confidence": "high",
-      "reasoning": "The cited paper explicitly states that outcome assessment scales were completed at three time points: pre-intervention (T0), post-intervention (T1), and three months after (T2), contradicting the claim that anxiety was measured using a single post-intervention assessment."
+      "reasoning": "The cited paper explicitly describes a longitudinal design with three assessment points, contradicting the claim that anxiety was measured using a single post-intervention assessment."
     },
     {
       "id": "074",
@@ -1208,11 +1208,11 @@
       "severity": "moderate",
       "field": "Public Health",
       "provenance": "pmc_xml",
-      "elapsed_s": 1.91,
+      "elapsed_s": 2.54,
       "match": true,
       "quote": null,
       "confidence": "high",
-      "reasoning": "The study compared an online mindfulness-based intervention (iMBI) against a non-active control group, not against an in-person mindfulness program."
+      "reasoning": "The cited paper explicitly states that the control group was a 'non-active control group' that 'received no intervention', rather than an in-person mindfulness program."
     },
     {
       "id": "075",
@@ -1224,11 +1224,11 @@
       "severity": "subtle",
       "field": "Cognitive Neuroscience",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 3.89,
+      "elapsed_s": 2.28,
       "match": true,
       "quote": null,
       "confidence": "high",
-      "reasoning": "The cited paper explicitly contradicts the claim, stating that Sustained Attention and Alertness were more affected by sleep deprivation than Executive Functions."
+      "reasoning": "The citing paper claims the exact opposite of the cited paper's findings; Lo et al. (2012) found that Sustained Attention was more affected than Executive Functions."
     },
     {
       "id": "076",
@@ -1240,11 +1240,11 @@
       "severity": "moderate",
       "field": "Cognitive Neuroscience",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 2.28,
+      "elapsed_s": 2.41,
       "match": true,
       "quote": null,
       "confidence": "high",
-      "reasoning": "The cited paper mentions 36 participants and that they were affected by sleep deprivation, but it explicitly states that 'some individuals are more affected than others' and discusses 'differential vulnerability,' contradicting the claim that they were affected to a 'near-identical degree'."
+      "reasoning": "The cited paper explicitly discusses individual differences and genetic susceptibility to sleep deprivation, which directly contradicts the claim that all participants were affected to a near-identical degree."
     },
     {
       "id": "077",
@@ -1256,11 +1256,11 @@
       "severity": "moderate",
       "field": "Cognitive Neuroscience",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 1.92,
+      "elapsed_s": 9.19,
       "match": true,
       "quote": null,
       "confidence": "high",
-      "reasoning": "The cited paper explicitly challenges the vigilance hypothesis, stating that while sustained attention is affected, higher aspects of cognition are not, thereby contradicting the claim that the data confirmed the hypothesis."
+      "reasoning": "The cited paper actually argues against the vigilance hypothesis's core premise that sustained attention governs higher cognition, noting that while sustained attention was impaired, higher cognitive functions (executive functions) were not."
     },
     {
       "id": "078",
@@ -1272,11 +1272,11 @@
       "severity": "moderate",
       "field": "Cognitive Neuroscience",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 2.06,
+      "elapsed_s": 2.2,
       "match": true,
       "quote": null,
       "confidence": "high",
-      "reasoning": "The cited paper explicitly states that cognitive performance was assessed every 2 hours during total sleep deprivation (TSD) and that the time course of performance showed a minimum in the morning and recovery the next day, directly contradicting the claim that it was tested only at a single time of day."
+      "reasoning": "The cited paper explicitly states that during Total Sleep Deprivation (TSD), the cognitive test battery was administered every 2 hours, contradicting the claim that it was tested only at a single time of day."
     },
     {
       "id": "079",
@@ -1327,11 +1327,11 @@
       "severity": "subtle",
       "field": "Public Health",
       "provenance": "pmc_xml",
-      "elapsed_s": 2.15,
+      "elapsed_s": 2.39,
       "match": true,
       "quote": null,
       "confidence": "high",
-      "reasoning": "The cited paper explicitly states multiple times that 'No effect of sleep deprivation was observed in the Stroop test,' which directly contradicts the claim."
+      "reasoning": "The cited paper directly contradicts the claim, stating multiple times that 'No effect of sleep deprivation was observed in the Stroop test.'"
     },
     {
       "id": "083",
@@ -1343,11 +1343,11 @@
       "severity": "moderate",
       "field": "Public Health",
       "provenance": "pmc_xml",
-      "elapsed_s": 2.48,
+      "elapsed_s": 8.25,
       "match": true,
       "quote": null,
       "confidence": "high",
-      "reasoning": "The cited paper explicitly states it used an 'ultra-short' battery of '2-min smartphone-based tests' to avoid the fatigue associated with 'long cognitive batteries', which directly contradicts the claim that a 'full hour-long laboratory cognitive battery' was used."
+      "reasoning": "The cited paper's primary purpose was to validate a brief 2-minute smartphone battery as an alternative to long laboratory tests, directly contradicting the claim that it used a full hour-long battery."
     },
     {
       "id": "084",
@@ -1359,27 +1359,27 @@
       "severity": "moderate",
       "field": "Public Health",
       "provenance": "pmc_xml",
-      "elapsed_s": 2.51,
+      "elapsed_s": 2.52,
       "match": true,
       "quote": null,
       "confidence": "high",
-      "reasoning": "The cited paper describes a single night of total sleep deprivation ('on the final night... the sleep deprivation group did not sleep'), whereas the claim asserts participants were sleep-deprived for 'several consecutive nights'."
+      "reasoning": "The cited paper explicitly describes a single night of total sleep deprivation following three nights of normal sleep, contradicting the claim of 'several consecutive nights'."
     },
     {
       "id": "085",
       "source_id": "S7",
       "expected": "incorrect",
-      "predicted_status": "partial",
-      "predicted_label": "correct",
+      "predicted_status": "not_supported",
+      "predicted_label": "incorrect",
       "error_type": "overstatement",
       "severity": "subtle",
       "field": "Sports Medicine",
       "provenance": "pmc_xml",
-      "elapsed_s": 2.49,
-      "match": false,
+      "elapsed_s": 7.77,
+      "match": true,
       "quote": "Compared with the control treatment, the effect of exercise on adolescent depression was moderate (SMD = \u22120.65, 95%CI: \u22121.03 to \u22120.27, p < 0.01).",
       "confidence": "high",
-      "reasoning": "The cited paper explicitly reports a 'moderate' effect size for exercise in adolescents, whereas the claiming paper describes it as a 'large' effect."
+      "reasoning": "The citing paper inflates the effect size from 'moderate' to 'large', which is a direct contradiction of the cited paper's primary result."
     },
     {
       "id": "086",
@@ -1391,11 +1391,11 @@
       "severity": "moderate",
       "field": "Sports Medicine",
       "provenance": "pmc_xml",
-      "elapsed_s": 2.44,
+      "elapsed_s": 2.8,
       "match": true,
       "quote": null,
       "confidence": "high",
-      "reasoning": "The cited paper explicitly states that the certainty of evidence was rated as 'moderate' (not high) and that heterogeneity was 'substantial' (I2 = 67%, not low)."
+      "reasoning": "The citing paper completely misrepresents the findings, claiming 'high' certainty and 'low' heterogeneity when the cited paper reported 'moderate' certainty and 'substantial' heterogeneity."
     },
     {
       "id": "087",
@@ -1407,11 +1407,11 @@
       "severity": "moderate",
       "field": "Sports Medicine",
       "provenance": "pmc_xml",
-      "elapsed_s": 2.41,
+      "elapsed_s": 5.82,
       "match": true,
       "quote": null,
       "confidence": "high",
-      "reasoning": "The cited paper states it pooled 433 adolescents across 9 studies (with 13 RCTs), which directly contradicts the claim of 'more than 4,000 adolescents across 13 trials'."
+      "reasoning": "The citing paper drastically inflates the sample size from 433 to over 4,000."
     },
     {
       "id": "088",
@@ -1423,11 +1423,11 @@
       "severity": "moderate",
       "field": "Sports Medicine",
       "provenance": "pmc_xml",
-      "elapsed_s": 2.21,
+      "elapsed_s": 3.19,
       "match": true,
       "quote": null,
       "confidence": "high",
-      "reasoning": "The cited paper explicitly states the opposite of the claim, finding that the benefits of exercise were sustained or even increased after the intervention ended."
+      "reasoning": "The cited paper directly contradicts the claim, reporting that antidepressant effects remained or increased in follow-up studies rather than disappearing."
     },
     {
       "id": "089",
@@ -1439,11 +1439,11 @@
       "severity": "subtle",
       "field": "Oncology",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 1.75,
+      "elapsed_s": 7.42,
       "match": true,
-      "quote": null,
+      "quote": "Conclusion: Exercise training provides a small overall reduction in depressive symptoms among cancer survivors",
       "confidence": "high",
-      "reasoning": "The cited paper explicitly states that exercise provides a 'small overall reduction' in depressive symptoms, which contradicts the claim that it produced a 'large reduction'."
+      "reasoning": "The citing paper inflates the magnitude of the effect from 'small' to 'large', which is a direct contradiction of the cited paper's conclusion."
     },
     {
       "id": "090",
@@ -1455,11 +1455,11 @@
       "severity": "moderate",
       "field": "Oncology",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 2.01,
+      "elapsed_s": 3.78,
       "match": true,
       "quote": null,
       "confidence": "high",
-      "reasoning": "The cited paper explicitly contradicts the claim, stating that increases in weekly volume of aerobic exercise reduced depressive symptoms in a 'dose-response fashion' (b = -0.24, p = 0.03)."
+      "reasoning": "The cited paper directly contradicts the claim by stating that increases in weekly volume of aerobic exercise reduced depressive symptoms in a dose-response fashion."
     },
     {
       "id": "091",
@@ -1471,11 +1471,11 @@
       "severity": "subtle",
       "field": "Oncology",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 2.14,
+      "elapsed_s": 2.58,
       "match": true,
-      "quote": null,
+      "quote": "Trials most often examined breast cancer survivors ( k = 24) [17,20,48\u201369]. Two trials each focused on prostate cancer [19,70]",
       "confidence": "high",
-      "reasoning": "The cited paper explicitly states that the meta-analysis was based mainly on breast cancer survivors (24 of 40 trials), whereas prostate cancer survivors were only represented in two trials."
+      "reasoning": "The cited paper explicitly states that breast cancer survivors were the most frequently examined group (24 trials), while prostate cancer survivors were only in two trials."
     },
     {
       "id": "092",
@@ -1487,11 +1487,11 @@
       "severity": "moderate",
       "field": "Psychiatry",
       "provenance": "pmc_xml",
-      "elapsed_s": 2.36,
+      "elapsed_s": 2.73,
       "match": true,
       "quote": null,
       "confidence": "high",
-      "reasoning": "The cited paper's own results explicitly state that exercise 'did not prevent suicidal ideation' and 'did not show a statistically effect on reducing suicidal tendencies and suicide risk among patients,' directly contradicting the claim."
+      "reasoning": "The cited paper's meta-analysis results explicitly contradict the claim, finding no statistically significant effect of exercise on reducing suicidal ideation or tendencies in depressed patients."
     },
     {
       "id": "093",
@@ -1503,11 +1503,11 @@
       "severity": "subtle",
       "field": "Psychiatry",
       "provenance": "pmc_xml",
-      "elapsed_s": 2.47,
+      "elapsed_s": 2.64,
       "match": true,
       "quote": null,
       "confidence": "high",
-      "reasoning": "The citing paper claims the analysis drew on 'dozens of trials', but the cited paper explicitly states that only 6 articles were selected for inclusion in the analysis."
+      "reasoning": "The citing paper drastically inflates the number of trials (dozens vs 6) and the precision/significance of the results regarding suicide-related outcomes."
     },
     {
       "id": "094",
@@ -1519,11 +1519,11 @@
       "severity": "subtle",
       "field": "Psychiatry",
       "provenance": "pmc_xml",
-      "elapsed_s": 1.93,
+      "elapsed_s": 2.37,
       "match": true,
       "quote": null,
       "confidence": "high",
-      "reasoning": "The cited paper explicitly contradicts the claim, stating that while exercise reduced depressive symptoms, it 'did not prevent suicidal ideation' and 'did not show a statistically effect on reducing suicidal tendencies'."
+      "reasoning": "The cited paper's results directly contradict the claim, stating that while exercise reduced depressive symptoms, it did not show a statistically significant effect on reducing suicidal tendencies or ideation."
     },
     {
       "id": "095",
@@ -1535,11 +1535,11 @@
       "severity": "subtle",
       "field": "Sports Medicine",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 2.18,
+      "elapsed_s": 4.25,
       "match": true,
       "quote": null,
       "confidence": "high",
-      "reasoning": "The cited paper reports a moderate effect size of -0.61 for its own results and -0.56 for Wegner et al. [24], which contradicts the claim that the effect was small at roughly -0.2."
+      "reasoning": "The claim significantly underestimates the effect size reported in the cited paper, describing it as 'small' (-0.2) when the paper describes it as 'moderate' (-0.56 to -0.61)."
     },
     {
       "id": "096",
@@ -1551,11 +1551,11 @@
       "severity": "moderate",
       "field": "Sports Medicine",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 2.31,
+      "elapsed_s": 2.59,
       "match": true,
-      "quote": null,
+      "quote": "The leave-one-out analysis showed that the overall effect size remained robust, with estimates ranging from -0.56 to -0.65, indicating that no single study had a major influence on the overall results (S2 Fig.).",
       "confidence": "high",
-      "reasoning": "The cited paper explicitly states that the leave-one-out analysis showed the overall effect size 'remained robust' and that 'no single study had a major influence', which directly contradicts the claim that the effect was 'fragile and collapsed'."
+      "reasoning": "The citing paper claims the leave-one-out analysis showed the effect was fragile and collapsed, whereas the cited paper explicitly states the opposite: that the effect remained robust and no single study had a major influence."
     },
     {
       "id": "097",
@@ -1567,11 +1567,11 @@
       "severity": "moderate",
       "field": "Sports Medicine",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 2.39,
+      "elapsed_s": 2.52,
       "match": false,
       "quote": "Wegner et al. [24] reported that the meta-analyses that tended to use randomized controlled trials had higher effect sizes (ES = -0.65) than studies that did not exclusively use randomized controlled trials (ES = -0.45).",
       "confidence": "high",
-      "reasoning": "The cited paper explicitly mentions that Wegner et al. included studies that did not exclusively use randomized controlled trials, which supports the claim that their review included non-randomized or observational studies."
+      "reasoning": "The cited paper explicitly references Wegner et al. [24] and notes that their work included studies that did not exclusively use randomized controlled trials, which supports the claim that they included non-randomized/observational studies."
     },
     {
       "id": "098",
@@ -1583,11 +1583,11 @@
       "severity": "subtle",
       "field": "Digital Wellbeing",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 1.92,
+      "elapsed_s": 2.16,
       "match": true,
       "quote": null,
       "confidence": "high",
-      "reasoning": "The cited paper explicitly contradicts the claim, stating that they 'do not find any significant impact of social media usage... on well-being and academic success' and that 'social media usage does not cause lower well-being or poor academic performance'."
+      "reasoning": "The cited paper directly contradicts the claim, stating that restricting social media usage did not cause a significant impact on well-being or academic performance."
     },
     {
       "id": "099",
@@ -1599,11 +1599,11 @@
       "severity": "subtle",
       "field": "Digital Wellbeing",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 2.46,
+      "elapsed_s": 2.19,
       "match": true,
       "quote": null,
       "confidence": "high",
-      "reasoning": "The cited paper explicitly contradicts the claim, stating that participants in the treatment group 'do not decrease their total time spent on digital devices' and instead substituted social media for instant messaging."
+      "reasoning": "The claim asserts a sharp reduction in total digital device time, whereas the cited paper's abstract explicitly states that participants in the treatment group did not decrease their total time spent on digital devices."
     },
     {
       "id": "100",
@@ -1615,11 +1615,11 @@
       "severity": "moderate",
       "field": "Digital Wellbeing",
       "provenance": "unpaywall_pdf",
-      "elapsed_s": 1.97,
+      "elapsed_s": 4.41,
       "match": true,
       "quote": null,
       "confidence": "high",
-      "reasoning": "The cited paper is explicitly described as a 'randomized controlled trial' (RCT) to provide 'causal evidence', which is the opposite of a 'correlational survey'."
+      "reasoning": "The citing paper fundamentally mischaracterizes the study's methodology, calling it a correlational survey when the cited paper's primary purpose and design is a randomized controlled trial (RCT) to avoid the limitations of correlational research."
     }
   ]
 }

@@ -38,29 +38,29 @@
 \@writefile{toc}{\contentsline {section}{\numberline {3}The citecheck pipeline}{3}{section.3}\protected@file@percent }
 \newlabel{sec:tool}{{3}{3}{The citecheck pipeline}{section.3}{}}
 \newlabel{sec:tool@cref}{{[section][3][]3}{[1][3][]3}{}{}{}}
-\@writefile{toc}{\contentsline {paragraph}{Stage 1: extraction.}{3}{paragraph*.1}\protected@file@percent }
-\abx@aux@page{9}{3}
 \abx@aux@cite{0}{openalex}
 \abx@aux@segm{0}{0}{openalex}
 \abx@aux@cite{0}{retraction_watch}
 \abx@aux@segm{0}{0}{retraction_watch}
 \abx@aux@cite{0}{openalex}
 \abx@aux@segm{0}{0}{openalex}
+\@writefile{toc}{\contentsline {paragraph}{Stage 1: extraction.}{4}{paragraph*.1}\protected@file@percent }
+\abx@aux@page{9}{4}
 \@writefile{toc}{\contentsline {paragraph}{Stage 2: resolution.}{4}{paragraph*.2}\protected@file@percent }
 \abx@aux@page{10}{4}
 \@writefile{toc}{\contentsline {paragraph}{Stage 3: retraction check.}{4}{paragraph*.3}\protected@file@percent }
 \abx@aux@page{11}{4}
-\abx@aux@page{12}{4}
+\abx@aux@page{12}{5}
+\@writefile{toc}{\contentsline {paragraph}{Stage 4: fabrication detection.}{5}{paragraph*.4}\protected@file@percent }
 \abx@aux@cite{0}{walters_wilder_2023}
 \abx@aux@segm{0}{0}{walters_wilder_2023}
-\@writefile{toc}{\contentsline {paragraph}{Stage 4: fabrication detection.}{5}{paragraph*.4}\protected@file@percent }
-\abx@aux@page{13}{5}
 \abx@aux@cite{0}{callaway_santanna_2021_preprint}
 \abx@aux@segm{0}{0}{callaway_santanna_2021_preprint}
+\abx@aux@page{13}{6}
 \abx@aux@cite{0}{walters_wilder_2023}
 \abx@aux@segm{0}{0}{walters_wilder_2023}
-\abx@aux@page{14}{6}
-\@writefile{toc}{\contentsline {paragraph}{Design choices and what they cost.}{6}{paragraph*.5}\protected@file@percent }
+\abx@aux@page{14}{7}
+\@writefile{toc}{\contentsline {paragraph}{Design choices and what they cost.}{7}{paragraph*.5}\protected@file@percent }
 \abx@aux@page{15}{7}
 \abx@aux@cite{0}{walters_wilder_2023}
 \abx@aux@segm{0}{0}{walters_wilder_2023}
@@ -72,8 +72,6 @@
 \newlabel{sec:eval-set}{{4}{8}{Evaluation set}{section.4}{}}
 \newlabel{sec:eval-set@cref}{{[section][4][]4}{[1][8][]8}{}{}{}}
 \abx@aux@page{16}{8}
-\abx@aux@page{17}{8}
-\abx@aux@page{18}{8}
 \abx@aux@cite{0}{walters_wilder_2023}
 \abx@aux@segm{0}{0}{walters_wilder_2023}
 \abx@aux@cite{0}{walters_wilder_2023}
@@ -86,11 +84,13 @@
 \abx@aux@segm{0}{0}{buchanan_hill_shapoval_2024}
 \abx@aux@cite{0}{walters_wilder_2023}
 \abx@aux@segm{0}{0}{walters_wilder_2023}
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Eval corpus composition}}{9}{table.caption.6}\protected@file@percent }
-\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{tab:eval-sources}{{1}{9}{Eval corpus composition}{table.caption.6}{}}
-\newlabel{tab:eval-sources@cref}{{[table][1][]1}{[1][9][]9}{}{}{}}
+\abx@aux@page{17}{9}
+\abx@aux@page{18}{9}
 \abx@aux@page{23}{9}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Eval corpus composition}}{10}{table.caption.6}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{tab:eval-sources}{{1}{10}{Eval corpus composition}{table.caption.6}{}}
+\newlabel{tab:eval-sources@cref}{{[table][1][]1}{[1][9][]10}{}{}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {5}Evaluation methodology}{10}{section.5}\protected@file@percent }
 \newlabel{sec:methodology}{{5}{10}{Evaluation methodology}{section.5}{}}
 \newlabel{sec:methodology@cref}{{[section][5][]5}{[1][9][]10}{}{}{}}
@@ -106,61 +106,81 @@
 \@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Metrics by source}}{12}{table.caption.10}\protected@file@percent }
 \newlabel{tab:eval-bysource}{{3}{12}{Metrics by source}{table.caption.10}{}}
 \newlabel{tab:eval-bysource@cref}{{[table][3][]3}{[1][11][]12}{}{}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Metrics by publication type (Walters slice)}}{13}{table.caption.12}\protected@file@percent }
-\newlabel{tab:eval-bypubtype}{{4}{13}{Metrics by publication type (Walters slice)}{table.caption.12}{}}
-\newlabel{tab:eval-bypubtype@cref}{{[table][4][]4}{[1][13][]13}{}{}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Metrics by publication type (Walters slice)}}{14}{table.caption.12}\protected@file@percent }
+\newlabel{tab:eval-bypubtype}{{4}{14}{Metrics by publication type (Walters slice)}{table.caption.12}{}}
+\newlabel{tab:eval-bypubtype@cref}{{[table][4][]4}{[1][13][]14}{}{}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Precision, recall, and false-positive rate per publication type (Walters slice). Articles attain precision and recall both near 0.9 with FPR below 0.10. Books show high recall (0.96) but precision drops to 0.20 and FPR to 0.60 --- the classic signature of a detector that is over-flagging in the absence of discriminating signal.}}{14}{figure.caption.14}\protected@file@percent }
 \newlabel{fig:metrics-by-pubtype}{{1}{14}{Precision, recall, and false-positive rate per publication type (Walters slice). Articles attain precision and recall both near 0.9 with FPR below 0.10. Books show high recall (0.96) but precision drops to 0.20 and FPR to 0.60 --- the classic signature of a detector that is over-flagging in the absence of discriminating signal}{figure.caption.14}{}}
 \newlabel{fig:metrics-by-pubtype@cref}{{[figure][1][]1}{[1][13][]14}{}{}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Predicted verdicts stratified by ground-truth class. The detector concentrates real references in \texttt  {real\_high\_confidence} and \texttt  {real\_low\_confidence}; fabricated references either escalate to \texttt  {suspicious} / \texttt  {likely\_hallucinated} (true positives) or fall into \texttt  {real\_low\_confidence} (false negatives, 10 of 195 cases). The false-negative slice is mixed in publication type --- six are journal articles, two are websites or grey-literature entries, and only one each is a book or a chapter --- so the residual misses are not concentrated in the obvious book-coverage gap.}}{14}{figure.caption.15}\protected@file@percent }
-\newlabel{fig:predicted-by-class}{{2}{14}{Predicted verdicts stratified by ground-truth class. The detector concentrates real references in \texttt {real\_high\_confidence} and \texttt {real\_low\_confidence}; fabricated references either escalate to \texttt {suspicious} / \texttt {likely\_hallucinated} (true positives) or fall into \texttt {real\_low\_confidence} (false negatives, 10 of 195 cases). The false-negative slice is mixed in publication type --- six are journal articles, two are websites or grey-literature entries, and only one each is a book or a chapter --- so the residual misses are not concentrated in the obvious book-coverage gap}{figure.caption.15}{}}
-\newlabel{fig:predicted-by-class@cref}{{[figure][2][]2}{[1][13][]14}{}{}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Predicted verdicts stratified by ground-truth class. The detector concentrates real references in \texttt  {real\_high\_confidence} and \texttt  {real\_low\_confidence}; fabricated references either escalate to \texttt  {suspicious} / \texttt  {likely\_hallucinated} (true positives) or fall into \texttt  {real\_low\_confidence} (false negatives, 10 of 195 cases). The false-negative slice is mixed in publication type --- six are journal articles, two are websites or grey-literature entries, and only one each is a book or a chapter --- so the residual misses are not concentrated in the obvious book-coverage gap.}}{15}{figure.caption.15}\protected@file@percent }
+\newlabel{fig:predicted-by-class}{{2}{15}{Predicted verdicts stratified by ground-truth class. The detector concentrates real references in \texttt {real\_high\_confidence} and \texttt {real\_low\_confidence}; fabricated references either escalate to \texttt {suspicious} / \texttt {likely\_hallucinated} (true positives) or fall into \texttt {real\_low\_confidence} (false negatives, 10 of 195 cases). The false-negative slice is mixed in publication type --- six are journal articles, two are websites or grey-literature entries, and only one each is a book or a chapter --- so the residual misses are not concentrated in the obvious book-coverage gap}{figure.caption.15}{}}
+\newlabel{fig:predicted-by-class@cref}{{[figure][2][]2}{[1][13][]15}{}{}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Distribution of red-flag counts (0 to 5 across the five detector layers) by ground-truth class. Real references concentrate at 0--1 flags; fabricated references shift right but the shift is modest for book-class items because L2 cannot reliably distinguish a fabricated book from a legitimate but uncatalogued one.}}{15}{figure.caption.16}\protected@file@percent }
 \newlabel{fig:red-flag-dist}{{3}{15}{Distribution of red-flag counts (0 to 5 across the five detector layers) by ground-truth class. Real references concentrate at 0--1 flags; fabricated references shift right but the shift is modest for book-class items because L2 cannot reliably distinguish a fabricated book from a legitimate but uncatalogued one}{figure.caption.16}{}}
 \newlabel{fig:red-flag-dist@cref}{{[figure][3][]3}{[1][13][]15}{}{}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Phase 4: journal-quality evaluation}{16}{subsection.6.1}\protected@file@percent }
 \newlabel{sec:eval-jq}{{6.1}{16}{Phase 4: journal-quality evaluation}{subsection.6.1}{}}
 \newlabel{sec:eval-jq@cref}{{[subsection][1][6]6.1}{[1][16][]16}{}{}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Phase 4 journal-quality check: calibration vs held-out}}{17}{table.caption.17}\protected@file@percent }
-\newlabel{tab:eval-journal-quality}{{5}{17}{Phase 4 journal-quality check: calibration vs held-out}{table.caption.17}{}}
-\newlabel{tab:eval-journal-quality@cref}{{[table][5][]5}{[1][16][]17}{}{}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Phase 5: claim verification --- planned, not yet evaluated}{17}{subsection.6.2}\protected@file@percent }
-\newlabel{sec:eval-claims}{{6.2}{17}{Phase 5: claim verification --- planned, not yet evaluated}{subsection.6.2}{}}
-\newlabel{sec:eval-claims@cref}{{[subsection][2][6]6.2}{[1][17][]17}{}{}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Phase 4 journal-quality check (v2): calibration vs held-out}}{17}{table.caption.17}\protected@file@percent }
+\newlabel{tab:eval-journal-quality}{{5}{17}{Phase 4 journal-quality check (v2): calibration vs held-out}{table.caption.17}{}}
+\newlabel{tab:eval-journal-quality@cref}{{[table][5][]5}{[1][17][]17}{}{}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Phase 5: claim verification --- evaluated on 100 hand-labeled triples}{18}{subsection.6.2}\protected@file@percent }
+\newlabel{sec:eval-claims}{{6.2}{18}{Phase 5: claim verification --- evaluated on 100 hand-labeled triples}{subsection.6.2}{}}
+\newlabel{sec:eval-claims@cref}{{[subsection][2][6]6.2}{[1][18][]18}{}{}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces Phase 5 claim-verification check: headline}}{20}{table.caption.19}\protected@file@percent }
+\newlabel{tab:eval-claim-headline}{{6}{20}{Phase 5 claim-verification check: headline}{table.caption.19}{}}
+\newlabel{tab:eval-claim-headline@cref}{{[table][6][]6}{[1][19][]20}{}{}{}}
 \abx@aux@cite{0}{callaway_santanna_2021_preprint}
 \abx@aux@segm{0}{0}{callaway_santanna_2021_preprint}
-\@writefile{toc}{\contentsline {section}{\numberline {7}Discussion and limitations}{18}{section.7}\protected@file@percent }
-\newlabel{sec:discussion}{{7}{18}{Discussion and limitations}{section.7}{}}
-\newlabel{sec:discussion@cref}{{[section][7][]7}{[1][18][]18}{}{}{}}
-\abx@aux@page{26}{18}
-\@writefile{toc}{\contentsline {paragraph}{The deep difficulty: absence versus non-existence.}{20}{paragraph*.19}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Publication-type asymmetry.}{20}{paragraph*.20}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces Phase 5 claim-verification check: stratified recall}}{21}{table.caption.21}\protected@file@percent }
+\newlabel{tab:eval-claim-stratified}{{7}{21}{Phase 5 claim-verification check: stratified recall}{table.caption.21}{}}
+\newlabel{tab:eval-claim-stratified@cref}{{[table][7][]7}{[1][21][]21}{}{}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Phase 5 claim-verification recall, stratified by (a) severity and (b) error type, with sample sizes annotated above each bar. Subtle and blatant severity reach ceiling; the lone remaining weakness is the small fabricated-specifics slice ($n=13$). Figure generated by \texttt  {scripts/make\_paper\_artifacts.py} from \texttt  {data/eval/claim\_results.json}.}}{22}{figure.caption.23}\protected@file@percent }
+\newlabel{fig:claim-stratified}{{4}{22}{Phase 5 claim-verification recall, stratified by (a) severity and (b) error type, with sample sizes annotated above each bar. Subtle and blatant severity reach ceiling; the lone remaining weakness is the small fabricated-specifics slice ($n=13$). Figure generated by \texttt {scripts/make\_paper\_artifacts.py} from \texttt {data/eval/claim\_results.json}}{figure.caption.23}{}}
+\newlabel{fig:claim-stratified@cref}{{[figure][4][]4}{[1][21][]22}{}{}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Discussion and limitations}{22}{section.7}\protected@file@percent }
+\newlabel{sec:discussion}{{7}{22}{Discussion and limitations}{section.7}{}}
+\newlabel{sec:discussion@cref}{{[section][7][]7}{[1][21][]22}{}{}{}}
+\abx@aux@page{26}{22}
+\@writefile{toc}{\contentsline {paragraph}{The deep difficulty: absence versus non-existence.}{23}{paragraph*.24}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Publication-type asymmetry.}{24}{paragraph*.25}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Why thresholds are not sharper.}{24}{paragraph*.26}\protected@file@percent }
 \abx@aux@cite{0}{buchanan_hill_shapoval_2024}
 \abx@aux@segm{0}{0}{buchanan_hill_shapoval_2024}
-\@writefile{toc}{\contentsline {paragraph}{Why thresholds are not sharper.}{21}{paragraph*.21}\protected@file@percent }
-\abx@aux@page{27}{21}
+\abx@aux@page{27}{25}
+\@writefile{toc}{\contentsline {section}{\numberline {8}Conclusion}{25}{section.8}\protected@file@percent }
+\newlabel{sec:conclusion}{{8}{25}{Conclusion}{section.8}{}}
+\newlabel{sec:conclusion@cref}{{[section][8][]8}{[1][25][]25}{}{}{}}
 \abx@aux@cite{0}{walters_wilder_2023}
 \abx@aux@segm{0}{0}{walters_wilder_2023}
-\@writefile{toc}{\contentsline {section}{\numberline {8}Conclusion}{22}{section.8}\protected@file@percent }
-\newlabel{sec:conclusion}{{8}{22}{Conclusion}{section.8}{}}
-\newlabel{sec:conclusion@cref}{{[section][8][]8}{[1][21][]22}{}{}{}}
-\abx@aux@page{28}{22}
-\abx@aux@page{29}{23}
-\abx@aux@page{30}{23}
-\abx@aux@page{31}{23}
-\abx@aux@page{32}{23}
-\abx@aux@page{33}{23}
-\abx@aux@page{34}{23}
-\abx@aux@page{35}{23}
-\@writefile{toc}{\contentsline {section}{\numberline {A}Per-layer firing rates}{24}{section.A}\protected@file@percent }
-\newlabel{app:per-layer}{{A}{24}{Per-layer firing rates}{section.A}{}}
-\newlabel{app:per-layer@cref}{{[section][1][]A}{[1][24][]24}{}{}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces Per-layer firing rate by ground-truth class}}{25}{table.caption.22}\protected@file@percent }
-\newlabel{tab:per-layer-firing}{{6}{25}{Per-layer firing rate by ground-truth class}{table.caption.22}{}}
-\newlabel{tab:per-layer-firing@cref}{{[table][6][]6}{[1][25][]25}{}{}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {B}Retraction-check coverage}{25}{section.B}\protected@file@percent }
-\newlabel{app:retraction}{{B}{25}{Retraction-check coverage}{section.B}{}}
-\newlabel{app:retraction@cref}{{[section][2][]B}{[1][25][]25}{}{}{}}
+\abx@aux@page{28}{26}
+\abx@aux@page{29}{27}
+\abx@aux@page{30}{27}
+\abx@aux@page{31}{27}
+\abx@aux@page{32}{27}
+\abx@aux@page{33}{27}
+\abx@aux@page{34}{27}
+\abx@aux@page{35}{27}
+\@writefile{toc}{\contentsline {section}{\numberline {A}Per-layer firing rates}{28}{section.A}\protected@file@percent }
+\newlabel{app:per-layer}{{A}{28}{Per-layer firing rates}{section.A}{}}
+\newlabel{app:per-layer@cref}{{[section][1][]A}{[1][28][]28}{}{}{}}
+\@writefile{toc}{\contentsline {paragraph}{L5 emerges as the strongest discriminator.}{28}{paragraph*.27}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{L3 fires more on real references than on fabricated ones.}{28}{paragraph*.28}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Per-layer flag rate by ground-truth class on the 770-reference corpus, cache-clean rerun. L5 is the strongest single discriminator (12$\times $ class ratio). L3 is the one layer whose blue bar (real references) exceeds its red bar (fabricated) --- the inversion that motivates dropping it as an isolated existence check in future releases. Figure generated by \texttt  {scripts/make\_paper\_artifacts.py} from \texttt  {data/eval/results.json}.}}{30}{figure.caption.29}\protected@file@percent }
+\newlabel{fig:per-layer-flag}{{5}{30}{Per-layer flag rate by ground-truth class on the 770-reference corpus, cache-clean rerun. L5 is the strongest single discriminator (12$\times $ class ratio). L3 is the one layer whose blue bar (real references) exceeds its red bar (fabricated) --- the inversion that motivates dropping it as an isolated existence check in future releases. Figure generated by \texttt {scripts/make\_paper\_artifacts.py} from \texttt {data/eval/results.json}}{figure.caption.29}{}}
+\newlabel{fig:per-layer-flag@cref}{{[figure][5][]5}{[1][29][]30}{}{}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {8}{\ignorespaces Per-layer firing rate by ground-truth class}}{30}{table.caption.30}\protected@file@percent }
+\newlabel{tab:per-layer-firing}{{8}{30}{Per-layer firing rate by ground-truth class}{table.caption.30}{}}
+\newlabel{tab:per-layer-firing@cref}{{[table][8][]8}{[1][29][]30}{}{}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {B}Retraction-check coverage}{31}{section.B}\protected@file@percent }
+\newlabel{app:retraction}{{B}{31}{Retraction-check coverage}{section.B}{}}
+\newlabel{app:retraction@cref}{{[section][2][]B}{[1][29][]31}{}{}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {9}{\ignorespaces Phase 2 retraction check: binary scoring and source coverage}}{31}{table.caption.32}\protected@file@percent }
+\newlabel{tab:eval-retraction}{{9}{31}{Phase 2 retraction check: binary scoring and source coverage}{table.caption.32}{}}
+\newlabel{tab:eval-retraction@cref}{{[table][9][]9}{[1][31][]31}{}{}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Source coverage among correctly-flagged retractions ($n=30$). A Crossref-only design would miss the right-hand 60\% of the bar; the dual-source merger catches them via OpenAlex's \texttt  {is\_retracted} flag. Figure generated by \texttt  {scripts/make\_paper\_artifacts.py} from \texttt  {data/eval/retraction\_results.json}.}}{32}{figure.caption.34}\protected@file@percent }
+\newlabel{fig:retraction-coverage}{{6}{32}{Source coverage among correctly-flagged retractions ($n=30$). A Crossref-only design would miss the right-hand 60\% of the bar; the dual-source merger catches them via OpenAlex's \texttt {is\_retracted} flag. Figure generated by \texttt {scripts/make\_paper\_artifacts.py} from \texttt {data/eval/retraction\_results.json}}{figure.caption.34}{}}
+\newlabel{fig:retraction-coverage@cref}{{[figure][6][]6}{[1][32][]32}{}{}{}}
 \abx@aux@read@bbl@mdfivesum{D824972987ECC4B592088DE4CF8B56D6}
 \abx@aux@defaultrefcontext{0}{borusyak_jaravel_spiess_2024_preprint}{nyt/global//global/global/global}
 \abx@aux@defaultrefcontext{0}{buchanan_hill_shapoval_2024}{nyt/global//global/global/global}
@@ -169,4 +189,4 @@
 \abx@aux@defaultrefcontext{0}{openalex}{nyt/global//global/global/global}
 \abx@aux@defaultrefcontext{0}{retraction_watch}{nyt/global//global/global/global}
 \abx@aux@defaultrefcontext{0}{walters_wilder_2023}{nyt/global//global/global/global}
-\gdef \@abspage@last{27}
+\gdef \@abspage@last{34}
