@@ -21,16 +21,26 @@
   </div>
 {% else %}
   <div id="job-status"
-       class="job-running"
+       class="mascot-card"
        hx-get="/api/jobs/{{ job.job_id }}/status"
        hx-trigger="every 3s"
        hx-swap="outerHTML">
-    <p>
-      <span class="spinner">⏳</span>
-      <strong>Stage:</strong> {{ job.progress_stage or job.status }}
-    </p>
-    {% if job.progress_text %}
-      <p class="muted">{{ job.progress_text }}</p>
-    {% endif %}
+    {% include "_mascot.html" %}
+    <div class="mascot-copy">
+      <h4>
+        Working on it
+        <span style="font-size: 0.95rem; color: var(--fg-muted); font-weight: 400;">
+          · {{ job.progress_stage or job.status }}
+        </span>
+      </h4>
+      {% if job.progress_text %}
+        <p>{{ job.progress_text }}</p>
+      {% else %}
+        <p>Reaching out to Crossref, OpenAlex, and the other databases.</p>
+      {% endif %}
+      <p class="small" style="margin-top: 0.4rem;">
+        <a href="/customize">Make this person look like you →</a>
+      </p>
+    </div>
   </div>
 {% endif %}

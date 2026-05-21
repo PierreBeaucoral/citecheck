@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% block title %}Customize your coffee person — {{ settings.site_title }}{% endblock %}
+{% set active_nav = 'customize' %}
+
+{% block content %}
+
+<section class="hero">
+  <h2>Design your coffee person ☕</h2>
+  <p class="lede">
+    They'll appear while citecheck is processing your PDFs. Choices are saved in your browser —
+    no account, no server. Refresh-proof, share-your-design-by-screenshot proof.
+  </p>
+</section>
+
+<section>
+  <div class="customizer-grid">
+
+    {# Live preview #}
+    <div class="cp-preview">
+      {% include "_mascot.html" %}
+      <p class="muted small" style="margin-top: 0.75rem;">Live preview</p>
+    </div>
+
+    {# Controls #}
+    <div>
+      <div class="customizer-fields">
+
+        <div class="color-row">
+          <label>Hair</label>
+          <div class="swatches" data-field="hair"></div>
+        </div>
+
+        <div class="color-row">
+          <label>Skin</label>
+          <div class="swatches" data-field="skin"></div>
+        </div>
+
+        <div class="color-row">
+          <label>Shirt</label>
+          <div class="swatches" data-field="shirt"></div>
+        </div>
+
+        <div class="color-row">
+          <label>Cup</label>
+          <div class="swatches" data-field="cup"></div>
+        </div>
+
+        <label class="toggle-row">
+          <input type="checkbox" data-toggle="hatOn">
+          <span>🎩 Hat</span>
+        </label>
+
+        <label class="toggle-row">
+          <input type="checkbox" data-toggle="glassesOn">
+          <span>👓 Glasses</span>
+        </label>
+
+      </div>
+
+      <div class="customizer-actions">
+        <button type="button" class="btn-secondary" id="cp-reset">Reset to defaults</button>
+        <a href="/" class="cta">Done · go check a PDF →</a>
+      </div>
+
+      <p class="muted small" style="margin-top: 1rem;">
+        Your choices persist in this browser only (localStorage). Clear browsing data and your
+        person reverts to defaults. We never send these choices to the server.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<script>
+(function () {
+  const M = window.citecheckMascot;
+  if (!M) {
+    console.warn("mascot.js not loaded yet; retrying...");
+    setTimeout(arguments.callee, 100);
+    return;
+  }
+
+  let state = M.load();
+
+  function renderSwatches() {
+    document.querySelectorAll(".swatches").forEach(group => {
+      const field = group.dataset.field;
+      const palette = M.PALETTES[field] || [];
+      group.innerHTML = palette.map(color => {
+        const isActive = state[field] === color;
+        return `<span class="swatch ${isActive ? 'active' : ''}"
+                      style="background:${color}"
+                      data-color="${color}"
+                      data-field="${field}"
+                      title="${color}"></span>`;
+      }).join("");
+    });
+  }
+
+  function renderToggles() {
+    document.querySelectorAll("[data-toggle]").forEach(input => {
+      const field = input.dataset.toggle;
+      input.checked = !!state[field];
+    });
+  }
+
+  function refresh() {
+    renderSwatches();
+    renderToggles();
+    M.apply(state);
+  }
+
+  // First render
+  refresh();
+
+  // Swatch clicks
+  document.addEventListener("click", e => {
+    const sw = e.target.closest(".swatch");
+    if (!sw) return;
+    const field = sw.dataset.field;
+    const color = sw.dataset.color;
+    state[field] = color;
+    M.save(state);
+    refresh();
+  });
+
+  // Toggle changes
+  document.querySelectorAll("[data-toggle]").forEach(input => {
+    input.addEventListener("change", () => {
+      state[input.dataset.toggle] = input.checked;
+      M.save(state);
+      refresh();
+    });
+  });
+
+  // Reset
+  document.getElementById("cp-reset").addEventListener("click", () => {
+    state = M.reset();
+    refresh();
+  });
+})();
+</script>
+
+{% endblock %}

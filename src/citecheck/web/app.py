@@ -23,7 +23,15 @@ from slowapi.middleware import SlowAPIMiddleware
 from slowapi.util import get_remote_address
 
 from citecheck.web.quota import QuotaMonitor
-from citecheck.web.routes import admin, howitworks, index, jobs, reports, upload
+from citecheck.web.routes import (
+    admin,
+    customize,
+    howitworks,
+    index,
+    jobs,
+    reports,
+    upload,
+)
 from citecheck.web.settings import WebSettings, get_settings
 from citecheck.web.storage import JobStore
 
@@ -73,6 +81,7 @@ def create_app(settings: WebSettings | None = None) -> FastAPI:
     # Mount routes.
     app.include_router(index.router)
     app.include_router(howitworks.router)
+    app.include_router(customize.router)
     app.include_router(upload.router)
     app.include_router(jobs.router)
     app.include_router(reports.router)

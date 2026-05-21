@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/style.css">
   <script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
+  <script src="/static/mascot.js" defer></script>
   {% block head_extra %}{% endblock %}
 </head>
 <body>
@@ -20,6 +21,7 @@
       <nav>
         <a href="/" {% if active_nav == 'home' %}class="active"{% endif %}>Check a PDF</a>
         <a href="/how" {% if active_nav == 'how' %}class="active"{% endif %}>How it works</a>
+        <a href="/customize" {% if active_nav == 'customize' %}class="active"{% endif %}>Customize ☕</a>
         <a href="https://github.com/pierrebeaucoral/citecheck" target="_blank" rel="noopener">GitHub</a>
       </nav>
     </div>

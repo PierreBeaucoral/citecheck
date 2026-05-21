@@ -5,11 +5,16 @@
 {% block content %}
 
 <section class="hero">
-  <h2>Scan citations for retractions, fabrications, predatory venues, and misrepresentation.</h2>
-  <p class="lede">
-    Upload an academic PDF. Citecheck runs four independent checks against free public databases
-    and an open-weight LLM, and produces a sharable report — typically in under two minutes.
-  </p>
+  <div style="display: flex; align-items: center; justify-content: center; gap: 1.5rem; flex-wrap: wrap;">
+    {% include "_mascot.html" %}
+    <div style="max-width: 520px;">
+      <h2 style="margin-top: 0;">Scan citations for retractions, fabrications, predatory venues, and misrepresentation.</h2>
+      <p class="lede" style="margin: 0;">
+        Upload an academic PDF. Citecheck runs four independent checks against free public databases
+        and an open-weight LLM, and produces a sharable report — typically in under two minutes.
+      </p>
+    </div>
+  </div>
 </section>
 
 {% if error_message %}
@@ -73,25 +78,25 @@
     <a href="/how">See methodology →</a>
   </p>
   <div class="checks-grid">
-    <div class="check-card">
+    <div class="check-card check-retraction">
       <div class="check-icon">🗑</div>
       <h4>Retraction</h4>
       <p>Crossref's <code>update-to</code> field + OpenAlex's <code>is_retracted</code> flag.</p>
       <p class="metric">Precision 1.000 · recall 1.000 (60-DOI eval)</p>
     </div>
-    <div class="check-card">
+    <div class="check-card check-fabrication">
       <div class="check-icon">🪞</div>
       <h4>Fabrication</h4>
       <p>Five signals: DOI integrity, cross-DB existence, author plausibility, venue plausibility, author–title coherence.</p>
       <p class="metric">Articles: precision 0.779 · recall 0.957 (770-ref eval)</p>
     </div>
-    <div class="check-card">
+    <div class="check-card check-journal-quality">
       <div class="check-icon">📰</div>
       <h4>Journal quality</h4>
       <p>Eight signals: DOAJ, Scopus, h-index, citations/article, concern list, APC, portfolio size, journal-flood pattern.</p>
       <p class="metric">Held-out precision 1.000 · recall 0.900 (25-journal eval)</p>
     </div>
-    <div class="check-card">
+    <div class="check-card check-claim">
       <div class="check-icon">🎯</div>
       <h4>Claim verification</h4>
       <p>RAG against the cited paper's full text + LLM with structured-output prompt + parser guard rail.</p>

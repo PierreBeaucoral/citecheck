@@ -7,33 +7,49 @@
    4. Mobile-first — HF Spaces gets a lot of phone traffic; the report must work at 360px.
 */
 
-/* ---- Design tokens ---- */
+/* ---- Design tokens ----
+   Palette: keep the four semantic colours (ok/warn/danger/accent) stable
+   because they carry meaning in the report. Add a brighter secondary set
+   (pink, purple, teal) for decoration and to make the four-check cards
+   visually distinct.  All decorative colours live in --deco-* variables
+   so a colour-tweak round is one variable to change. */
 :root {
   --fg:           #1a1d24;
   --fg-muted:     #5b6271;
   --fg-soft:      #8a90a0;
-  --bg:           #f7f9fc;
+  --bg:           #fef7f0;
   --bg-card:      #ffffff;
-  --bg-sunken:    #eef1f6;
-  --border:       #d8dde6;
-  --border-soft:  #e7ebf2;
+  --bg-sunken:    #f5e9dc;
+  --border:       #e6d4be;
+  --border-soft:  #f0e2cf;
 
-  --accent:       #1f5fd0;
-  --accent-soft:  #e8eefd;
+  --accent:       #6d28d9;            /* deep violet, friendlier than navy blue */
+  --accent-2:     #ec4899;            /* hot pink, used in gradients */
+  --accent-soft:  #f3e8ff;
   --accent-fg:    #ffffff;
 
   --ok:           #16a34a;
-  --ok-soft:      #ecfdf5;
-  --warn:         #d97706;
-  --warn-soft:    #fff7ed;
-  --danger:       #dc2626;
-  --danger-soft:  #fef2f2;
+  --ok-soft:      #d6f5e3;
+  --warn:         #ea580c;
+  --warn-soft:    #ffe9d6;
+  --danger:       #e11d48;
+  --danger-soft:  #ffe1e8;
 
-  --shadow-sm:    0 1px 2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.06);
-  --shadow-md:    0 2px 4px rgba(15, 23, 42, 0.05), 0 6px 16px rgba(15, 23, 42, 0.08);
+  /* Decorative accents — used only on the four-check icons and the
+     coffee-person mascot defaults.  Pick from this set when assigning
+     a per-check accent. */
+  --deco-pink:    #ec4899;
+  --deco-purple:  #8b5cf6;
+  --deco-teal:    #0d9488;
+  --deco-orange:  #f97316;
+  --deco-yellow:  #facc15;
+  --deco-blue:    #2563eb;
 
-  --radius:       8px;
-  --radius-lg:    12px;
+  --shadow-sm:    0 1px 2px rgba(91, 33, 182, 0.05), 0 1px 3px rgba(91, 33, 182, 0.08);
+  --shadow-md:    0 2px 6px rgba(91, 33, 182, 0.08), 0 8px 20px rgba(91, 33, 182, 0.12);
+
+  --radius:       10px;
+  --radius-lg:    16px;
 
   --font-sans:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   --font-mono:    'JetBrains Mono', 'SF Mono', 'Menlo', monospace;
@@ -585,3 +601,181 @@ button[type="submit"]:active { transform: translateY(1px); }
 }
 .limits-list ul { margin: 0.3rem 0 0; padding-left: 1.2rem; }
 .limits-list li { margin: 0.3rem 0; }
+
+/* ---- Per-check accent colours ----
+   Each check gets its own decorative colour so the four cards on the
+   landing page (and the four summary cards on the report) are visually
+   distinct.  Semantic ok/warn/danger pills on the report stay stable. */
+.check-card.check-retraction      .check-icon { background: #fde2e2; color: var(--danger); }
+.check-card.check-fabrication     .check-icon { background: #f3e8ff; color: var(--deco-purple); }
+.check-card.check-journal-quality .check-icon { background: #d6f0ed; color: var(--deco-teal); }
+.check-card.check-claim           .check-icon { background: #fde6f1; color: var(--deco-pink); }
+
+.check-card.check-retraction      { border-top: 3px solid var(--danger); }
+.check-card.check-fabrication     { border-top: 3px solid var(--deco-purple); }
+.check-card.check-journal-quality { border-top: 3px solid var(--deco-teal); }
+.check-card.check-claim           { border-top: 3px solid var(--deco-pink); }
+
+.hero h2 {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ---- Coffee-person mascot ----
+   Inline SVG referenced by `.coffee-person` class on the wrapping span.
+   Customizable parts use CSS variables that are set from JS reading
+   localStorage; defaults are sensible cute values. */
+.coffee-person {
+  --hair:  #4b3a2e;
+  --skin:  #f4c89f;
+  --shirt: #6d28d9;
+  --cup:   #e11d48;
+  --hat-on: none;
+  --glasses-on: none;
+  display: inline-block;
+  width: 110px;
+  height: 130px;
+  vertical-align: middle;
+}
+.coffee-person svg { display: block; width: 100%; height: 100%; }
+
+.coffee-person .cp-hair { fill: var(--hair); }
+.coffee-person .cp-skin { fill: var(--skin); }
+.coffee-person .cp-shirt { fill: var(--shirt); }
+.coffee-person .cp-cup  { fill: var(--cup); }
+.coffee-person .cp-hat  { display: var(--hat-on); fill: var(--hair); }
+.coffee-person .cp-glasses { display: var(--glasses-on); }
+
+/* Blink animation: eyes (rects) compress to thin slits every ~4s. */
+.coffee-person .cp-eye {
+  animation: cp-blink 4s infinite ease-in-out;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+@keyframes cp-blink {
+  0%, 90%, 100% { transform: scaleY(1); }
+  93%, 97%      { transform: scaleY(0.1); }
+}
+
+/* Steam rising from the cup. */
+.coffee-person .cp-steam {
+  animation: cp-steam 2.4s infinite ease-in-out;
+  opacity: 0.7;
+  transform-origin: center bottom;
+}
+.coffee-person .cp-steam:nth-child(2) { animation-delay: 0.4s; }
+.coffee-person .cp-steam:nth-child(3) { animation-delay: 0.8s; }
+@keyframes cp-steam {
+  0%   { transform: translateY(0)   scale(0.8); opacity: 0; }
+  25%  { transform: translateY(-3px) scale(1);   opacity: 0.7; }
+  100% { transform: translateY(-14px) scale(1.4); opacity: 0; }
+}
+
+/* Sipping animation: tiny rotation of the arm/cup group every ~3s. */
+.coffee-person .cp-arm-cup {
+  animation: cp-sip 3.2s infinite ease-in-out;
+  transform-origin: 60px 95px;
+  transform-box: fill-box;
+}
+@keyframes cp-sip {
+  0%, 70%, 100% { transform: translate(0, 0) rotate(0deg); }
+  85%           { transform: translate(0, -3px) rotate(-12deg); }
+}
+
+/* Mascot wrapper / context-specific layouts. */
+.mascot-card {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.25rem;
+  background: linear-gradient(135deg, #fff0f6, #f3e8ff);
+  border: 1px solid var(--accent-soft);
+  border-radius: var(--radius-lg);
+}
+.mascot-card .mascot-copy h4 { margin: 0 0 0.25rem; font-size: 1.05rem; }
+.mascot-card .mascot-copy p  { margin: 0; color: var(--fg-muted); font-size: 0.95rem; }
+.mascot-card .mascot-copy a  { color: var(--accent); font-weight: 500; }
+
+/* Customizer page. */
+.customizer-grid {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 2rem;
+  margin: 1.5rem 0;
+}
+@media (max-width: 700px) {
+  .customizer-grid { grid-template-columns: 1fr; }
+}
+.cp-preview {
+  text-align: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, #fff0f6 0%, #f3e8ff 100%);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--accent-soft);
+}
+.cp-preview .coffee-person { width: 160px; height: 200px; }
+
+.customizer-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+@media (max-width: 500px) {
+  .customizer-fields { grid-template-columns: 1fr; }
+}
+.color-row {
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius);
+  padding: 0.75rem 0.9rem;
+}
+.color-row > label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+  color: var(--fg-muted);
+}
+.swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.swatch {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: transform 0.1s, border-color 0.1s;
+}
+.swatch:hover   { transform: scale(1.1); }
+.swatch.active  { border-color: var(--accent); transform: scale(1.15); }
+.toggle-row {
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius);
+  padding: 0.75rem 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.95rem;
+}
+.toggle-row input { accent-color: var(--accent); }
+.customizer-actions {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.6rem;
+}
+.btn-secondary {
+  background: var(--bg-card);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  padding: 0.55rem 1rem;
+  border-radius: var(--radius);
+  font-size: 0.9rem;
+  cursor: pointer;
+  font-weight: 500;
+}
+.btn-secondary:hover { background: var(--bg-sunken); }
