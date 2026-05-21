@@ -45,7 +45,7 @@
 % ====== Figure and Caption Packages ======
 \usepackage{graphicx, subcaption}
 \usepackage{tikz}
-\usetikzlibrary{positioning, arrows.meta, shapes.geometric, fit, backgrounds}
+\usetikzlibrary{positioning, arrows.meta, shapes.geometric, fit, backgrounds, calc}
 \usepackage{caption}
 \captionsetup{font=small, labelfont=bf, justification=justified}
 \usepackage{float}
@@ -163,64 +163,65 @@ The tool runs as a command-line interface over a six-stage pipeline. Each stage 
 \begin{tikzpicture}[
     font=\small\sffamily,
     >={Stealth[length=2mm,width=2mm]},
-    node distance=4mm and 5mm,
-    box/.style={draw, rounded corners=2pt, minimum width=24mm, minimum height=10mm, align=center, inner sep=3pt},
+    box/.style={draw, rounded corners=2pt, minimum width=28mm, minimum height=11mm, align=center, inner sep=3pt, font=\small\sffamily},
     stage/.style={box, fill=blue!8},
-    check/.style={box, fill=red!8},
-    data/.style={box, draw=gray!60, fill=gray!8, font=\footnotesize\sffamily\itshape},
-    api/.style={font=\footnotesize\sffamily\itshape, text=gray!60!black},
+    check/.style={box, fill=red!8, minimum width=30mm},
+    data/.style={draw=gray!60, fill=gray!8, rounded corners=2pt, minimum height=11mm, align=center, inner sep=4pt, font=\footnotesize\sffamily\itshape},
+    api/.style={font=\scriptsize\sffamily\itshape, text=gray!55!black, align=center, inner sep=1pt},
     arr/.style={->, thick, gray!70!black},
+    node distance=6mm and 8mm,
 ]
 
-% Input
+% --- Top row: PDF -> Stage 1 -> Stage 2 -> Reference ---
 \node[data] (pdf) {PDF};
-
-% Stage 1
 \node[stage, right=of pdf] (s1) {Stage 1\\extraction};
-\node[api, below=1pt of s1] {GROBID};
-
-% Stage 2 — resolution
 \node[stage, right=of s1] (s2) {Stage 2\\resolution};
-\node[api, below=1pt of s2] {Crossref + OpenAlex};
+\node[data, right=of s2, minimum width=22mm] (ref) {Reference\\(with DOI)};
 
-% Typed Reference
-\node[data, right=of s2] (ref) {Reference\\(with DOI)};
+% API labels under the top-row stages
+\node[api, below=1mm of s1.south] {GROBID};
+\node[api, below=1mm of s2.south] {Crossref + OpenAlex};
 
-% Four parallel checks (Stages 3-6) below Reference
-\node[check, below=12mm of ref, xshift=-45mm] (s3) {Stage 3\\retraction\\(Phase 2)};
-\node[check, right=of s3] (s4) {Stage 4\\fabrication\\(Phase 3)};
-\node[check, right=of s4] (s5) {Stage 5\\journal qual.\\(Phase 4)};
-\node[check, right=of s5] (s6) {Stage 6\\claim verif.\\(Phase 5)};
+% --- Bottom row: four parallel checks ---
+% Anchor the row at a fixed y-coordinate well below the top row so API labels
+% have room.  Spread horizontally so each check has room for its API label.
+\node[check] (s4) at ($(s2)+(0,-30mm)$) {Stage 4\\fabrication\\(Phase 3)};
+\node[check, left=14mm of s4] (s3) {Stage 3\\retraction\\(Phase 2)};
+\node[check, right=14mm of s4] (s5) {Stage 5\\journal qual.\\(Phase 4)};
+\node[check, right=14mm of s5] (s6) {Stage 6\\claim verif.\\(Phase 5)};
 
-% APIs under checks
-\node[api, below=1pt of s3] {Crossref \texttt{update-to}};
-\node[api, below=1pt of s4] {OpenAlex \texttt{/authors},};
-\node[api, below=4mm of s4, font=\footnotesize\sffamily\itshape] {\texttt{/sources}, \texttt{/works}};
-\node[api, below=1pt of s5] {DOAJ + OpenAlex};
-\node[api, below=1pt of s6] {Unpaywall / PMC + LLM};
+% API labels under the four checks (each on its own narrow text width)
+\node[api, below=1mm of s3.south, text width=34mm] {Crossref \texttt{update-to}\\OpenAlex \texttt{is\_retracted}};
+\node[api, below=1mm of s4.south, text width=34mm] {OpenAlex \texttt{/authors},\\\texttt{/sources}, \texttt{/works}};
+\node[api, below=1mm of s5.south, text width=34mm] {DOAJ +\\OpenAlex \texttt{/sources}};
+\node[api, below=1mm of s6.south, text width=34mm] {Unpaywall / PMC\\+ local-or-cloud LLM};
 
-% Output box spanning the four checks
-\node[data, below=12mm of s4, xshift=18mm, minimum width=110mm] (out) {Report: RetractionCheck $\,\cdot\,$ HallucinationCheck $\,\cdot\,$ JournalQualityCheck $\,\cdot\,$ ClaimCheck};
+% --- Aggregated report at the bottom ---
+\node[data, below=22mm of s4, minimum width=132mm, font=\footnotesize\sffamily] (out)
+  {\textit{Report:}\quad RetractionCheck \;$\cdot$\; HallucinationCheck \;$\cdot$\; JournalQualityCheck \;$\cdot$\; ClaimCheck};
 
-% Arrows: pipeline
+% --- Top-row arrows ---
 \draw[arr] (pdf) -- (s1);
 \draw[arr] (s1) -- (s2);
 \draw[arr] (s2) -- (ref);
 
-% Fan-out from Reference to the four checks
-\draw[arr] (ref.south) -- ++(0,-3mm) -| (s3.north);
-\draw[arr] (ref.south) -- ++(0,-3mm) -| (s4.north);
-\draw[arr] (ref.south) -- ++(0,-3mm) -| (s5.north);
-\draw[arr] (ref.south) -- ++(0,-3mm) -| (s6.north);
+% --- Fan-out from Reference to the four checks ---
+% Use a single bus line: drop straight down from Reference, then branch out.
+\coordinate (bus) at ($(ref.south)+(0,-6mm)$);
+\draw[arr, -] (ref.south) -- (bus);
+\draw[arr] (bus) -| (s3.north);
+\draw[arr] (bus) -| (s4.north);
+\draw[arr] (bus) -| (s5.north);
+\draw[arr] (bus) -| (s6.north);
 
-% Fan-in from checks to the report
-\draw[arr] (s3.south) |- ++(0,-5mm) -| (out.north -| s3.south);
-\draw[arr] (s4.south) -- (out.north -| s4.south);
-\draw[arr] (s5.south) -- (out.north -| s5.south);
-\draw[arr] (s6.south) |- ++(0,-5mm) -| (out.north -| s6.south);
+% --- Fan-in to the report ---
+\draw[arr] (s3.south) ++(0,-8mm) -- (s3 |- out.north);
+\draw[arr] (s4.south) ++(0,-8mm) -- (s4 |- out.north);
+\draw[arr] (s5.south) ++(0,-8mm) -- (s5 |- out.north);
+\draw[arr] (s6.south) ++(0,-8mm) -- (s6 |- out.north);
 
 \end{tikzpicture}
-\caption{Citecheck's six-stage pipeline. Stages 1--2 extract a typed \texttt{Reference} from the input PDF. Stages 3--6 run in parallel against that \texttt{Reference}, each producing a typed check result. The aggregated report is the union of those four check results, one per citation-integrity failure mode. APIs consulted by each stage are labeled in italics; each stage is a separately replaceable module in \texttt{src/citecheck/}.}
+\caption{Citecheck's six-stage pipeline. Stages 1--2 (blue) extract a typed \texttt{Reference} from the input PDF. Stages 3--6 (red) run in parallel against that \texttt{Reference}, each producing a typed check result. The aggregated report is the union of those four check results, one per citation-integrity failure mode. APIs consulted by each stage are labeled in italics; each stage is a separately replaceable module in \texttt{src/citecheck/}.}
 \label{fig:pipeline}
 \end{figure}
 
