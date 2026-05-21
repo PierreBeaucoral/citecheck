@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+{% block title %}How it works — {{ settings.site_title }}{% endblock %}
+{% set active_nav = 'how' %}
+
+{% block content %}
+
+<section class="hero">
+  <h2>How citecheck works</h2>
+  <p class="lede">
+    Six pipeline stages, four independent checks, four open public APIs, one optional LLM call.
+    Everything runs in the same place; nothing is sent to a third-party "AI" service for
+    inspection beyond what you can see below.
+  </p>
+</section>
+
+<section>
+  <h3 style="margin-bottom: 0.4rem;">The pipeline</h3>
+  <p class="muted small" style="margin-top: 0;">
+    Each stage produces a typed data object that the next stage consumes.
+    Stages 3–6 run in parallel against the same resolved reference; each is independently auditable.
+  </p>
+
+  <div class="steps">
+    <div class="step">
+      <h3>Extraction</h3>
+      <p>
+        Your PDF is sent to a local instance of GROBID — an open-source machine-learning model
+        for parsing scholarly documents. We disable Crossref consolidation; we want our own
+        DOI lookups to use the polite-pool conventions described below.
+      </p>
+      <span class="api-tag">GROBID</span>
+    </div>
+
+    <div class="step">
+      <h3>Resolution</h3>
+      <p>
+        Each parsed reference is mapped to a canonical DOI through a three-step dispatch:
+        Crossref by-DOI first, Crossref by-metadata second, OpenAlex as fallback.
+        Both APIs are free; we honour their polite-pool headers so this never costs them
+        a paid lookup.
+      </p>
+      <span class="api-tag">Crossref</span>
+      <span class="api-tag">OpenAlex</span>
+    </div>
+
+    <div class="step">
+      <h3>Retraction check</h3>
+      <p>
+        Two-source merge. Crossref's <code>update-to</code> field carries the structured
+        retraction notice when the publisher has deposited one — but only 40% of retractions in our
+        eval have that signal populated. OpenAlex's <code>is_retracted</code> flag, fed from the
+        Retraction Watch dataset, catches the other 60%. A single-source check would miss most
+        retractions; the merge is the empirical justification.
+      </p>
+      <span class="api-tag">Crossref update-to</span>
+      <span class="api-tag">OpenAlex is_retracted</span>
+    </div>
+
+    <div class="step">
+      <h3>Fabrication detection</h3>
+      <p>
+        Five signals, rule-based aggregator. Three are <em>existence</em> checks (does this field
+        appear in a database?) and two are <em>coherence</em> checks (do two extracted fields agree?).
+        Our published evaluation shows the coherence checks discriminate fabricated from real
+        citations roughly twelvefold more sharply than the existence checks — the design
+        hypothesis the paper confirms empirically.
+      </p>
+      <span class="api-tag">OpenAlex /authors</span>
+      <span class="api-tag">OpenAlex /sources</span>
+      <span class="api-tag">OpenAlex /works</span>
+    </div>
+
+    <div class="step">
+      <h3>Journal quality</h3>
+      <p>
+        Eight signals scored continuously: DOAJ membership, Scopus indexing, h-index, citations
+        per article, hand-curated concern list match, journal-flood pattern (low h-index + high
+        works count), high APC without DOAJ listing, and publisher portfolio size. A single
+        positive signal (DOAJ-listed) is enough to demote a venue to LOW; a single concern
+        signal carries a venue to HIGH on its own.
+      </p>
+      <span class="api-tag">DOAJ</span>
+      <span class="api-tag">OpenAlex /sources</span>
+    </div>
+
+    <div class="step">
+      <h3>Claim verification (optional)</h3>
+      <p>
+        Only runs if you tick the checkbox at upload time. We fetch the cited paper's full text
+        (Unpaywall for DOI-keyed sources, NCBI's E-utilities for PMC-only sources), chunk it
+        at ~500 tokens, embed the chunks with a small open-weight transformer, retrieve the
+        five most semantically similar passages to your in-text claim, and ask an open-weight
+        LLM whether they support the claim. The LLM is prompted to enumerate qualifier and
+        quantifier mismatches before setting the verdict; a parser guard rail forces the
+        verdict to NOT_SUPPORTED whenever any discrepancy is found.
+      </p>
+      <span class="api-tag">Unpaywall</span>
+      <span class="api-tag">NCBI E-utilities</span>
+      <span class="api-tag">BAAI/bge-small-en-v1.5</span>
+      <span class="api-tag">{{ settings.llm_model }}</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h3>What citecheck cannot do</h3>
+  <div class="limits-list">
+    <p style="margin-top: 0;">
+      Citecheck is a screening tool, not a substitute for editorial review. Honest limitations:
+    </p>
+    <ul>
+      <li>
+        <strong>Books and grey literature.</strong> The fabrication detector's strongest signal
+        (author–title coherence) is by-design disabled for references without a journal field.
+        Book recall on our 770-reference eval is 0.250 — citecheck catches one in four
+        fabricated book references.
+      </li>
+      <li>
+        <strong>Non-English venues and pre-2010 obscure journals.</strong> Crossref and OpenAlex
+        indexing is patchy here. A real citation to a 1971 paper in a regional journal can
+        look identical to a fabrication to a database-only detector.
+      </li>
+      <li>
+        <strong>Misattribution to real, similar papers.</strong> If a citation references a
+        real paper that happens to discuss the same topic but does not support the specific
+        claim, citecheck's metadata checks all pass; only Phase 5 (claim verification) catches
+        this — and Phase 5 only runs if you opt in.
+      </li>
+      <li>
+        <strong>Subtle scientific errors inside a correctly-cited paper.</strong> If the cited
+        paper itself is wrong, citecheck has nothing to say about that. We check whether the
+        citation accurately represents what the cited paper claims — not whether the cited
+        paper's claims are true.
+      </li>
+      <li>
+        <strong>Predatory venue judgements are heuristic.</strong> Our journal-quality risk
+        score combines reputation and concern signals, but the concern list is hand-maintained
+        and the broader literature on predatory publishing is contested. Treat HIGH risk as
+        "review carefully," not as a final verdict.
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h3>Open and reproducible</h3>
+  <p>
+    Citecheck is Apache-2.0 licensed. Every eval number in the
+    <a href="https://github.com/pierrebeaucoral/citecheck/blob/main/paper/main.pdf" target="_blank" rel="noopener">companion paper</a>
+    has a one-line reproduction recipe. The benchmark datasets — 60 retraction DOIs, 770 fabrication
+    references, 75 predatory-venue calibration entries, 100 hand-curated claim-verification triples —
+    are public under permissive licences. The repository at
+    <a href="https://github.com/pierrebeaucoral/citecheck" target="_blank" rel="noopener">github.com/pierrebeaucoral/citecheck</a>
+    has the full source, test suite, and Docker setup for self-hosting.
+  </p>
+  <p>
+    Reports generated through this web app are public-by-URL. The job IDs are unguessable UUIDs
+    (128 bits) so there's no listing or directory; only people you share the URL with can find
+    a given report. We don't keep accounts, don't track visitors, and store no PII.
+  </p>
+</section>
+
+{% endblock %}

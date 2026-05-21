@@ -2,21 +2,25 @@
 {% block title %}Job {{ job.job_id[:8] }} — {{ settings.site_title }}{% endblock %}
 {% block content %}
 
-<section class="job">
-  <h2>Processing your PDF</h2>
-  <p class="muted">Job ID: <code>{{ job.job_id }}</code></p>
+<section>
+  <div class="card job-card">
+    <h2>Processing your PDF</h2>
+    <p class="muted small">Job ID: <code>{{ job.job_id }}</code></p>
 
-  <div id="job-status"
-       hx-get="/api/jobs/{{ job.job_id }}/status"
-       hx-trigger="load, every 3s"
-       hx-swap="outerHTML">
-    Loading status…
+    <div id="job-status"
+         hx-get="/api/jobs/{{ job.job_id }}/status"
+         hx-trigger="load, every 3s"
+         hx-swap="outerHTML">
+      <div class="job-running">
+        <p><span class="spinner">⏳</span> Initializing...</p>
+      </div>
+    </div>
+
+    <p class="small muted" style="margin-top: 1rem;">
+      This page auto-refreshes every 3 seconds. Bookmark it if you want to come back later —
+      the URL is permanent.
+    </p>
   </div>
-
-  <p class="small muted">
-    This page auto-refreshes every 3 seconds. You can also bookmark it and come back later
-    — the report URL is stable.
-  </p>
 </section>
 
 {% endblock %}

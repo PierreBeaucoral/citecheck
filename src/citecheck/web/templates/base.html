@@ -4,22 +4,38 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}{{ settings.site_title if settings else 'citecheck' }}{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/style.css">
   <script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
+  {% block head_extra %}{% endblock %}
 </head>
 <body>
   <header>
-    <h1><a href="/">{{ settings.site_title if settings else 'citecheck' }}</a></h1>
-    <p class="tagline">{{ settings.site_tagline if settings else '' }}</p>
+    <div class="inner">
+      <h1>
+        <a href="/"><span class="logo" aria-hidden="true"></span> citecheck</a>
+      </h1>
+      <nav>
+        <a href="/" {% if active_nav == 'home' %}class="active"{% endif %}>Check a PDF</a>
+        <a href="/how" {% if active_nav == 'how' %}class="active"{% endif %}>How it works</a>
+        <a href="https://github.com/pierrebeaucoral/citecheck" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </div>
+    {% block subtitle %}{% endblock %}
   </header>
   <main>
     {% block content %}{% endblock %}
   </main>
   <footer>
-    <p>
-      <a href="https://github.com/pierrebeaucoral/citecheck" target="_blank" rel="noopener">Source code</a> ·
-      <a href="/api/reports/{example_id}.json" onclick="return false" class="muted">JSON API</a> ·
-      Apache-2.0
+    <div>
+      <span class="badge">Apache-2.0</span>
+      <span class="badge">No tracking</span>
+      <span class="badge">Public reports</span>
+    </div>
+    <p style="margin-top: 0.5rem;">
+      Built for academic use. Citecheck is not a substitute for editorial review.
     </p>
   </footer>
 </body>

@@ -1,89 +1,162 @@
 {% extends "base.html" %}
 {% block title %}Report {{ job.job_id[:8] }} — {{ settings.site_title if settings else 'citecheck' }}{% endblock %}
+{% block head_extra %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"></script>
+{% endblock %}
+
 {% block content %}
 
-<section class="report-header">
-  <h2>Citation-integrity report</h2>
-  <p class="muted">
-    Job <code>{{ job.job_id }}</code> ·
-    {{ report.n_references }} references ·
-    <a href="/api/reports/{{ job.job_id }}.json">Download JSON</a>
-  </p>
-</section>
-
-{# Aggregate counters across the four checks #}
+{# ----- Pre-compute counters once so the template doesn't loop multiple times ----- #}
 {% set retracted_n = 0 %}
-{% set fab_n = 0 %}
+{% set retracted_eoc_n = 0 %}
+{% set fab_susp_n = 0 %}
+{% set fab_likely_n = 0 %}
 {% set high_jq_n = 0 %}
+{% set medium_jq_n = 0 %}
 {% set claim_not_supported_n = 0 %}
+{% set claim_supported_n = 0 %}
+{% set total_refs = report.n_references %}
+{% set clean_refs = 0 %}
+
 {% for r in report.references %}
-  {% if r.retraction.status in ('retracted', 'expression_of_concern') %}{% set retracted_n = retracted_n + 1 %}{% endif %}
-  {% if r.hallucination.verdict in ('suspicious', 'likely_hallucinated') %}{% set fab_n = fab_n + 1 %}{% endif %}
-  {% if r.journal_quality.risk_level == 'high' %}{% set high_jq_n = high_jq_n + 1 %}{% endif %}
+  {% set is_flagged = false %}
+  {% if r.retraction.status == 'retracted' %}{% set retracted_n = retracted_n + 1 %}{% set is_flagged = true %}{% endif %}
+  {% if r.retraction.status == 'expression_of_concern' %}{% set retracted_eoc_n = retracted_eoc_n + 1 %}{% set is_flagged = true %}{% endif %}
+  {% if r.hallucination.verdict == 'suspicious' %}{% set fab_susp_n = fab_susp_n + 1 %}{% set is_flagged = true %}{% endif %}
+  {% if r.hallucination.verdict == 'likely_hallucinated' %}{% set fab_likely_n = fab_likely_n + 1 %}{% set is_flagged = true %}{% endif %}
+  {% if r.journal_quality.risk_level == 'high' %}{% set high_jq_n = high_jq_n + 1 %}{% set is_flagged = true %}{% endif %}
+  {% if r.journal_quality.risk_level == 'medium' %}{% set medium_jq_n = medium_jq_n + 1 %}{% endif %}
   {% for c in r.claims %}
-    {% if c.status == 'not_supported' %}{% set claim_not_supported_n = claim_not_supported_n + 1 %}{% endif %}
+    {% if c.status == 'not_supported' %}{% set claim_not_supported_n = claim_not_supported_n + 1 %}{% set is_flagged = true %}{% endif %}
+    {% if c.status == 'supported' %}{% set claim_supported_n = claim_supported_n + 1 %}{% endif %}
   {% endfor %}
+  {% if not is_flagged %}{% set clean_refs = clean_refs + 1 %}{% endif %}
 {% endfor %}
 
-<section class="summary">
-  <div class="summary-grid">
-    <div class="summary-card {% if retracted_n %}flag{% endif %}">
-      <h3>{{ retracted_n }}</h3>
-      <p>retracted citations</p>
-    </div>
-    <div class="summary-card {% if fab_n %}flag{% endif %}">
-      <h3>{{ fab_n }}</h3>
-      <p>fabricated / suspicious</p>
-    </div>
-    <div class="summary-card {% if high_jq_n %}flag{% endif %}">
-      <h3>{{ high_jq_n }}</h3>
-      <p>predatory venue (HIGH)</p>
-    </div>
-    <div class="summary-card {% if claim_not_supported_n %}flag{% endif %}">
-      <h3>{{ claim_not_supported_n }}</h3>
-      <p>claims not supported</p>
-    </div>
+<section>
+  <h2 style="margin-top: 0;">Citation-integrity report</h2>
+  <div class="report-meta">
+    <span class="pill">{{ report.n_references }} references</span>
+    {% if report.phase5.enabled %}
+      <span class="pill">Phase 5 ran on {{ report.phase5.claims_verified }} claims</span>
+    {% else %}
+      <span class="pill muted">Phase 5 not run</span>
+    {% endif %}
+    <span>Job <code>{{ job.job_id[:8] }}…</code></span>
+    <span>·</span>
+    <span><a href="/api/reports/{{ job.job_id }}.json">Download JSON</a></span>
   </div>
 
   {% if report.phase5.partial %}
-    <div class="info-banner">
-      <strong>Phase 5 partial.</strong> {{ report.phase5.skipped_reason or "" }}
-      {{ report.phase5.claims_verified }} of {{ report.phase5.claims_verified + report.phase5.claims_skipped_quota }} claims verified.
+    <div class="banner banner-warn">
+      <span aria-hidden="true">⏳</span>
+      <span>
+        <strong>Phase 5 partial.</strong> {{ report.phase5.skipped_reason or "" }}
+        {{ report.phase5.claims_verified }} of
+        {{ report.phase5.claims_verified + report.phase5.claims_skipped_quota }}
+        claims verified before the daily LLM quota was reached.
+      </span>
     </div>
   {% elif not report.phase5.enabled %}
-    <div class="info-banner muted">
-      Claim verification was not requested for this report.  The four metadata checks above completed normally.
+    <div class="banner banner-info">
+      <span aria-hidden="true">ℹ</span>
+      <span>
+        Claim verification (Phase 5) was not requested. The four metadata checks completed normally.
+        <a href="/">Re-run with the checkbox enabled</a> to verify in-text claims against cited papers.
+      </span>
     </div>
   {% endif %}
 </section>
 
-<section class="references">
+{# ----- Summary cards ----- #}
+<section>
+  <div class="summary-grid">
+    <div class="summary-card {{ 'flag' if retracted_n + retracted_eoc_n > 0 else 'muted' }}">
+      <span class="big">{{ retracted_n + retracted_eoc_n }}</span>
+      <span class="label">retracted / EoC</span>
+    </div>
+    <div class="summary-card {{ 'flag' if fab_susp_n + fab_likely_n > 0 else 'muted' }}">
+      <span class="big">{{ fab_susp_n + fab_likely_n }}</span>
+      <span class="label">fabricated / suspicious</span>
+    </div>
+    <div class="summary-card {{ 'flag' if high_jq_n > 0 else 'muted' }}">
+      <span class="big">{{ high_jq_n }}</span>
+      <span class="label">predatory venue (HIGH)</span>
+    </div>
+    <div class="summary-card {{ 'flag' if claim_not_supported_n > 0 else 'muted' }}">
+      <span class="big">{{ claim_not_supported_n }}</span>
+      <span class="label">claims not supported</span>
+    </div>
+  </div>
+</section>
+
+{# ----- Charts ----- #}
+<section class="charts-row">
+  <div class="chart-card">
+    <h3>Overall reference health</h3>
+    <canvas id="chart-overall"></canvas>
+  </div>
+  <div class="chart-card">
+    <h3>Flags by check</h3>
+    <canvas id="chart-bycheck"></canvas>
+  </div>
+</section>
+
+{# ----- Per-reference detail with filter ----- #}
+<section>
   <h3>Per-reference detail</h3>
+  <div class="ref-controls">
+    <button type="button" class="ref-toggle active" data-filter="all">All ({{ report.n_references }})</button>
+    <button type="button" class="ref-toggle" data-filter="flagged">Flagged only ({{ retracted_n + retracted_eoc_n + fab_susp_n + fab_likely_n + high_jq_n + claim_not_supported_n }})</button>
+    <button type="button" class="ref-toggle" data-filter="clean">Clean ({{ clean_refs }})</button>
+  </div>
+
   {% for r in report.references %}
-    {# r.raw is the serialized Reference; it nests a RawReference at r.raw.raw #}
+    {# Determine the worst severity for the left-border color #}
     {% set rawref = r.raw.raw if r.raw and r.raw.raw is mapping else r.raw %}
-    <article class="ref-card">
+    {% set sev = 'clean' %}
+    {% if r.retraction.status in ('retracted', 'expression_of_concern') %}{% set sev = 'danger' %}{% endif %}
+    {% if sev != 'danger' and r.hallucination.verdict == 'likely_hallucinated' %}{% set sev = 'danger' %}{% endif %}
+    {% if sev != 'danger' and r.hallucination.verdict == 'suspicious' %}{% set sev = 'warn' %}{% endif %}
+    {% if sev != 'danger' and r.journal_quality.risk_level == 'high' %}{% set sev = 'danger' %}{% endif %}
+    {% for c in r.claims %}
+      {% if c.status == 'not_supported' and sev != 'danger' %}{% set sev = 'danger' %}{% endif %}
+    {% endfor %}
+
+    <article class="ref-card severity-{{ sev }}" data-severity="{{ sev }}">
       <header>
-        <h4>{{ loop.index }}. {{ (rawref.title or rawref.raw_text or '(no title)')[:120] }}</h4>
+        <span class="ref-num">{{ loop.index }}.</span>
+        <h4>{{ (rawref.title or rawref.raw_text or '(no title)')[:140] }}</h4>
       </header>
       <dl>
         <dt>Retraction</dt>
-        <dd class="status-{{ r.retraction.status }}">
-          {{ r.retraction.status | replace('_', ' ') }}
-          {% if r.retraction.notice_doi %} (notice DOI: {{ r.retraction.notice_doi }}){% endif %}
+        <dd>
+          {% set rs = r.retraction.status %}
+          <span class="pill {{ 'danger' if rs in ('retracted','expression_of_concern') else 'ok' if rs == 'clean' else '' }}">
+            {{ rs | replace('_', ' ') }}
+          </span>
+          {% if r.retraction.notice_doi %}
+            <span class="small muted">— notice: {{ r.retraction.notice_doi }}</span>
+          {% endif %}
         </dd>
 
         <dt>Fabrication</dt>
-        <dd class="verdict-{{ r.hallucination.verdict }}">
-          {{ r.hallucination.verdict | replace('_', ' ') }}
-          ({{ r.hallucination.red_flag_count }} flag{{ 's' if r.hallucination.red_flag_count != 1 else '' }})
+        <dd>
+          {% set v = r.hallucination.verdict %}
+          <span class="pill {{ 'danger' if v == 'likely_hallucinated' else 'warn' if v == 'suspicious' else 'ok' }}">
+            {{ v | replace('_', ' ') }}
+          </span>
+          <span class="small muted">— {{ r.hallucination.red_flag_count }} flag{{ 's' if r.hallucination.red_flag_count != 1 else '' }}</span>
         </dd>
 
         <dt>Journal quality</dt>
-        <dd class="risk-{{ r.journal_quality.risk_level }}">
-          {{ r.journal_quality.risk_level }}
+        <dd>
+          {% set jq = r.journal_quality.risk_level %}
+          <span class="pill {{ 'danger' if jq == 'high' else 'warn' if jq == 'medium' else 'ok' if jq == 'low' else '' }}">
+            {{ jq }}
+          </span>
           {% if r.journal_quality.matched_publisher %}
-            — matched concern list: <code>{{ r.journal_quality.matched_publisher }}</code>
+            <span class="small muted">— concern list: <code>{{ r.journal_quality.matched_publisher }}</code></span>
           {% endif %}
         </dd>
 
@@ -92,10 +165,9 @@
           <dd>
             {% for c in r.claims %}
               <div class="claim claim-{{ c.status }}">
-                <p><strong>{{ c.status | replace('_', ' ') }}</strong>
-                  {% if c.confidence %}(confidence: {{ c.confidence }}){% endif %}
-                </p>
-                {% if c.reasoning %}<p class="muted">{{ c.reasoning }}</p>{% endif %}
+                <strong>{{ c.status | replace('_', ' ') }}</strong>
+                {% if c.confidence %} (confidence: {{ c.confidence }}){% endif %}
+                {% if c.reasoning %}<div class="muted small" style="margin-top: 0.2rem;">{{ c.reasoning }}</div>{% endif %}
                 {% if c.quote %}<blockquote>{{ c.quote }}</blockquote>{% endif %}
               </div>
             {% endfor %}
@@ -105,5 +177,90 @@
     </article>
   {% endfor %}
 </section>
+
+{# ----- Chart.js wiring + ref filter ----- #}
+<script>
+(function () {
+  const data = {
+    clean: {{ clean_refs }},
+    flagged: {{ retracted_n + retracted_eoc_n + fab_susp_n + fab_likely_n + high_jq_n + claim_not_supported_n }},
+    medium: {{ medium_jq_n }},
+    byCheck: {
+      retracted: {{ retracted_n + retracted_eoc_n }},
+      fabricated: {{ fab_susp_n + fab_likely_n }},
+      highJournal: {{ high_jq_n }},
+      claimsNotSupported: {{ claim_not_supported_n }},
+    },
+  };
+
+  // Overall doughnut
+  const ctxOverall = document.getElementById('chart-overall');
+  if (ctxOverall) {
+    new Chart(ctxOverall, {
+      type: 'doughnut',
+      data: {
+        labels: ['Clean', 'Medium-risk journal', 'Flagged'],
+        datasets: [{
+          data: [data.clean, Math.max(0, data.medium - data.flagged), data.flagged],
+          backgroundColor: ['#16a34a', '#d97706', '#dc2626'],
+          borderWidth: 0,
+        }],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 12 } } },
+        },
+        cutout: '60%',
+      },
+    });
+  }
+
+  // By-check bar
+  const ctxByCheck = document.getElementById('chart-bycheck');
+  if (ctxByCheck) {
+    new Chart(ctxByCheck, {
+      type: 'bar',
+      data: {
+        labels: ['Retracted', 'Fabricated', 'Predatory venue', 'Claim not supported'],
+        datasets: [{
+          data: [data.byCheck.retracted, data.byCheck.fabricated, data.byCheck.highJournal, data.byCheck.claimsNotSupported],
+          backgroundColor: ['#dc2626', '#dc2626', '#dc2626', '#dc2626'],
+          borderRadius: 4,
+        }],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        indexAxis: 'y',
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { beginAtZero: true, ticks: { precision: 0 } },
+          y: { ticks: { font: { size: 11 } } },
+        },
+      },
+    });
+  }
+
+  // Ref filter
+  const toggles = document.querySelectorAll('.ref-toggle');
+  const cards = document.querySelectorAll('.ref-card');
+  toggles.forEach(btn => {
+    btn.addEventListener('click', () => {
+      toggles.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      cards.forEach(card => {
+        const sev = card.dataset.severity;
+        let show = true;
+        if (filter === 'flagged') show = (sev === 'danger' || sev === 'warn');
+        else if (filter === 'clean') show = (sev === 'clean');
+        card.classList.toggle('hidden', !show);
+      });
+    });
+  });
+})();
+</script>
 
 {% endblock %}
