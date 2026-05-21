@@ -1,103 +1,121 @@
 {
   "confusion": {
-    "pos_pos": 153,
-    "pos_neg": 42,
-    "neg_pos": 103,
-    "neg_neg": 472
+    "pos_pos": 185,
+    "pos_neg": 10,
+    "neg_pos": 152,
+    "neg_neg": 423
   },
   "metrics": {
-    "precision": 0.59765625,
-    "recall": 0.7846153846153846,
-    "fpr": 0.1791304347826087,
-    "f1": 0.6784922394678493,
-    "tp": 153,
-    "fn": 42,
-    "fp": 103,
-    "tn": 472
+    "precision": 0.5489614243323442,
+    "recall": 0.9487179487179487,
+    "fpr": 0.2643478260869565,
+    "f1": 0.6954887218045113,
+    "tp": 185,
+    "fn": 10,
+    "fp": 152,
+    "tn": 423
   },
   "predictions": [
     {
       "id": "walters_0001",
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
-        "L2_cross_db": false,
-        "L3_authors": false,
+        "L2_cross_db": true,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
-      "resolution_status": "resolved",
-      "resolved_doi": "10.2752/175169709x374353",
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
       "title_truncated": "Stonehenge: The Story So Far",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0002",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "Stonehenge: Exploring the Greatest Stone Age Mystery",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0003",
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "Stonehenge: A New Understanding",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0004",
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
-        "L2_cross_db": false,
-        "L3_authors": false,
+        "L2_cross_db": true,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
-      "resolution_status": "ambiguous",
-      "resolved_doi": "10.1057/9780230598294",
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
       "title_truncated": "The South African War",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0005",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
+        "L4_venue": false,
+        "L5_author_title": false
+      },
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
+      "title_truncated": "The Boer War",
+      "match": false
+    },
+    {
+      "id": "walters_0006",
+      "class": "hallucinated",
+      "expected_verdict": "likely_hallucinated",
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
+      "layer_flags": {
+        "L1_doi_integrity": false,
+        "L2_cross_db": true,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -107,69 +125,51 @@
       "match": true
     },
     {
-      "id": "walters_0006",
-      "class": "hallucinated",
-      "expected_verdict": "likely_hallucinated",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
-      "layer_flags": {
-        "L1_doi_integrity": false,
-        "L2_cross_db": true,
-        "L3_authors": false,
-        "L4_venue": false,
-        "L5_author_title": false
-      },
-      "resolution_status": "unresolved",
-      "resolved_doi": null,
-      "title_truncated": "The Boer War",
-      "match": false
-    },
-    {
       "id": "walters_0007",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": true,
         "L5_author_title": false
       },
       "resolution_status": "resolved",
       "resolved_doi": "10.1080/10402659808426162",
       "title_truncated": "The White Man's Burden",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0008",
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "The History of the Second Boer War",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0009",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -200,30 +200,30 @@
       "id": "walters_0011",
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
-        "L2_cross_db": false,
-        "L3_authors": false,
+        "L2_cross_db": true,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
-      "resolution_status": "resolved",
-      "resolved_doi": "10.2307/3729313",
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
       "title_truncated": "The Gothic Novel 1790-1830: Plot Summaries and Index to Motifs",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0012",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -236,37 +236,37 @@
       "id": "walters_0013",
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "A Reading of Flaubert's \"Madame Bovary",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0014",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "North and South",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0015",
@@ -290,66 +290,66 @@
       "id": "walters_0016",
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
-        "L2_cross_db": false,
-        "L3_authors": false,
+        "L2_cross_db": true,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
-      "resolution_status": "ambiguous",
-      "resolved_doi": "10.2307/3733203",
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
       "title_truncated": "Gustave Flaubert",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0017",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
-        "L2_cross_db": false,
-        "L3_authors": false,
+        "L2_cross_db": true,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
-      "resolution_status": "resolved",
-      "resolved_doi": "10.5962/bhl.title.62077",
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
       "title_truncated": "Moby-Dick; or, The Whale",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0018",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "Stoker, B. (1897). Dracula. New York, NY: Archibald Constable and Company.",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0019",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -362,19 +362,19 @@
       "id": "walters_0020",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
-        "L2_cross_db": false,
-        "L3_authors": false,
+        "L2_cross_db": true,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
-      "resolution_status": "resolved",
-      "resolved_doi": "10.5860/choice.43-2646",
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
       "title_truncated": "Graphs, Maps, Trees: Abstract Models for Literary History",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0021",
@@ -385,9 +385,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -403,9 +403,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -421,9 +421,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -439,9 +439,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -457,9 +457,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -488,37 +488,37 @@
       "id": "walters_0027",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
-        "L2_cross_db": false,
-        "L3_authors": false,
+        "L2_cross_db": true,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
-      "resolution_status": "resolved",
-      "resolved_doi": "10.5962/bhl.title.147382",
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
       "title_truncated": "Historia Animalium",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0028",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "My Little Pony",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0029",
@@ -542,30 +542,30 @@
       "id": "walters_0030",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "Harry Potter and the Philosopher's Stone",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0031",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -614,30 +614,30 @@
       "id": "walters_0034",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
-        "L2_cross_db": false,
-        "L3_authors": false,
+        "L2_cross_db": true,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
-      "resolution_status": "resolved",
-      "resolved_doi": "10.5860/choice.48-0098",
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
       "title_truncated": "Bilingual: Life and Reality",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0035",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -655,9 +655,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -673,9 +673,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -686,30 +686,30 @@
       "id": "walters_0038",
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
-        "L2_cross_db": false,
-        "L3_authors": false,
+        "L2_cross_db": true,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
-      "resolution_status": "ambiguous",
-      "resolved_doi": "10.1017/cbo9781139012775",
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
       "title_truncated": "Multilingualism in the world",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0039",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -722,66 +722,66 @@
       "id": "walters_0040",
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "The cultural politics of rhythm and blues in the United States",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0041",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "Sign wars: The cluttered landscape of advertising",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0042",
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
-        "L2_cross_db": false,
-        "L3_authors": false,
+        "L2_cross_db": true,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
-      "resolution_status": "ambiguous",
-      "resolved_doi": "10.1075/aila.16.12ras",
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
       "title_truncated": "Popular music and the cultural construction of identity",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0043",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -795,11 +795,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -830,55 +830,55 @@
       "id": "walters_0046",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "95 Theses",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0047",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
-        "L2_cross_db": false,
-        "L3_authors": false,
+        "L2_cross_db": true,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
-      "resolution_status": "resolved",
-      "resolved_doi": "10.5860/choice.49-5015",
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
       "title_truncated": "Purgatory: The Logic of Total Transformation",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0048",
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
-        "L2_cross_db": false,
-        "L3_authors": false,
+        "L2_cross_db": true,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
-      "resolution_status": "ambiguous",
-      "resolved_doi": "10.12794/metadc30487",
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
       "title_truncated": "The Concept of Purgatory",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0049",
@@ -889,9 +889,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -907,9 +907,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -920,14 +920,14 @@
       "id": "walters_0051",
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
-      "predicted_verdict": "likely_hallucinated",
+      "predicted_verdict": "suspicious",
       "red_flag_count": 3,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": true,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -943,9 +943,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -961,9 +961,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -974,14 +974,14 @@
       "id": "walters_0054",
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
-      "predicted_verdict": "likely_hallucinated",
+      "predicted_verdict": "suspicious",
       "red_flag_count": 3,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": true,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -997,9 +997,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -1015,9 +1015,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -1033,9 +1033,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -1051,9 +1051,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -1069,9 +1069,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -1087,9 +1087,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -1105,9 +1105,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -1119,11 +1119,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -1136,19 +1136,19 @@
       "id": "walters_0063",
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "The sharing economy, labour and regulation",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0064",
@@ -1172,37 +1172,37 @@
       "id": "walters_0065",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
-        "L2_cross_db": false,
-        "L3_authors": false,
+        "L2_cross_db": true,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
-      "resolution_status": "resolved",
-      "resolved_doi": "10.4324/9780429299681",
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
       "title_truncated": "Nonprofit organizations: Theory, management, policy",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0066",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
-        "L2_cross_db": false,
-        "L3_authors": false,
+        "L2_cross_db": true,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
-      "resolution_status": "ambiguous",
-      "resolved_doi": "10.2307/1228181",
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
       "title_truncated": "Federal income taxation",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0067",
@@ -1213,9 +1213,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -1227,11 +1227,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -1249,9 +1249,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -1267,9 +1267,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -1285,9 +1285,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -1303,9 +1303,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -1321,9 +1321,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -1335,11 +1335,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -1352,14 +1352,14 @@
       "id": "walters_0075",
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
-      "predicted_verdict": "likely_hallucinated",
+      "predicted_verdict": "suspicious",
       "red_flag_count": 3,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": true,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -1370,48 +1370,48 @@
       "id": "walters_0076",
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "Brexit: The impact on trade, investment, and the distribution of income. Centre for Economic Perform",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0077",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "In the wake of the crisis: Leading economists reassess economic policy",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0078",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -1424,19 +1424,19 @@
       "id": "walters_0079",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
-        "L2_cross_db": false,
-        "L3_authors": false,
+        "L2_cross_db": true,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
-      "resolution_status": "resolved",
-      "resolved_doi": "10.1097/00005053-199102000-00025",
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
       "title_truncated": "Case study research: Design and methods",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0080",
@@ -1447,9 +1447,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -1460,48 +1460,48 @@
       "id": "walters_0081",
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "The Minimum Wage as a Progressive Reform",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0082",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
-        "L2_cross_db": false,
-        "L3_authors": false,
+        "L2_cross_db": true,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
-      "resolution_status": "resolved",
-      "resolved_doi": "10.7551/mitpress/9780262141024.001.0001",
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
       "title_truncated": "Minimum Wages",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0083",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -1514,48 +1514,48 @@
       "id": "walters_0084",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "suspicious",
+      "predicted_verdict": "real_low_confidence",
       "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "resolved",
       "resolved_doi": "10.1037/0022-0167.28.5.399",
       "title_truncated": "The relationship of career-related self-efficacy expectations to perceived career options in college",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0085",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "suspicious",
+      "predicted_verdict": "real_low_confidence",
       "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "ambiguous",
       "resolved_doi": "10.1037/0022-0167.31.3.356",
       "title_truncated": "Relation of self-efficacy expectations to academic outcomes: a meta-analytic review",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0086",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -1569,11 +1569,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -1627,9 +1627,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -1645,9 +1645,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -1663,9 +1663,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -1681,9 +1681,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -1699,9 +1699,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -1712,37 +1712,37 @@
       "id": "walters_0095",
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "Charter schools in Michigan: Their characteristics, accomplishments, and enrollment",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0096",
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "The charter school advantage: Examining the evidence on enrollment and achievement in New Jersey cha",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0097",
@@ -1753,9 +1753,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -1771,9 +1771,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -1789,9 +1789,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -1807,9 +1807,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -1821,16 +1821,16 @@
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
       "predicted_verdict": "suspicious",
-      "red_flag_count": 1,
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
-        "L2_cross_db": false,
-        "L3_authors": false,
+        "L2_cross_db": true,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
-      "resolution_status": "ambiguous",
-      "resolved_doi": "10.3389/fnhum.2013.00425",
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
       "title_truncated": "The effects of school breakfast on academic performance",
       "match": true
     },
@@ -1843,9 +1843,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -1875,11 +1875,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -1892,55 +1892,55 @@
       "id": "walters_0105",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
-        "L2_cross_db": false,
-        "L3_authors": false,
+        "L2_cross_db": true,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
-      "resolution_status": "resolved",
-      "resolved_doi": "10.5860/choice.43-1083",
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
       "title_truncated": "Preparing teachers for a changing world: What teachers should learn and be able to do",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0106",
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "Effective teaching: Evidence and policies for practice",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0107",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
-        "L2_cross_db": false,
-        "L3_authors": false,
+        "L2_cross_db": true,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
-      "resolution_status": "resolved",
-      "resolved_doi": "10.1080/01443410903415150",
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
       "title_truncated": "Visible learning: A synthesis of over 800 meta-analyses relating to achievement",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0108",
@@ -1951,9 +1951,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -1969,9 +1969,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -1987,9 +1987,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -2005,9 +2005,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -2023,9 +2023,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -2041,9 +2041,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -2059,9 +2059,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -2077,9 +2077,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -2091,11 +2091,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -2109,11 +2109,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -2126,30 +2126,30 @@
       "id": "walters_0118",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "suspicious",
+      "predicted_verdict": "real_low_confidence",
       "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "ambiguous",
       "resolved_doi": "10.1016/0030-5073(79)90003-5",
       "title_truncated": "When beauty is beastly: The effects of appearance and sex on evaluations of job candidates",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0119",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -2163,11 +2163,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -2180,30 +2180,30 @@
       "id": "walters_0121",
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "The scarcity paradigm and diversity in organizations: Opening the black box",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0122",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -2234,37 +2234,37 @@
       "id": "walters_0124",
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
-        "L2_cross_db": false,
+        "L2_cross_db": true,
         "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
-      "resolution_status": "resolved",
-      "resolved_doi": "10.5040/9798400693656",
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
       "title_truncated": "Oprah Winfrey",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0125",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "Body and Soul: Profits with Principles - the Rise of The Body Shop",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0126",
@@ -2288,37 +2288,37 @@
       "id": "walters_0127",
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "Delivering Happiness: A Path to Profits, Passion, and Purpose",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0128",
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "The Rise of the Gulf Stream",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0129",
@@ -2342,48 +2342,48 @@
       "id": "walters_0130",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "Accidents, Compensation and the Law",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0131",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
-        "L2_cross_db": false,
-        "L3_authors": false,
+        "L2_cross_db": true,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
-      "resolution_status": "resolved",
-      "resolved_doi": "10.5040/9781472558725",
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
       "title_truncated": "The Damages Lottery",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0132",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -2419,9 +2419,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -2437,9 +2437,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -2450,19 +2450,19 @@
       "id": "walters_0136",
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
-        "L2_cross_db": false,
+        "L2_cross_db": true,
         "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
-      "resolution_status": "resolved",
-      "resolved_doi": "10.1080/23296151.2018.1529286",
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
       "title_truncated": "Drones: What everyone needs to know",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0137",
@@ -2473,9 +2473,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -2491,9 +2491,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -2509,9 +2509,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -2527,9 +2527,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -2541,11 +2541,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -2558,19 +2558,19 @@
       "id": "walters_0142",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "A Future That Works: Automation, Employment, and Productivity",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0143",
@@ -2594,19 +2594,19 @@
       "id": "walters_0144",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "suspicious",
+      "predicted_verdict": "real_high_confidence",
       "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "resolved",
       "resolved_doi": "10.1289/ehp.7688",
       "title_truncated": "Low-level environmental lead exposure and children's intellectual function: an international pooled ",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0145",
@@ -2630,19 +2630,19 @@
       "id": "walters_0146",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "Asbestos. In Encyclopedia of Occupational Health and Safety",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0147",
@@ -2653,9 +2653,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -2671,9 +2671,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -2689,9 +2689,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -2707,9 +2707,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -2725,9 +2725,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -2743,9 +2743,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -2761,9 +2761,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -2774,66 +2774,66 @@
       "id": "walters_0154",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "Australia: A massive buyback of low-risk guns",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0155",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "suspicious",
+      "predicted_verdict": "real_high_confidence",
       "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "resolved",
       "resolved_doi": "10.1037/0022-3514.78.4.772",
       "title_truncated": "Video games and aggressive thoughts, feelings, and behavior in the laboratory and in life",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0156",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "suspicious",
+      "predicted_verdict": "real_high_confidence",
       "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "resolved",
       "resolved_doi": "10.1177/0146167205277205",
       "title_truncated": "Correlates and consequences of exposure to video game violence: Hostile personality, low self-esteem",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0157",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -2847,11 +2847,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -2865,11 +2865,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -2882,30 +2882,30 @@
       "id": "walters_0160",
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
-      "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
-        "L2_cross_db": false,
-        "L3_authors": false,
+        "L2_cross_db": true,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
-      "resolution_status": "resolved",
-      "resolved_doi": "10.1146/annurev.psych.53.100901.135231",
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
       "title_truncated": "Human aggression",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0161",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -2918,30 +2918,30 @@
       "id": "walters_0162",
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
-      "predicted_verdict": "suspicious",
+      "predicted_verdict": "real_low_confidence",
       "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "ambiguous",
       "resolved_doi": "10.1002/ab.20290",
       "title_truncated": "The effects of violent video games on aggression: A meta-analysis",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0163",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -2955,16 +2955,16 @@
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
       "predicted_verdict": "suspicious",
-      "red_flag_count": 1,
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
-        "L2_cross_db": false,
-        "L3_authors": false,
+        "L2_cross_db": true,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
-      "resolution_status": "resolved",
-      "resolved_doi": "10.1037/a0034857",
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
       "title_truncated": "The benefits of playing video games",
       "match": true
     },
@@ -2977,9 +2977,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -2995,9 +2995,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -3008,66 +3008,66 @@
       "id": "walters_0167",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
-        "L2_cross_db": false,
-        "L3_authors": false,
+        "L2_cross_db": true,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
-      "resolution_status": "resolved",
-      "resolved_doi": "10.1080/10439463.2015.1031228",
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
       "title_truncated": "Police and community in Chicago: A tale of three cities",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0168",
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "Police deviance and corruption",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0169",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "The end of policing",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0170",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -3080,55 +3080,55 @@
       "id": "walters_0171",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "suspicious",
+      "predicted_verdict": "real_low_confidence",
       "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "resolved",
       "resolved_doi": "10.2307/421717",
       "title_truncated": "The Causes of Terrorism",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0172",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "Strategy: A History",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0173",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "Coup d'\u00c9tat: A Practical Handbook",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0174",
@@ -3139,9 +3139,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -3157,9 +3157,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -3170,19 +3170,19 @@
       "id": "walters_0176",
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
-      "predicted_verdict": "suspicious",
+      "predicted_verdict": "real_low_confidence",
       "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "ambiguous",
       "resolved_doi": "10.1371/journal.pone.0071901",
       "title_truncated": "The effect of dental care on the risk of cardiovascular disease and stroke: A systematic review and ",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0177",
@@ -3207,11 +3207,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -3224,35 +3224,35 @@
       "id": "walters_0179",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
-        "L2_cross_db": false,
-        "L3_authors": false,
+        "L2_cross_db": true,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
-      "resolution_status": "resolved",
-      "resolved_doi": "10.1111/j.1532-849x.2000.113_1.x",
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
       "title_truncated": "Dentistry, Dental Practice, and the Community",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0180",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "resolved",
-      "resolved_doi": "10.1902/jop.1967.38.6_part2.610",
+      "resolved_doi": "10.1902/jop.1967.38.6.610",
       "title_truncated": "The gingival index, the plaque index and the retention index systems",
       "match": true
     },
@@ -3261,11 +3261,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -3279,11 +3279,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -3297,11 +3297,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -3324,7 +3324,7 @@
         "L5_author_title": false
       },
       "resolution_status": "resolved",
-      "resolved_doi": "10.1155/sd",
+      "resolved_doi": "10.1155/3717",
       "title_truncated": "Sleep Disorders",
       "match": true
     },
@@ -3332,30 +3332,30 @@
       "id": "walters_0185",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
-        "L2_cross_db": false,
-        "L3_authors": false,
+        "L2_cross_db": true,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
-      "resolution_status": "resolved",
-      "resolved_doi": "10.1007/978-1-4614-1353-0",
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
       "title_truncated": "Regression methods in biostatistics: linear, logistic, survival, and repeated measures models",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0186",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -3373,9 +3373,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -3391,9 +3391,9 @@
       "layer_flags": {
         "L1_doi_integrity": true,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "resolved",
       "resolved_doi": "10.3389/fpls.2015.00763",
@@ -3409,9 +3409,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -3427,9 +3427,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -3441,11 +3441,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -3463,9 +3463,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -3481,9 +3481,9 @@
       "layer_flags": {
         "L1_doi_integrity": true,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "resolved",
       "resolved_doi": "10.3389/fpls.2018.00838",
@@ -3495,11 +3495,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -3517,9 +3517,9 @@
       "layer_flags": {
         "L1_doi_integrity": true,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "resolved",
       "resolved_doi": "10.3389/fpls.2017.01096",
@@ -3535,9 +3535,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -3553,9 +3553,9 @@
       "layer_flags": {
         "L1_doi_integrity": true,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "resolved",
       "resolved_doi": "10.1016/j.jhevol.2008.11.005",
@@ -3571,9 +3571,9 @@
       "layer_flags": {
         "L1_doi_integrity": true,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "resolved",
       "resolved_doi": "10.1016/j.biocon.2011.02.009",
@@ -3584,19 +3584,19 @@
       "id": "walters_0199",
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "The orangutan: biology, ecology and conservation",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0200",
@@ -3607,9 +3607,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -3625,9 +3625,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -3643,9 +3643,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -3661,9 +3661,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -3675,11 +3675,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -3692,19 +3692,19 @@
       "id": "walters_0205",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "Livestock\u2019s Long Shadow: Environmental Issues and Options",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0206",
@@ -3715,9 +3715,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -3728,19 +3728,19 @@
       "id": "walters_0207",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "suspicious",
+      "predicted_verdict": "real_low_confidence",
       "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "ambiguous",
       "resolved_doi": "10.1088/1755-1307/6/24/242001",
       "title_truncated": "Greenhouse Gas Mitigation in Agriculture",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0208",
@@ -3751,9 +3751,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -3783,11 +3783,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -3801,16 +3801,16 @@
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
       "predicted_verdict": "suspicious",
-      "red_flag_count": 1,
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
-        "L2_cross_db": false,
-        "L3_authors": false,
+        "L2_cross_db": true,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
-      "resolution_status": "ambiguous",
-      "resolved_doi": "10.2172/982352",
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
       "title_truncated": "The energy and greenhouse gas implications of plug-in hybrid electric vehicles",
       "match": true
     },
@@ -3837,16 +3837,16 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
-        "L2_cross_db": false,
+        "L2_cross_db": true,
         "L3_authors": false,
         "L4_venue": false,
         "L5_author_title": false
       },
-      "resolution_status": "resolved",
-      "resolved_doi": "10.1017/9781009157940",
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
       "title_truncated": "Global Warming of 1.5\u00b0C, an IPCC special report on the impacts of global warming of 1.5\u00b0C above pre-",
       "match": true
     },
@@ -3873,11 +3873,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -3895,9 +3895,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -3908,19 +3908,19 @@
       "id": "walters_0217",
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
-        "L2_cross_db": false,
-        "L3_authors": false,
+        "L2_cross_db": true,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
-      "resolution_status": "resolved",
-      "resolved_doi": "10.5860/choice.49-3876",
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
       "title_truncated": "Climate change and cities: first assessment report of the urban climate change research network",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0218",
@@ -3931,9 +3931,9 @@
       "layer_flags": {
         "L1_doi_integrity": true,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "resolved",
       "resolved_doi": "10.3389/fenrg.2020.00073",
@@ -3944,14 +3944,14 @@
       "id": "walters_0219",
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
-      "predicted_verdict": "likely_hallucinated",
+      "predicted_verdict": "suspicious",
       "red_flag_count": 3,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": true,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -3967,9 +3967,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -3985,9 +3985,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -4003,9 +4003,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -4017,11 +4017,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -4035,11 +4035,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -4052,66 +4052,66 @@
       "id": "walters_0225",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "Stonehenge: Neolithic Man and the Cosmos",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0226",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "Stonehenge: Exploring the Greatest Stone Age Mystery",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0227",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "suspicious",
+      "predicted_verdict": "real_high_confidence",
       "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "resolved",
       "resolved_doi": "10.1177/1359183506063024",
       "title_truncated": "Materializing Stonehenge",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0228",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -4125,11 +4125,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -4142,30 +4142,30 @@
       "id": "walters_0230",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "The Boer War: A History",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0231",
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -4179,11 +4179,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -4196,66 +4196,66 @@
       "id": "walters_0233",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
-        "L2_cross_db": false,
-        "L3_authors": false,
+        "L2_cross_db": true,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
-      "resolution_status": "resolved",
-      "resolved_doi": "10.5860/choice.45-4533",
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
       "title_truncated": "Diamonds, Gold, and War: The British, the Boers, and the Making of South Africa",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0234",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
-        "L2_cross_db": false,
-        "L3_authors": false,
+        "L2_cross_db": true,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
-      "resolution_status": "resolved",
-      "resolved_doi": "10.1057/9780230598294",
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
       "title_truncated": "The Impact of the South African War",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0235",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "The Boer War",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0236",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -4268,30 +4268,30 @@
       "id": "walters_0237",
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "The Anglo-Boer War 1899-1902: White Man's War, Black Man's War, Traumatic War",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0238",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -4305,11 +4305,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -4322,30 +4322,30 @@
       "id": "walters_0240",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
-        "L2_cross_db": false,
-        "L3_authors": false,
+        "L2_cross_db": true,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
-      "resolution_status": "resolved",
-      "resolved_doi": "10.5860/choice.43-4512",
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
       "title_truncated": "Melville: His World and Work",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0241",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -4358,48 +4358,48 @@
       "id": "walters_0242",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
-        "L2_cross_db": false,
-        "L3_authors": false,
+        "L2_cross_db": true,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
-      "resolution_status": "resolved",
-      "resolved_doi": "10.5860/choice.45-4864",
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
       "title_truncated": "Anna Karenina in Our Time: Seeing More Wisely",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0243",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "Wuthering Heights: A Reader's Guide to Essential Criticism",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0244",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -4412,104 +4412,104 @@
       "id": "walters_0245",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "Flaubert: A Life",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0246",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
-        "L2_cross_db": false,
-        "L3_authors": false,
+        "L2_cross_db": true,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
-      "resolution_status": "resolved",
-      "resolved_doi": "10.25740/cg224cc2024",
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
       "title_truncated": "Between Canon and Corpus: Six Perspectives on 20th-Century Novels",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0247",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "Testing Burrows's Delta. Literary and Linguistic Computing",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0248",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
-        "L2_cross_db": false,
-        "L3_authors": false,
+        "L2_cross_db": true,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
-      "resolution_status": "resolved",
-      "resolved_doi": "10.5860/choice.51-4276",
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
       "title_truncated": "Macroanalysis: Digital Methods and Literary History",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0249",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
-        "L2_cross_db": false,
-        "L3_authors": false,
+        "L2_cross_db": true,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
-      "resolution_status": "resolved",
-      "resolved_doi": "10.5860/choice.43-2646",
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
       "title_truncated": "Graphs, Maps, Trees: Abstract Models for a Literary History",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0250",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "likely_hallucinated",
+      "predicted_verdict": "suspicious",
       "red_flag_count": 3,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": true,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -4525,9 +4525,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -4539,11 +4539,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -4556,19 +4556,19 @@
       "id": "walters_0253",
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "The Indus Valley Civilization and the Unicorn Seal",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0254",
@@ -4579,9 +4579,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -4597,9 +4597,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -4610,37 +4610,37 @@
       "id": "walters_0256",
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "Unicorns in Children's Literature",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0257",
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "The Traditions of the Unicorn in the Middle Ages",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0258",
@@ -4651,9 +4651,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -4664,14 +4664,14 @@
       "id": "walters_0259",
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
-      "predicted_verdict": "likely_hallucinated",
+      "predicted_verdict": "suspicious",
       "red_flag_count": 3,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": true,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -4682,37 +4682,37 @@
       "id": "walters_0260",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "The Lore of the Unicorn: Historical Mythology",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0261",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
-        "L2_cross_db": false,
-        "L3_authors": false,
+        "L2_cross_db": true,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
-      "resolution_status": "resolved",
-      "resolved_doi": "10.1075/lplp.26.2.08she",
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
       "title_truncated": "The Dominance of English as a Language of Science: Effects on Other Languages and Language Communiti",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0262",
@@ -4723,9 +4723,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -4737,11 +4737,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -4754,37 +4754,37 @@
       "id": "walters_0264",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "suspicious",
+      "predicted_verdict": "real_high_confidence",
       "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "resolved",
       "resolved_doi": "10.2307/3588099",
       "title_truncated": "Discourse community, legitimate peripheral participation, and the nonnative-English-speaking scholar",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0265",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
-        "L2_cross_db": false,
-        "L3_authors": false,
+        "L2_cross_db": true,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
-      "resolution_status": "resolved",
-      "resolved_doi": "10.5860/choice.193754",
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
       "title_truncated": "Scientific Babel: How Science Was Done Before and After Global English",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0266",
@@ -4795,9 +4795,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -4809,11 +4809,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -4826,37 +4826,37 @@
       "id": "walters_0268",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "Is there science beyond English? Initiatives to increase the quality and visibility of non-English p",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0269",
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "Modeling, translating, and summarizing scientific claims",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0270",
@@ -4881,11 +4881,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -4898,66 +4898,66 @@
       "id": "walters_0272",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "The New Invisible College: Science for Development",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0273",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "Cultures of Popular Music",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0274",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
-        "L2_cross_db": false,
-        "L3_authors": false,
+        "L2_cross_db": true,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
-      "resolution_status": "resolved",
-      "resolved_doi": "10.1111/j.1467-8306.2004.09401012_2.x",
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
       "title_truncated": "Sound Tracks: Popular Music, Identity and Place",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0275",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -4970,30 +4970,30 @@
       "id": "walters_0276",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "Electric Shock: From the Gramophone to the iPhone: 125 Years of Pop Music",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0277",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -5006,30 +5006,30 @@
       "id": "walters_0278",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "suspicious",
+      "predicted_verdict": "real_low_confidence",
       "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "resolved",
       "resolved_doi": "10.2307/3052666",
       "title_truncated": "From Music Publishing to MP3: Music and Industry in the Twentieth Century",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0279",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -5043,11 +5043,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -5061,11 +5061,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -5078,19 +5078,19 @@
       "id": "walters_0282",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
-        "L2_cross_db": false,
-        "L3_authors": false,
+        "L2_cross_db": true,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
-      "resolution_status": "resolved",
-      "resolved_doi": "10.5860/choice.47-0779",
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
       "title_truncated": "How the Beatles Destroyed Rock 'n' Roll: An Alternative History of American Popular Music",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0283",
@@ -5115,11 +5115,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -5137,9 +5137,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -5155,9 +5155,9 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
@@ -5186,30 +5186,30 @@
       "id": "walters_0288",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
-        "L2_cross_db": false,
-        "L3_authors": false,
+        "L2_cross_db": true,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
-      "resolution_status": "resolved",
-      "resolved_doi": "10.1177/003463738708400133",
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
       "title_truncated": "Medieval Monasticism: Forms of Religious Life in Western Europe in the Middle Ages",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0289",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -5222,30 +5222,30 @@
       "id": "walters_0290",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "Sentences. Various editions",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0291",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -5258,30 +5258,30 @@
       "id": "walters_0292",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "suspicious",
+      "predicted_verdict": "real_high_confidence",
       "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "resolved",
       "resolved_doi": "10.1111/j.1467-954x.2009.01864.x",
       "title_truncated": "Migration and the search for a better way of life: A critical exploration of lifestyle migration",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0293",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -5295,11 +5295,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -5330,30 +5330,30 @@
       "id": "walters_0296",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "The US will become \u2018minority white\u2019 in 2045, Census projects. Brookings Institution",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0297",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -5367,11 +5367,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -5384,48 +5384,48 @@
       "id": "walters_0299",
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
-        "L2_cross_db": false,
-        "L3_authors": false,
+        "L2_cross_db": true,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
-      "resolution_status": "resolved",
-      "resolved_doi": "10.1007/978-1-4020-6895-9",
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
       "title_truncated": "Rural retirement migration",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0300",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "suspicious",
+      "predicted_verdict": "real_low_confidence",
       "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "ambiguous",
       "resolved_doi": "10.1093/geront/41.2.220",
       "title_truncated": "Retirement migration counties in the southeastern United States: Geographic, demographic, and econom",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0301",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -5443,8 +5443,8 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
-        "L4_venue": true,
+        "L3_authors": true,
+        "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "ambiguous",
@@ -5456,19 +5456,19 @@
       "id": "walters_0303",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "suspicious",
+      "predicted_verdict": "real_low_confidence",
       "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "ambiguous",
       "resolved_doi": "10.1093/geront/gnr098",
       "title_truncated": "The meaning of \u201caging in place",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0304",
@@ -5479,8 +5479,8 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
-        "L4_venue": true,
+        "L3_authors": true,
+        "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "resolved",
@@ -5492,30 +5492,30 @@
       "id": "walters_0305",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "suspicious",
+      "predicted_verdict": "real_high_confidence",
       "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "resolved",
       "resolved_doi": "10.1080/17538963.2010.511899",
       "title_truncated": "Demographic transition, demographic dividend, and Lewis turning point in China",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0306",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -5529,11 +5529,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -5547,11 +5547,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -5564,30 +5564,30 @@
       "id": "walters_0309",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
-        "L2_cross_db": false,
-        "L3_authors": false,
+        "L2_cross_db": true,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
-      "resolution_status": "resolved",
-      "resolved_doi": "10.5860/choice.42-1904",
+      "resolution_status": "unresolved",
+      "resolved_doi": null,
       "title_truncated": "Only Hope: Coming of Age under China's One-Child Policy",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0310",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -5601,11 +5601,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -5618,66 +5618,66 @@
       "id": "walters_0312",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "suspicious",
+      "predicted_verdict": "real_low_confidence",
       "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "resolved",
       "resolved_doi": "10.2307/1130591",
       "title_truncated": "Comparative study of behavioral qualities of only children and sibling children",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0313",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "suspicious",
+      "predicted_verdict": "real_high_confidence",
       "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "resolved",
       "resolved_doi": "10.1007/s13524-011-0055-y",
       "title_truncated": "Estimating the effect of the one-child policy on the sex ratio imbalance in China: identification ba",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0314",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "suspicious",
+      "predicted_verdict": "real_high_confidence",
       "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "resolved",
       "resolved_doi": "10.1007/s00148-013-0478-4",
       "title_truncated": "The quality-quantity trade-off: evidence from the relaxation of China's one-child policy",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0315",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -5690,84 +5690,84 @@
       "id": "walters_0316",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "suspicious",
+      "predicted_verdict": "real_high_confidence",
       "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "resolved",
       "resolved_doi": "10.1111/j.1728-4457.2011.00383.x",
       "title_truncated": "The future of a demographic overachiever: Long-term implications of the demographic transition in Ch",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0317",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "suspicious",
+      "predicted_verdict": "real_high_confidence",
       "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "resolved",
       "resolved_doi": "10.1111/j.1728-4457.2007.00168.x",
       "title_truncated": "Options for fertility policy transition in China",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0318",
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
-      "predicted_verdict": "suspicious",
+      "predicted_verdict": "real_high_confidence",
       "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "resolved",
       "resolved_doi": "10.1007/bf03500915",
       "title_truncated": "The impacts of the selective two-child policy on China's future population",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0319",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "suspicious",
+      "predicted_verdict": "real_high_confidence",
       "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
-        "L5_author_title": true
+        "L5_author_title": false
       },
       "resolution_status": "resolved",
       "resolved_doi": "10.1016/j.euroecorev.2018.05.006",
       "title_truncated": "Drivers of disruption? Estimating the Uber effect",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0320",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -5785,8 +5785,8 @@
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
-        "L4_venue": true,
+        "L3_authors": true,
+        "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "resolved",
@@ -6285,11 +6285,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -6428,19 +6428,19 @@
       "id": "walters_0357",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "Neumark, D., & Wascher, W. L. (2008). Minimum Wages. MIT Press.",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0358",
@@ -6483,11 +6483,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -6500,19 +6500,19 @@
       "id": "walters_0361",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "Self-efficacy: The exercise of control",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0362",
@@ -6537,11 +6537,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -6554,19 +6554,19 @@
       "id": "walters_0364",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "Self-beliefs and school success: Self-efficacy, self-concept, and school achievement",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0365",
@@ -6897,11 +6897,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -6986,19 +6986,19 @@
       "id": "walters_0388",
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "The Effect of Charter Schools on School Climate and Student Achievement in Michigan",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0389",
@@ -7238,19 +7238,19 @@
       "id": "walters_0402",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "Visible Learning: A Synthesis of Over 800 Meta-Analyses Relating to Achievement",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0403",
@@ -7617,11 +7617,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -7634,30 +7634,30 @@
       "id": "walters_0424",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "Through the labyrinth: The truth about how women become leaders",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0425",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -7671,11 +7671,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -7977,11 +7977,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -8373,11 +8373,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -8408,30 +8408,30 @@
       "id": "walters_0467",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "Where machines could replace humans-and where they can\u2019t (yet)",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0468",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -8786,19 +8786,19 @@
       "id": "walters_0488",
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "Investigating the causal relationship between sport team identification and psychological well-being",
-      "match": false
+      "match": true
     },
     {
       "id": "walters_0489",
@@ -9021,11 +9021,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -9075,11 +9075,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -9093,11 +9093,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -9111,11 +9111,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -9129,11 +9129,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -9147,11 +9147,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -9381,11 +9381,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -10299,11 +10299,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -10335,11 +10335,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -10407,11 +10407,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -10533,11 +10533,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -10551,11 +10551,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -10658,19 +10658,19 @@
       "id": "walters_0592",
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": true,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
       "resolution_status": "unresolved",
       "resolved_doi": null,
       "title_truncated": "Tackling climate change through livestock: a global assessment of emissions and mitigation opportuni",
-      "match": true
+      "match": false
     },
     {
       "id": "walters_0593",
@@ -10713,11 +10713,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -10785,11 +10785,11 @@
       "class": "real_external",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -11379,11 +11379,11 @@
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
       "predicted_verdict": "suspicious",
-      "red_flag_count": 1,
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": true,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -11433,11 +11433,11 @@
       "class": "hallucinated",
       "expected_verdict": "likely_hallucinated",
       "predicted_verdict": "suspicious",
-      "red_flag_count": 1,
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": true,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -11523,11 +11523,11 @@
       "class": "real_fixture",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -11541,11 +11541,11 @@
       "class": "real_fixture",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -11559,11 +11559,11 @@
       "class": "real_fixture",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -11775,11 +11775,11 @@
       "class": "real_fixture",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_low_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -11793,11 +11793,11 @@
       "class": "real_fixture",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -11811,11 +11811,11 @@
       "class": "real_fixture",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -12116,19 +12116,19 @@
       "id": "fixture_1803.09015_037",
       "class": "real_fixture",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
         "L3_authors": true,
-        "L4_venue": false,
+        "L4_venue": true,
         "L5_author_title": false
       },
       "resolution_status": "resolved",
       "resolved_doi": "10.1016/j.jeconom.2019.08.014",
       "title_truncated": "Identification in nonparametric models for dynamic treatment effects",
-      "match": true
+      "match": false
     },
     {
       "id": "fixture_1803.09015_038",
@@ -12378,7 +12378,7 @@
         "L5_author_title": false
       },
       "resolution_status": "resolved",
-      "resolved_doi": "10.1257/000282807780323569",
+      "resolved_doi": "10.1257/aer.97.1.318",
       "title_truncated": "The effect of court-ordered hiring quotas on the composition and quality of police",
       "match": true
     },
@@ -12459,11 +12459,11 @@
       "class": "real_fixture",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -12782,19 +12782,19 @@
       "id": "fixture_1803.09015_075",
       "class": "real_fixture",
       "expected_verdict": "real_high_confidence",
-      "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 1,
+      "predicted_verdict": "suspicious",
+      "red_flag_count": 2,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
         "L3_authors": true,
-        "L4_venue": false,
+        "L4_venue": true,
         "L5_author_title": false
       },
       "resolution_status": "resolved",
       "resolved_doi": "10.1257/000282803321946930",
       "title_truncated": "Cluster-sample methods in applied econometrics",
-      "match": true
+      "match": false
     },
     {
       "id": "fixture_1803.09015_076",
@@ -13359,11 +13359,11 @@
       "class": "real_fixture",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
@@ -13539,11 +13539,11 @@
       "class": "real_fixture",
       "expected_verdict": "real_high_confidence",
       "predicted_verdict": "real_high_confidence",
-      "red_flag_count": 0,
+      "red_flag_count": 1,
       "layer_flags": {
         "L1_doi_integrity": false,
         "L2_cross_db": false,
-        "L3_authors": false,
+        "L3_authors": true,
         "L4_venue": false,
         "L5_author_title": false
       },
