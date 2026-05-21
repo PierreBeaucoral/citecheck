@@ -132,9 +132,11 @@ def _run_pipeline_inner(
         # Stage 6: Phase 5 claim verification (opt-in).
         phase5_summary: dict[str, Any] = {
             "enabled": phase5_enabled,
-            "n_candidates": 0,            # refs with a resolved DOI = eligible for Phase 5
-            "n_refs_no_doi": 0,           # refs lacking any DOI; not Phase-5-eligible
-            "claims_verified": 0,
+            "n_candidates": 0,                # refs with a resolved DOI = eligible for Phase 5
+            "n_refs_no_doi": 0,               # refs lacking any DOI; not Phase-5-eligible
+            "claims_verified": 0,             # total claims with a verdict
+            "claims_verified_fulltext": 0,    # of those, verdicts against full text
+            "claims_verified_abstract": 0,    # of those, verdicts against abstract-only fallback
             "claims_skipped_quota": 0,
             "claims_skipped_no_text": 0,
             "claims_skipped_cap": 0,
@@ -355,8 +357,9 @@ def _run_phase5(
             progress_stage="phase5",
             progress_text=f"Verifying claim {i}/{len(capped)}...",
         )
-        doi = (r.get("raw") or {}).get("doi") or ""
-        text, _provenance = fetch_text_any(doi=doi, cache=cache)
+        outer = r.get("raw") or {}
+        doi = outer.get("resolved_doi") or (outer.get("raw") or {}).get("doi") or ""
+        text, provenance = fetch_text_any(doi=doi, cache=cache)
         if text is None:
             phase5_summary["claims_skipped_no_text"] += 1
             continue
@@ -386,16 +389,36 @@ def _run_phase5(
                 break
             continue
 
-        # Best-effort token accounting: assume average per-call cost.
-        # v1.1 will read actual token counts from response headers.
+        # Best-effort token accounting: assume average per-call cost.  Abstract
+        # paths use ~30% fewer tokens because the abstract is shorter than 5
+        # chunks of body text; we approximate.  v1.1 will read actual token
+        # counts from response headers.
         from citecheck.web.quota import ESTIMATED_TOKENS_PER_CALL
 
+        approx_total = ESTIMATED_TOKENS_PER_CALL
+        if provenance == "openalex_abstract":
+            approx_total = int(approx_total * 0.7)
         quota.record(
             settings.llm_provider,
-            input_tokens=int(ESTIMATED_TOKENS_PER_CALL * 0.9),
-            output_tokens=int(ESTIMATED_TOKENS_PER_CALL * 0.1),
+            input_tokens=int(approx_total * 0.9),
+            output_tokens=int(approx_total * 0.1),
         )
-        r["claims"].append(result.model_dump(mode="json"))
+        # Tag the result with the text-source provenance so the report can
+        # distinguish high-confidence (full-text) verdicts from
+        # abstract-only fallbacks.
+        result_dict = result.model_dump(mode="json")
+        result_dict["text_source"] = provenance
+        if result_dict.get("notes") is None:
+            result_dict["notes"] = []
+        if provenance == "openalex_abstract":
+            result_dict["notes"].append(
+                "Verified against OpenAlex abstract only — full text was not "
+                "available (paywalled).  Lower confidence than full-text verification."
+            )
+            phase5_summary["claims_verified_abstract"] += 1
+        else:
+            phase5_summary["claims_verified_fulltext"] += 1
+        r["claims"].append(result_dict)
         n_verified += 1
 
     phase5_summary["claims_verified"] = n_verified

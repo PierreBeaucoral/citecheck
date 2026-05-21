@@ -1,113 +1,133 @@
-{# Reusable coffee-person SVG mascot — 16-bit-RPG style.
+{# Coffee-person SVG mascot — chibi pixel-art (16-pixel-creator aesthetic).
 
-   Built on a 24×32 pixel grid (5px per cell at the default 120×160px
-   render size).  Every visible "pixel" is a `<rect width="5" height="5">`
-   placed on integer coordinates, with `shape-rendering="crispEdges"` on
-   the root so the browser doesn't anti-alias the squares.
+   Built on a 16-wide × 22-tall pixel grid.  Each cell is 6px in the
+   default 96×132 rendered size.  Style choices match the 16pixel
+   character-creator aesthetic:
+     - Chibi proportions: head is 7×6 cells, body is 6×8 cells.
+     - One-pixel dark outline around every visible region.
+     - Bright flat colour blocks; no gradients.
+     - Two-pixel eyes, single-pixel mouth.
+     - Steam = a tall column of 3 staggered single pixels.
 
-   Customizable parts use the `.cp-*` CSS classes set by mascot.js from
-   localStorage; defaults are sensible cute values.
+   Customisable parts use `.cp-*` CSS classes; defaults read from
+   localStorage via mascot.js.  Animations preserved (eye blink,
+   steam rise, arm-cup sip tilt).
 #}
-<span class="coffee-person" aria-label="A pixel-art adventurer sipping coffee">
-  <svg viewBox="0 0 120 160" xmlns="http://www.w3.org/2000/svg"
+<span class="coffee-person" aria-label="A small adventurer sipping coffee">
+  <svg viewBox="0 0 96 132" xmlns="http://www.w3.org/2000/svg"
        shape-rendering="crispEdges">
 
-    {# Pixel grid: each cell = 5px.  Origin column 0 = x=0; column 23 = x=115. #}
-
-    {# ---- Steam (3 wavy puffs above the cup) ---- #}
+    {# ---- Steam (rising single pixels above the cup) ---- #}
     <g>
-      <rect class="cp-steam" x="85" y="35" width="5" height="5" fill="#d4d8e0"/>
-      <rect class="cp-steam" x="90" y="30" width="5" height="5" fill="#d4d8e0"/>
-      <rect class="cp-steam" x="80" y="30" width="5" height="5" fill="#d4d8e0"/>
-      <rect class="cp-steam" x="85" y="25" width="5" height="5" fill="#d4d8e0"/>
+      <rect class="cp-steam" x="72" y="18" width="6" height="6" fill="#d4d8e0"/>
+      <rect class="cp-steam" x="66" y="12" width="6" height="6" fill="#d4d8e0"/>
+      <rect class="cp-steam" x="78" y="6"  width="6" height="6" fill="#d4d8e0"/>
     </g>
 
-    {# ---- Optional pointy hat (adventurer style) ---- #}
+    {# ---- Optional pointy hat ---- #}
     <g class="cp-hat">
-      <rect x="50" y="5"  width="20" height="5" fill="currentColor"/>
-      <rect x="45" y="10" width="30" height="5" fill="currentColor"/>
-      <rect x="40" y="15" width="40" height="5" fill="currentColor"/>
-      {# Hat band #}
-      <rect x="40" y="20" width="40" height="5" fill="#1a1d24"/>
-      {# Hat feather #}
-      <rect x="65" y="0"  width="5"  height="10" fill="#dc2626"/>
+      <rect x="36" y="0"  width="24" height="6" fill="currentColor"/>
+      <rect x="30" y="6"  width="36" height="6" fill="currentColor"/>
+      <rect x="24" y="12" width="48" height="6" fill="currentColor"/>
+      {# hat outline (1px darker shadow at base) #}
+      <rect x="24" y="18" width="48" height="3" fill="rgba(0,0,0,0.25)"/>
+      {# hat band #}
+      <rect x="24" y="18" width="48" height="6" fill="#1a1d24"/>
+      {# feather #}
+      <rect x="54" y="-3" width="6"  height="9" fill="#dc2626"/>
     </g>
 
-    {# ---- Hair (back, framing the face) ---- #}
+    {# ---- Hair (frames the head; outline + fill in one shape) ---- #}
     <g>
-      <rect class="cp-hair" x="40" y="25" width="40" height="5"/>
-      <rect class="cp-hair" x="35" y="30" width="5"  height="20"/>
-      <rect class="cp-hair" x="80" y="30" width="5"  height="20"/>
-      <rect class="cp-hair" x="40" y="30" width="5"  height="5"/>
-      <rect class="cp-hair" x="75" y="30" width="5"  height="5"/>
+      {# top of head hair #}
+      <rect class="cp-hair" x="24" y="24" width="48" height="12"/>
+      {# side bangs #}
+      <rect class="cp-hair" x="24" y="36" width="6"  height="18"/>
+      <rect class="cp-hair" x="66" y="36" width="6"  height="18"/>
+      {# darker outline pixel along the hairline #}
+      <rect x="24" y="24" width="48" height="3" fill="rgba(0,0,0,0.18)"/>
     </g>
 
-    {# ---- Face (skin, 6×4 block) ---- #}
+    {# ---- Head (skin) — 7×6 cells centered ---- #}
     <g>
-      <rect class="cp-skin" x="40" y="30" width="40" height="25"/>
-      {# Outline pixels (slight darker shadow on the left + chin) #}
-      <rect x="40" y="55" width="40" height="5" fill="rgba(0,0,0,0.08)"/>
+      <rect class="cp-skin" x="30" y="30" width="36" height="30"/>
+      {# 1px dark outline #}
+      <rect x="30" y="30" width="36" height="3" fill="rgba(0,0,0,0.12)"/>
+      <rect x="30" y="57" width="36" height="3" fill="rgba(0,0,0,0.15)"/>
+      <rect x="30" y="30" width="3"  height="30" fill="rgba(0,0,0,0.10)"/>
+      <rect x="63" y="30" width="3"  height="30" fill="rgba(0,0,0,0.10)"/>
     </g>
 
-    {# ---- Eyes (two 5×5 blocks, blink animated via CSS) ---- #}
-    <rect class="cp-eye" x="48" y="40" width="5" height="5" fill="#1a1d24"/>
-    <rect class="cp-eye" x="67" y="40" width="5" height="5" fill="#1a1d24"/>
+    {# ---- Eyes (two 6×6 blocks; blink scales them) ---- #}
+    <rect class="cp-eye" x="36" y="42" width="6" height="6" fill="#1a1d24"/>
+    <rect class="cp-eye" x="54" y="42" width="6" height="6" fill="#1a1d24"/>
+    {# tiny white shine pixel on each eye #}
+    <rect x="36" y="42" width="3" height="3" fill="#ffffff" opacity="0.7"/>
+    <rect x="54" y="42" width="3" height="3" fill="#ffffff" opacity="0.7"/>
 
-    {# ---- Mouth (single pixel smile) ---- #}
-    <rect x="55" y="50" width="10" height="3" fill="#1a1d24"/>
+    {# ---- Mouth (single horizontal pixel smile) ---- #}
+    <rect x="42" y="51" width="12" height="3" fill="#1a1d24"/>
 
-    {# ---- Optional glasses (round-frame retro style) ---- #}
+    {# ---- Cheek blush (subtle pink dots — chibi marker) ---- #}
+    <rect x="33" y="48" width="3" height="3" fill="rgba(236, 72, 153, 0.4)"/>
+    <rect x="60" y="48" width="3" height="3" fill="rgba(236, 72, 153, 0.4)"/>
+
+    {# ---- Optional glasses ---- #}
     <g class="cp-glasses">
-      <rect x="43" y="38" width="15" height="9" fill="none" stroke="#1a1d24" stroke-width="2"/>
-      <rect x="62" y="38" width="15" height="9" fill="none" stroke="#1a1d24" stroke-width="2"/>
-      <rect x="58" y="42" width="4"  height="3" fill="#1a1d24"/>
+      <rect x="33" y="39" width="12" height="12" fill="none" stroke="#1a1d24" stroke-width="3"/>
+      <rect x="51" y="39" width="12" height="12" fill="none" stroke="#1a1d24" stroke-width="3"/>
+      <rect x="45" y="45" width="6"  height="3"  fill="#1a1d24"/>
     </g>
 
-    {# ---- Neck / shoulders ---- #}
-    <rect class="cp-skin" x="55" y="60" width="10" height="5"/>
+    {# ---- Neck ---- #}
+    <rect class="cp-skin" x="42" y="60" width="12" height="6"/>
 
-    {# ---- Body / shirt (tunic shape with widening hem) ---- #}
+    {# ---- Body / tunic ---- #}
     <g>
-      <rect class="cp-shirt" x="35" y="65" width="50" height="40"/>
-      <rect class="cp-shirt" x="30" y="105" width="60" height="20"/>
-      {# Belt (just below mid-torso) #}
-      <rect x="35" y="85" width="50" height="5" fill="#1a1d24"/>
-      <rect x="55" y="85" width="10" height="5" fill="#facc15"/>
-      <rect x="57" y="87" width="6"  height="1" fill="#1a1d24"/>
+      <rect class="cp-shirt" x="30" y="66" width="36" height="36"/>
+      {# darker outline strip down each side and along the top #}
+      <rect x="30" y="66" width="36" height="3" fill="rgba(0,0,0,0.18)"/>
+      <rect x="30" y="66" width="3"  height="36" fill="rgba(0,0,0,0.12)"/>
+      <rect x="63" y="66" width="3"  height="36" fill="rgba(0,0,0,0.12)"/>
+      {# belt #}
+      <rect x="30" y="84" width="36" height="6" fill="#1a1d24"/>
+      <rect x="42" y="84" width="12" height="6" fill="#facc15"/>
+      <rect x="45" y="87" width="6"  height="3" fill="#1a1d24"/>
     </g>
 
-    {# ---- Left arm (resting against side) ---- #}
+    {# ---- Left arm (hanging by side) ---- #}
     <g>
-      <rect class="cp-shirt" x="30" y="70" width="5" height="30"/>
-      <rect class="cp-skin"  x="30" y="100" width="5" height="10"/>
+      <rect class="cp-shirt" x="24" y="69" width="6"  height="18"/>
+      <rect class="cp-skin"  x="24" y="84" width="6"  height="6"/>
     </g>
 
     {# ---- Right arm + cup (sip-rotation animated) ---- #}
     <g class="cp-arm-cup">
-      <rect class="cp-shirt" x="85" y="70" width="5" height="15"/>
-      <rect class="cp-shirt" x="85" y="80" width="10" height="5"/>
-      <rect class="cp-skin"  x="90" y="55" width="5" height="30"/>
-
-      {# Cup body #}
-      <rect class="cp-cup" x="80" y="40" width="20" height="20"/>
-      {# Cup outline #}
-      <rect x="80" y="40" width="20" height="3" fill="rgba(0,0,0,0.15)"/>
-      {# Coffee surface #}
-      <rect x="83" y="42" width="14" height="3" fill="#3e1f0a"/>
-      {# Handle #}
-      <rect class="cp-cup" x="100" y="45" width="5" height="10"/>
+      <rect class="cp-shirt" x="66" y="69" width="6"  height="9"/>
+      <rect class="cp-skin"  x="66" y="48" width="6"  height="24"/>
+      {# cup body #}
+      <rect class="cp-cup" x="60" y="30" width="24" height="18"/>
+      {# cup outline #}
+      <rect x="60" y="30" width="24" height="3" fill="rgba(0,0,0,0.20)"/>
+      <rect x="60" y="30" width="3"  height="18" fill="rgba(0,0,0,0.15)"/>
+      <rect x="81" y="30" width="3"  height="18" fill="rgba(0,0,0,0.15)"/>
+      {# coffee surface #}
+      <rect x="63" y="33" width="18" height="3" fill="#3e1f0a"/>
+      {# handle (small loop) #}
+      <rect class="cp-cup" x="84" y="33" width="6" height="12"/>
+      <rect class="cp-cup" x="87" y="36" width="3" height="6" fill="rgba(0,0,0,0.12)"/>
     </g>
 
     {# ---- Legs / boots ---- #}
     <g>
-      <rect x="40" y="125" width="15" height="20" fill="#1a1d24"/>
-      <rect x="65" y="125" width="15" height="20" fill="#1a1d24"/>
-      {# Boot shine #}
-      <rect x="42" y="127" width="3" height="2" fill="rgba(255,255,255,0.2)"/>
-      <rect x="67" y="127" width="3" height="2" fill="rgba(255,255,255,0.2)"/>
-      {# Boot soles #}
-      <rect x="38" y="145" width="19" height="5" fill="#4a4a4a"/>
-      <rect x="63" y="145" width="19" height="5" fill="#4a4a4a"/>
+      <rect x="33" y="102" width="12" height="18" fill="#1a1d24"/>
+      <rect x="51" y="102" width="12" height="18" fill="#1a1d24"/>
+      {# boot shine #}
+      <rect x="36" y="105" width="3" height="3" fill="rgba(255,255,255,0.25)"/>
+      <rect x="54" y="105" width="3" height="3" fill="rgba(255,255,255,0.25)"/>
+      {# soles #}
+      <rect x="30" y="120" width="18" height="6" fill="#4a4a4a"/>
+      <rect x="48" y="120" width="18" height="6" fill="#4a4a4a"/>
     </g>
 
   </svg>

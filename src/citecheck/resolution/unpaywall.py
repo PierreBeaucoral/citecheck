@@ -432,4 +432,81 @@ def fetch_text_any(
         text = fetch_pmc_text(pmc_id, cache=cache, timeout_s=timeout_s)
         if text is not None:
             return text, "pmc_xml"
+    # Last resort: abstract-only verification.  OpenAlex stores abstracts as
+    # `abstract_inverted_index` (token positions → token) for almost every
+    # indexed work; we reconstruct it into running text.  This dramatically
+    # extends Phase 5 coverage to paywalled refs but with lower confidence,
+    # so the source label is distinct so the report can warn the user.
+    if doi:
+        abstract = _fetch_openalex_abstract(doi, cache=cache, timeout_s=timeout_s)
+        if abstract:
+            return abstract, "openalex_abstract"
     return None, None
+
+
+def _fetch_openalex_abstract(
+    doi: str,
+    *,
+    cache: CacheStore | None = None,
+    timeout_s: float = DEFAULT_TIMEOUT_S,
+) -> str | None:
+    """Fetch the abstract for `doi` from OpenAlex; reconstruct from inverted index.
+
+    OpenAlex returns abstracts as an inverted index of `{token: [positions]}`
+    rather than running text (a copyright-friendly format that's lossless
+    enough for full-text reconstruction).  We rebuild the sentence(s).
+
+    Returns None when OpenAlex doesn't know the DOI, has no abstract, the
+    daily budget is exhausted (circuit-breaker), or the response is
+    malformed.  Cache key: `openalex:abstract:<doi>`.
+    """
+    from citecheck import budget
+
+    doi = (doi or "").lower().strip()
+    if not doi:
+        return None
+
+    key = f"openalex:abstract:{doi}"
+    if cache is not None:
+        cached = cache.get(key)
+        if cached is not None:
+            return cached.get("abstract") or None if isinstance(cached, dict) else None
+
+    url = f"https://api.openalex.org/works/doi:{doi}"
+    params = {"select": "abstract_inverted_index"}
+    email = os.environ.get("CITECHECK_CONTACT_EMAIL", "").strip()
+    if email and "@" in email:
+        params["mailto"] = email
+
+    try:
+        with httpx.Client(timeout=timeout_s) as client:
+            resp = budget.openalex_get(client, url, **params)
+    except httpx.RequestError as exc:
+        log.warning("openalex abstract fetch failed for %s: %s", doi, exc)
+        return None
+    if resp is None or resp.status_code != 200:
+        return None
+
+    body = resp.json() or {}
+    inv = body.get("abstract_inverted_index") or {}
+    if not inv:
+        if cache is not None:
+            cache.set(key, {"abstract": None})
+        return None
+
+    # Reconstruct: invert the index, sort by position, join.  Some tokens
+    # repeat at multiple positions; the natural order returns the original.
+    positions: list[tuple[int, str]] = []
+    for token, posns in inv.items():
+        if not isinstance(posns, list):
+            continue
+        for p in posns:
+            try:
+                positions.append((int(p), str(token)))
+            except (TypeError, ValueError):
+                continue
+    positions.sort(key=lambda x: x[0])
+    abstract = " ".join(token for _, token in positions).strip()
+    if cache is not None:
+        cache.set(key, {"abstract": abstract})
+    return abstract or None
