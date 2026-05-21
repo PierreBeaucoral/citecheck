@@ -60,9 +60,11 @@
 <section class="references">
   <h3>Per-reference detail</h3>
   {% for r in report.references %}
+    {# r.raw is the serialized Reference; it nests a RawReference at r.raw.raw #}
+    {% set rawref = r.raw.raw if r.raw and r.raw.raw is mapping else r.raw %}
     <article class="ref-card">
       <header>
-        <h4>{{ loop.index }}. {{ (r.raw.title or r.raw.raw_text)[:120] }}</h4>
+        <h4>{{ loop.index }}. {{ (rawref.title or rawref.raw_text or '(no title)')[:120] }}</h4>
       </header>
       <dl>
         <dt>Retraction</dt>

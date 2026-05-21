@@ -181,26 +181,36 @@ def _write_temp_pdf(pdf_bytes: bytes, upload_dir: Path) -> Path:
 
 
 def _extract_references(pdf_path: Path) -> list:
-    """Wrap the citecheck.pipeline extraction step.
+    """Wrap citecheck's GROBID-backed extraction step.
 
-    Imported lazily because GROBID + lxml are heavy and the test suite
-    benefits from being able to mock the entrypoint without importing
-    the full extraction stack at module load.
+    Returns a list of `RawReference` objects (not yet resolved).  Imported
+    lazily because GROBID + lxml are heavy and the test suite benefits from
+    being able to mock the entrypoint without importing the full extraction
+    stack at module load.
     """
-    from citecheck.extraction.grobid_client import extract_references_from_pdf
+    from citecheck.extraction.grobid_client import extract_references
 
-    return extract_references_from_pdf(pdf_path)
+    return extract_references(pdf_path)
 
 
-def _resolve_references(references: list) -> list:
-    """Run the existing batch resolver from citecheck.resolution."""
-    from citecheck.resolution.crossref import resolve
+def _resolve_references(raw_refs: list) -> list:
+    """Run the unified resolver from citecheck.resolution.
 
-    return [resolve(ref.raw) if hasattr(ref, "raw") else resolve(ref) for ref in references]
+    `resolve()` dispatches: tries Crossref by DOI, then Crossref by metadata,
+    then OpenAlex as fallback.  Returns a `Reference` for each input.
+    """
+    from citecheck.resolution import resolve
+
+    return [resolve(raw) for raw in raw_refs]
 
 
 def _serialize_ref(ref) -> dict[str, Any]:
-    """Reduce a Reference / RawReference object to a JSON-serializable dict."""
+    """Reduce a Reference / RawReference object to a JSON-serializable dict.
+
+    `Reference` carries a nested `raw` (the original RawReference) plus
+    resolution metadata; we serialize the whole tree so the report has
+    enough context to be self-contained.
+    """
     if hasattr(ref, "model_dump"):
         return ref.model_dump(mode="json")
     if hasattr(ref, "__dict__"):
@@ -244,14 +254,24 @@ def _run_phase5(
         def llm_call(prompt: str) -> str:
             return _call_ollama(prompt, model=settings.llm_model)
 
-    # Identify candidate refs: have a resolved DOI/PMC and a clear text-claim.
+    # Identify candidate refs: have a resolved DOI and a raw citation text.
     # The "claim" we verify is the citation context — in v1 we use the raw
     # citation string itself as a proxy; v1.1 will extract the in-text
-    # sentence that cites this ref via GROBID's coordinates.
+    # sentence that cites this ref via GROBID's coordinates.  Reference
+    # objects serialize with the original `raw` block nested inside, plus a
+    # top-level `resolved_doi` from the dispatch result.
     candidates: list[tuple[int, dict, str]] = []
     for idx, r in enumerate(per_ref_results):
-        raw_text = (r.get("raw") or {}).get("raw_text") or ""
-        doi = (r.get("raw") or {}).get("doi") or ""
+        raw_block = r.get("raw") or {}
+        nested_raw = raw_block.get("raw") if isinstance(raw_block, dict) else None
+        if isinstance(nested_raw, dict):
+            raw_block = nested_raw
+        raw_text = raw_block.get("raw_text") or ""
+        doi = (
+            r.get("raw", {}).get("resolved_doi")
+            or raw_block.get("doi")
+            or ""
+        )
         if not raw_text or not doi:
             continue
         candidates.append((idx, r, raw_text))
