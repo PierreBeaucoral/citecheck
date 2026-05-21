@@ -1,0 +1,24 @@
+\begin{tabular}{lc}
+\toprule
+\multicolumn{2}{l}{\textit{Panel A: Binary classification (positive = predicted RETRACTED)}} \\
+\midrule
+ Metric & Value \\
+\midrule
+ DOIs scored & 58 / 60 \\
+ True positive (retraction caught) & 30 \\
+ False negative (retraction missed) & 0 \\
+ False positive (clean flagged) & 0 \\
+ True negative (clean passed) & 28 \\
+\midrule
+ Precision & 1.000 \\
+ Recall & 1.000 \\
+ False-positive rate & 0.000 \\
+ $F_1$ & 1.000 \\
+\midrule
+\multicolumn{2}{l}{\textit{Panel B: Source coverage among correctly-flagged retractions}} \\
+\midrule
+ Crossref \texttt{update-to} populated & 12 (0.400) \\
+ OpenAlex \texttt{is\_retracted} only & 18 (0.600) \\
+ Total correctly flagged & 30 \\
+\bottomrule
+\end{tabular}

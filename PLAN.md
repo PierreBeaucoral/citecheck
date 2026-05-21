@@ -42,7 +42,7 @@ compiles to 26 pages.
 |---|---|---|---|---|
 | Setup | ✅ | n/a | ✅ | Apache-2.0, CI, ruff, uv, pytest |
 | Phase 1: extraction + resolution | ✅ | ✅ (770-ref corpus) | ✅ §3.1–3.2 | GROBID + Crossref + OpenAlex fallback. 89-96% resolve on test fixtures |
-| Phase 2: retraction check | ✅ | ⚠ partial | ⚠ App. B notes the gap | Wakefield case verified live; no scale eval yet (deferred — needs labeled retracted DOIs) |
+| Phase 2: retraction check | ✅ | ✅ (60-DOI labeled set, OpenAlex-sourced) | ✅ App. B + table | Precision 1.000, recall 1.000, FPR 0.000 on 58 scored DOIs. Crossref update-to covers only 40% of correctly-flagged retractions — empirical justification for dual-source design |
 | Phase 3: hallucination detection | ✅ | ✅ (770-ref corpus) | ✅ §6 + figures | Five layers; rule-based aggregator; asymmetric caveat. Per-layer firing rates published |
 | Phase 4: journal quality (v2) | ✅ | ✅ (calibration 50 + held-out 25) | ✅ §6.1 + table | Multi-signal continuous risk score (DOAJ, Scopus, h-index, citations/article, concern list, journal-flood, APC, portfolio size). Held-out precision 1.000, recall 0.900, FPR 0.000 — closes the v1 0/0/0.133 gap |
 | Phase 5: claim verification | ✅ | ✅ (100-triple hand-curated set, 11 sources) | ✅ §6.2 + 2 tables | Precision 0.952, recall 0.909, FPR 0.043, F1 0.930 against gemma4:31b-cloud (free cloud Ollama). Stratified by severity + error_type. PMC E-utilities fetcher added |
@@ -61,17 +61,20 @@ done.
 The features are already shipped; what's missing are the numbers and the
 prose to support them. These items move ⚠ rows to ✅.
 
-#### 1.1 Phase 2 retraction eval at scale
+#### 1.1 Phase 2 retraction eval at scale — DONE
 
-- Source ~30 retracted DOIs via OpenAlex `?filter=is_retracted:true`
-  (waiting for daily-budget reset; tomorrow morning UTC).
-- Add ~20 known-clean DOIs as negative controls.
-- Extend `run_eval.py` to also call `check_retraction` and record predicted
-  vs expected retraction status per row.
-- Generate `paper/tables/eval_retraction.tex` and replace App. B's "not
-  yet evaluated" paragraph with the real confusion matrix and metrics.
+Sourced 30 retracted + 30 clean DOIs from OpenAlex; ran `check_retraction`
+through the full Crossref + OpenAlex pipeline. Precision 1.000, recall
+1.000, FPR 0.000 on the 58 scored items. The substantive finding is the
+60/40 split: only 12 of 30 correctly-flagged retractions had a Crossref
+`update-to` field populated; the remaining 18 were caught only by
+OpenAlex's `is_retracted` flag. This is the empirical justification for
+the dual-source merger documented in §3.
 
-Effort: ~3 hours. Blocker: OpenAlex midnight-UTC reset.
+Code: `scripts/run_retraction_eval.py` (build labels + run eval in one
+script). Paper: App B rewritten with `tab:eval-retraction` (two panels:
+binary scoring + source coverage). Self-consistency caveat is named in
+the appendix.
 
 #### 1.2 Phase 5 claim-verification eval
 
@@ -252,4 +255,4 @@ These came out of the build, not the original spec:
 - **Never** edit the original `~/Downloads/citecheck_PLAN.md`. It is
   the project's preserved baseline.
 
-Last updated: 2026-05-21 (after Phase 4 v2 + Phase 5 100-triple eval — claim verification reaches precision 0.952, recall 0.909, FPR 0.043, F1 0.930 against gemma4:31b-cloud).
+Last updated: 2026-05-21 (after Phase 4 v2 + Phase 5 100-triple eval + Phase 2 60-DOI retraction eval — all four issue classes now have numerical eval; paper at 32 pages with App B rewritten).

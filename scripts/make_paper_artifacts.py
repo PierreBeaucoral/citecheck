@@ -32,6 +32,7 @@ LABELS_CSV = REPO_ROOT / "data" / "eval" / "labels.csv"
 JOURNAL_RESULTS_JSON = REPO_ROOT / "data" / "eval" / "journal_results.json"
 JOURNAL_RESULTS_HOLDOUT_JSON = REPO_ROOT / "data" / "eval" / "journal_results_holdout.json"
 CLAIM_RESULTS_JSON = REPO_ROOT / "data" / "eval" / "claim_results.json"
+RETRACTION_RESULTS_JSON = REPO_ROOT / "data" / "eval" / "retraction_results.json"
 TABLES_DIR = REPO_ROOT / "paper" / "tables"
 FIGURES_DIR = REPO_ROOT / "paper" / "figures"
 
@@ -468,6 +469,50 @@ def _emit_journal_quality_table() -> None:
     (TABLES_DIR / "eval_journal_quality.tex").write_text(body, encoding="utf-8")
 
 
+def _emit_retraction_table() -> None:
+    """Phase 2 (retraction) eval: headline + Crossref-vs-OpenAlex coverage split.
+
+    Reads data/eval/retraction_results.json produced by
+    scripts/run_retraction_eval.py.  Emits one .tex file containing both panels.
+    """
+    if not RETRACTION_RESULTS_JSON.is_file():
+        body = (
+            "\\begin{tabular}{lc}\n\\toprule\nMetric & Value \\\\\n\\midrule\n"
+            "\\multicolumn{2}{l}{\\textit{Run scripts/run\\_retraction\\_eval.py to populate}} \\\\\n"
+            "\\bottomrule\n\\end{tabular}\n"
+        )
+        (TABLES_DIR / "eval_retraction.tex").write_text(body, encoding="utf-8")
+        return
+
+    s = json.loads(RETRACTION_RESULTS_JSON.read_text(encoding="utf-8"))["summary"]
+    cov = s.get("coverage", {})
+
+    body = (
+        "\\begin{tabular}{lc}\n\\toprule\n"
+        "\\multicolumn{2}{l}{\\textit{Panel A: Binary classification (positive = predicted RETRACTED)}} \\\\\n"
+        "\\midrule\n"
+        " Metric & Value \\\\\n\\midrule\n"
+        f" DOIs scored & {s.get('n_scored', 0)} / {s.get('n_total', 0)} \\\\\n"
+        f" True positive (retraction caught) & {s.get('tp', 0)} \\\\\n"
+        f" False negative (retraction missed) & {s.get('fn', 0)} \\\\\n"
+        f" False positive (clean flagged) & {s.get('fp', 0)} \\\\\n"
+        f" True negative (clean passed) & {s.get('tn', 0)} \\\\\n"
+        "\\midrule\n"
+        f" Precision & {_fmt(s.get('precision', 0))} \\\\\n"
+        f" Recall & {_fmt(s.get('recall', 0))} \\\\\n"
+        f" False-positive rate & {_fmt(s.get('fpr', 0))} \\\\\n"
+        f" $F_1$ & {_fmt(s.get('f1', 0))} \\\\\n"
+        "\\midrule\n"
+        "\\multicolumn{2}{l}{\\textit{Panel B: Source coverage among correctly-flagged retractions}} \\\\\n"
+        "\\midrule\n"
+        f" Crossref \\texttt{{update-to}} populated & {cov.get('with_crossref_update_to', 0)} ({_fmt(cov.get('crossref_fraction', 0))}) \\\\\n"
+        f" OpenAlex \\texttt{{is\\_retracted}} only & {cov.get('openalex_only', 0)} ({_fmt(1 - cov.get('crossref_fraction', 0))}) \\\\\n"
+        f" Total correctly flagged & {cov.get('n_correctly_flagged', 0)} \\\\\n"
+        "\\bottomrule\n\\end{tabular}\n"
+    )
+    (TABLES_DIR / "eval_retraction.tex").write_text(body, encoding="utf-8")
+
+
 def _emit_claim_quality_tables() -> None:
     """Phase 5 (claim verification) eval: headline + severity + error-type tables.
 
@@ -663,6 +708,7 @@ def main() -> int:
     _emit_bypubtype_barchart(predictions, labels_by_id)
     _emit_journal_quality_table()
     _emit_claim_quality_tables()
+    _emit_retraction_table()
 
     tp, fn, fp, tn = _confusion(predictions)
     m = _metrics_from_confusion(tp, fn, fp, tn)
