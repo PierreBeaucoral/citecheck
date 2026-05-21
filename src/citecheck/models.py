@@ -257,11 +257,31 @@ class JournalRiskLevel(StrEnum):
 
 
 class JournalQualityCheck(BaseModel):
-    """Per-reference assessment of the cited journal's reputational signals."""
+    """Per-reference assessment of the cited journal's reputational signals.
+
+    Phase 4 v2 (May 2026) replaces the original binary DOAJ + concern-list
+    classifier with a continuous risk_score aggregated from up to eight
+    signals (DOAJ membership, Scopus indexing, h-index, citations per
+    article, hand-curated concern list, journal-flood pattern, high APC
+    without DOAJ, publisher portfolio size). `risk_level` is a discretized
+    view of `risk_score` for backwards compatibility with the report layer.
+
+    All metadata fields are populated when OpenAlex `/sources` returns a
+    record for the journal; they are None when OpenAlex was skipped (no
+    journal field, budget exhausted, network error, or no Scopus/DOAJ data
+    on the OpenAlex record). The `signals` list captures which deductions
+    and surcharges actually fired, which is what we display in the report
+    and use to debug calibration / held-out splits.
+    """
 
     model_config = ConfigDict(extra="forbid")
 
     risk_level: JournalRiskLevel = JournalRiskLevel.UNCHECKED
+    risk_score: float | None = Field(
+        default=None,
+        description="Continuous risk score in roughly [-1.0, +1.5]. Lower is safer. "
+        "None when the multi-signal path was not run (e.g., no journal field).",
+    )
     doaj_listed: bool | None = Field(
         default=None,
         description="True if DOAJ indexes the journal; None if not checked.",
@@ -273,6 +293,40 @@ class JournalQualityCheck(BaseModel):
     matched_publisher: str | None = Field(
         default=None,
         description="The concern-list entry that matched, if any.",
+    )
+    # OpenAlex /sources metadata (None when unavailable).
+    h_index: int | None = Field(
+        default=None,
+        description="Journal h-index from OpenAlex (summary_stats.h_index).",
+    )
+    works_count: int | None = Field(
+        default=None,
+        description="Total works in OpenAlex for this source.",
+    )
+    cited_by_count: int | None = Field(
+        default=None,
+        description="Total citations to all works in this source (used with works_count for citations/article).",
+    )
+    is_indexed_in_scopus: bool | None = Field(
+        default=None,
+        description="True if OpenAlex reports Scopus indexing.",
+    )
+    apc_usd: int | None = Field(
+        default=None,
+        description="Article processing charge in USD when OpenAlex reports apc_prices.",
+    )
+    host_organization: str | None = Field(
+        default=None,
+        description="Publisher / host organization display name from OpenAlex.",
+    )
+    publisher_portfolio_size: int | None = Field(
+        default=None,
+        description="Number of journals hosted by the same organization, when known.",
+    )
+    signals: list[str] = Field(
+        default_factory=list,
+        description="Human-readable list of signals that fired (e.g., 'DOAJ -0.5'). "
+        "Order matches the contribution to risk_score.",
     )
     notes: list[str] = Field(default_factory=list)
 

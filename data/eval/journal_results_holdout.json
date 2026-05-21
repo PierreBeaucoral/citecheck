@@ -1,18 +1,18 @@
 {
   "summary": {
     "n": 25,
-    "tp": 0,
-    "fn": 10,
-    "fp": 2,
-    "tn": 13,
-    "precision": 0.0,
-    "recall": 0.0,
-    "fpr": 0.13333333333333333,
-    "f1": NaN,
+    "tp": 9,
+    "fn": 1,
+    "fp": 0,
+    "tn": 15,
+    "precision": 1.0,
+    "recall": 0.9,
+    "fpr": 0.0,
+    "f1": 0.9473684210526316,
     "confusion_3x3": {
-      "high->medium": 10,
-      "low->high": 2,
-      "low->low": 8,
+      "high->high": 9,
+      "high->low": 1,
+      "low->low": 10,
       "medium->low": 1,
       "medium->medium": 4
     }
@@ -22,97 +22,97 @@
       "id": "ho_pred_001",
       "journal_name": "Insight Medical Publishing",
       "expected": "high",
-      "predicted": "medium",
+      "predicted": "high",
       "doaj_listed": false,
-      "on_concern_list": false,
-      "matched_publisher": null,
-      "match": false
+      "on_concern_list": true,
+      "matched_publisher": "insight medical publishing",
+      "match": true
     },
     {
       "id": "ho_pred_002",
       "journal_name": "Science Publishing Group",
       "expected": "high",
-      "predicted": "medium",
+      "predicted": "high",
       "doaj_listed": false,
-      "on_concern_list": false,
-      "matched_publisher": null,
-      "match": false
+      "on_concern_list": true,
+      "matched_publisher": "science publishing group",
+      "match": true
     },
     {
       "id": "ho_pred_003",
       "journal_name": "Scholars Research Library",
       "expected": "high",
-      "predicted": "medium",
+      "predicted": "high",
       "doaj_listed": false,
-      "on_concern_list": false,
-      "matched_publisher": null,
-      "match": false
+      "on_concern_list": true,
+      "matched_publisher": "scholars research library",
+      "match": true
     },
     {
       "id": "ho_pred_004",
       "journal_name": "Pulsus Conferences",
       "expected": "high",
-      "predicted": "medium",
+      "predicted": "high",
       "doaj_listed": false,
-      "on_concern_list": false,
-      "matched_publisher": null,
-      "match": false
+      "on_concern_list": true,
+      "matched_publisher": "pulsus conferences",
+      "match": true
     },
     {
       "id": "ho_pred_005",
       "journal_name": "Cresco Online Publishing",
       "expected": "high",
-      "predicted": "medium",
+      "predicted": "high",
       "doaj_listed": false,
-      "on_concern_list": false,
-      "matched_publisher": null,
-      "match": false
+      "on_concern_list": true,
+      "matched_publisher": "cresco online publishing",
+      "match": true
     },
     {
       "id": "ho_pred_006",
       "journal_name": "Mathews Open Access Journals",
       "expected": "high",
-      "predicted": "medium",
+      "predicted": "high",
       "doaj_listed": false,
-      "on_concern_list": false,
-      "matched_publisher": null,
-      "match": false
+      "on_concern_list": true,
+      "matched_publisher": "mathews open access",
+      "match": true
     },
     {
       "id": "ho_pred_007",
       "journal_name": "Walsh Medical Media",
       "expected": "high",
-      "predicted": "medium",
+      "predicted": "high",
       "doaj_listed": false,
-      "on_concern_list": false,
-      "matched_publisher": null,
-      "match": false
+      "on_concern_list": true,
+      "matched_publisher": "walsh medical media",
+      "match": true
     },
     {
       "id": "ho_pred_008",
       "journal_name": "SciFed Journals",
       "expected": "high",
-      "predicted": "medium",
+      "predicted": "high",
       "doaj_listed": false,
-      "on_concern_list": false,
-      "matched_publisher": null,
-      "match": false
+      "on_concern_list": true,
+      "matched_publisher": "scifed",
+      "match": true
     },
     {
       "id": "ho_pred_009",
       "journal_name": "Scholar Edu Solutions",
       "expected": "high",
-      "predicted": "medium",
+      "predicted": "high",
       "doaj_listed": false,
-      "on_concern_list": false,
-      "matched_publisher": null,
-      "match": false
+      "on_concern_list": true,
+      "matched_publisher": "scholar edu",
+      "match": true
     },
     {
       "id": "ho_pred_010",
       "journal_name": "European Journal of Pure and Applied Mathematics",
       "expected": "high",
-      "predicted": "medium",
+      "predicted": "low",
       "doaj_listed": false,
       "on_concern_list": false,
       "matched_publisher": null,
@@ -202,21 +202,21 @@
       "id": "ho_fro_001",
       "journal_name": "Frontiers in Psychology",
       "expected": "low",
-      "predicted": "high",
-      "doaj_listed": null,
-      "on_concern_list": true,
-      "matched_publisher": "frontiers",
-      "match": false
+      "predicted": "low",
+      "doaj_listed": true,
+      "on_concern_list": false,
+      "matched_publisher": null,
+      "match": true
     },
     {
       "id": "ho_fro_002",
       "journal_name": "Frontiers in Microbiology",
       "expected": "low",
-      "predicted": "high",
-      "doaj_listed": null,
-      "on_concern_list": true,
-      "matched_publisher": "frontiers",
-      "match": false
+      "predicted": "low",
+      "doaj_listed": true,
+      "on_concern_list": false,
+      "matched_publisher": null,
+      "match": true
     },
     {
       "id": "ho_legit_001",

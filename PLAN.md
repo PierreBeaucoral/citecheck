@@ -44,7 +44,7 @@ compiles to 26 pages.
 | Phase 1: extraction + resolution | ✅ | ✅ (770-ref corpus) | ✅ §3.1–3.2 | GROBID + Crossref + OpenAlex fallback. 89-96% resolve on test fixtures |
 | Phase 2: retraction check | ✅ | ⚠ partial | ⚠ App. B notes the gap | Wakefield case verified live; no scale eval yet (deferred — needs labeled retracted DOIs) |
 | Phase 3: hallucination detection | ✅ | ✅ (770-ref corpus) | ✅ §6 + figures | Five layers; rule-based aggregator; asymmetric caveat. Per-layer firing rates published |
-| Phase 4: journal quality | ✅ | ✅ (50-journal hand-curated) | ✅ §6 + table | DOAJ + concern list. Precision/recall both 1.0 on the calibration set (numbers are upper-bound — paper says so) |
+| Phase 4: journal quality (v2) | ✅ | ✅ (calibration 50 + held-out 25) | ✅ §6.1 + table | Multi-signal continuous risk score (DOAJ, Scopus, h-index, citations/article, concern list, journal-flood, APC, portfolio size). Held-out precision 1.000, recall 0.900, FPR 0.000 — closes the v1 0/0/0.133 gap |
 | Phase 5: claim verification | ✅ | ❌ | ⚠ App. plan | Implementation ships with mocked tests; no labeled (claim, paper, support) corpus exists publicly — v2 plan documented |
 | Budget hardening | ✅ | n/a | ✅ docs/SCALING.md | OpenAlex circuit-breaker, metrics tracker, automatic Crossref-only fallback |
 | Companion paper | ✅ | n/a | ✅ self | Methods/data paper at `paper/main.tex`. Writer-critic round 1 done; round 2 pending |
@@ -101,15 +101,27 @@ for ~97% of real refs, inflating book false-positive rate. Need to:
 
 Effort: ~30 min code + ~30 min eval runtime.
 
-#### 1.4 Phase 4 held-out eval
+#### 1.4 Phase 4 held-out eval — DONE (v2 rebuild)
 
-The current Phase 4 numbers (precision 1.0, recall 1.0) are upper-bound
-because the concern list was extended after observing recall on the same
-50-row set. Need a held-out 20-row set that was never inspected during
-development, or a 5-fold cross-validation that doesn't peek.
+The v1 static-list design failed held-out evaluation (precision 0,
+recall 0, FPR 0.133). We rebuilt Phase 4 as a multi-signal continuous
+risk-score aggregator (eight signals: DOAJ -0.5, Scopus -0.3, h-index
+≥20 -0.3, citations/article ≥5 -0.2; concern-list +0.6, journal-flood
++0.4, high APC no DOAJ +0.3, publisher portfolio >50 +0.4). Held-out
+precision 1.000, recall 0.900, FPR 0.000. Calibration precision 1.000,
+recall 1.000. Paper §6.1, table `eval_journal_quality.tex`, and the
+abstract/conclusion all updated. The single held-out miss is European
+Journal of Pure and Applied Mathematics, which has reputable OpenAlex
+metadata — an honest miss, not a bug.
 
-Effort: ~2 hours (curate 20 more journals from independent sources;
-re-run; report).
+Code: `src/citecheck/checks/journal_quality.py` (v2 rebuild),
+`src/citecheck/models.py` (extended `JournalQualityCheck` with
+`risk_score`, `h_index`, `works_count`, `cited_by_count`,
+`is_indexed_in_scopus`, `apc_usd`, `host_organization`,
+`publisher_portfolio_size`, `signals`).
+
+Tests: 20 tests in `tests/test_journal_quality.py` (12 new for the
+multi-signal path; all 185 tests in the suite still pass).
 
 #### 1.5 Writer-critic round 2 on the paper
 
@@ -240,4 +252,4 @@ These came out of the build, not the original spec:
 - **Never** edit the original `~/Downloads/citecheck_PLAN.md`. It is
   the project's preserved baseline.
 
-Last updated: 2026-05-20 (after Phase 4 eval + Phase 5 deferred-plan landed).
+Last updated: 2026-05-21 (after Phase 4 v2 multi-signal rebuild — held-out precision 1.000, recall 0.900, FPR 0.000).

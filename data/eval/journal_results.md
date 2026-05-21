@@ -1,6 +1,6 @@
 # Citecheck Phase 4 (journal quality) eval results
 
-Evaluated 50 journals from the hand-curated set at `data/eval/journal_quality_labels.csv`.
+Evaluated 50 journals from `data/eval/journal_quality_labels.csv`.
 
 ## Binary classification: predicted HIGH-risk
 
@@ -16,5 +16,5 @@ Evaluated 50 journals from the hand-curated set at `data/eval/journal_quality_la
 | Expected \ Predicted | high | medium | low | unchecked |
 |---|---|---|---|---|
 | high | 20 | 0 | 0 | 0 |
-| medium | 0 | 4 | 6 | 0 |
+| medium | 0 | 2 | 8 | 0 |
 | low | 0 | 2 | 18 | 0 |
