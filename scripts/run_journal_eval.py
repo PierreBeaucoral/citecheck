@@ -37,9 +37,9 @@ from citecheck.models import (  # noqa: E402
     ResolutionStatus,
 )
 
-LABELS_CSV = REPO_ROOT / "data" / "eval" / "journal_quality_labels.csv"
-RESULTS_MD = REPO_ROOT / "data" / "eval" / "journal_results.md"
-RESULTS_JSON = REPO_ROOT / "data" / "eval" / "journal_results.json"
+DEFAULT_LABELS_CSV = REPO_ROOT / "data" / "eval" / "journal_quality_labels.csv"
+DEFAULT_RESULTS_MD = REPO_ROOT / "data" / "eval" / "journal_results.md"
+DEFAULT_RESULTS_JSON = REPO_ROOT / "data" / "eval" / "journal_results.json"
 
 
 def _ref(journal: str) -> Reference:
@@ -50,11 +50,48 @@ def _ref(journal: str) -> Reference:
 
 
 def main() -> int:
-    if not LABELS_CSV.is_file():
-        print(f"missing: {LABELS_CSV}", file=sys.stderr)
+    import argparse
+
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--labels",
+        type=Path,
+        default=DEFAULT_LABELS_CSV,
+        help="Path to the labels CSV (default: data/eval/journal_quality_labels.csv).",
+    )
+    parser.add_argument(
+        "--out-md",
+        type=Path,
+        default=None,
+        help="Output markdown report path. Derived from --labels if omitted.",
+    )
+    parser.add_argument(
+        "--out-json",
+        type=Path,
+        default=None,
+        help="Output JSON path. Derived from --labels if omitted.",
+    )
+    args = parser.parse_args()
+
+    labels_csv = args.labels.resolve()
+    if not labels_csv.is_file():
+        print(f"missing: {labels_csv}", file=sys.stderr)
         return 2
 
-    with LABELS_CSV.open(encoding="utf-8") as fh:
+    # Derive default output paths from the labels filename so the calibration
+    # and held-out runs produce distinct artifacts side by side.
+    stem = labels_csv.stem
+    if stem == "journal_quality_labels":
+        results_md = args.out_md or DEFAULT_RESULTS_MD
+        results_json = args.out_json or DEFAULT_RESULTS_JSON
+    else:
+        # e.g. journal_quality_holdout -> journal_results_holdout.md
+        suffix = stem.replace("journal_quality_", "").replace("labels", "")
+        suffix = suffix.strip("_") or "alt"
+        results_md = args.out_md or (labels_csv.parent / f"journal_results_{suffix}.md")
+        results_json = args.out_json or (labels_csv.parent / f"journal_results_{suffix}.json")
+
+    with labels_csv.open(encoding="utf-8") as fh:
         rows = list(csv.DictReader(fh))
     print(f"loaded {len(rows)} journals", file=sys.stderr)
 
@@ -122,14 +159,13 @@ def main() -> int:
         "confusion_3x3": {f"{e}->{p}": c for (e, p), c in sorted(confusion.items())},
     }
 
-    RESULTS_JSON.write_text(
+    results_json.write_text(
         json.dumps({"summary": summary, "predictions": predictions}, indent=2), encoding="utf-8"
     )
     md = [
         "# Citecheck Phase 4 (journal quality) eval results",
         "",
-        f"Evaluated {len(rows)} journals from the hand-curated set at "
-        "`data/eval/journal_quality_labels.csv`.",
+        f"Evaluated {len(rows)} journals from `{labels_csv.relative_to(REPO_ROOT)}`.",
         "",
         "## Binary classification: predicted HIGH-risk",
         "",
@@ -151,13 +187,13 @@ def main() -> int:
             for predicted in ("high", "medium", "low", "unchecked")
         ]
         md.append(f"| {expected} | {' | '.join(cells)} |")
-    RESULTS_MD.write_text("\n".join(md) + "\n", encoding="utf-8")
+    results_md.write_text("\n".join(md) + "\n", encoding="utf-8")
 
     print(
         f"DONE. precision={precision:.3f} recall={recall:.3f} fpr={fpr:.3f} f1={f1:.3f}",
         file=sys.stderr,
     )
-    print(f"  results: {RESULTS_MD} and {RESULTS_JSON}", file=sys.stderr)
+    print(f"  results: {results_md} and {results_json}", file=sys.stderr)
     return 0
 
 

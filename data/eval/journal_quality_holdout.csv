@@ -1,0 +1,26 @@
+id,journal_name,expected_risk_level,source,notes
+ho_pred_001,Insight Medical Publishing,high,multi_source_beall_extension,not in initial concern list; documented predatory
+ho_pred_002,Science Publishing Group,high,multi_source,distinct from Springer; predatory documented
+ho_pred_003,Scholars Research Library,high,beall_extension,
+ho_pred_004,Pulsus Conferences,high,multi_source,Pulsus also runs predatory conferences
+ho_pred_005,Cresco Online Publishing,high,multi_source,
+ho_pred_006,Mathews Open Access Journals,high,multi_source,
+ho_pred_007,Walsh Medical Media,high,multi_source,
+ho_pred_008,SciFed Journals,high,multi_source,
+ho_pred_009,Scholar Edu Solutions,high,multi_source,
+ho_pred_010,European Journal of Pure and Applied Mathematics,high,beall_extension,specific journal flagged
+ho_oa_001,The Cryosphere,low,doaj_held_out,Copernicus OA
+ho_oa_002,Nonlinear Processes in Geophysics,low,doaj_held_out,Copernicus OA
+ho_oa_003,Climate Risk Management,low,doaj_held_out,Elsevier OA
+ho_oa_004,Heliyon,low,doaj_held_out,Elsevier OA — debated by some but DOAJ-indexed
+ho_oa_005,SoftwareX,low,doaj_held_out,Elsevier OA
+ho_mdpi_001,Sustainability,low,doaj_mdpi,DOAJ-listed but published by MDPI (in our concern list)
+ho_mdpi_002,Energies,low,doaj_mdpi,DOAJ-listed but MDPI
+ho_mdpi_003,Sensors,low,doaj_mdpi,DOAJ-listed but MDPI
+ho_fro_001,Frontiers in Psychology,low,doaj_frontiers,DOAJ-listed but Frontiers (in our concern list)
+ho_fro_002,Frontiers in Microbiology,low,doaj_frontiers,DOAJ-listed but Frontiers
+ho_legit_001,Journal of Finance,medium,scimago_finance_top,top finance journal; non-OA
+ho_legit_002,Journal of Monetary Economics,medium,scimago_econ_top,non-OA
+ho_legit_003,Review of Financial Studies,medium,scimago_finance_top,non-OA
+ho_legit_004,Journal of Public Economics,medium,scimago_econ_top,non-OA
+ho_legit_005,American Journal of Sociology,medium,scimago_sociology_top,non-OA

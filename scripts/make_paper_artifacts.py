@@ -30,6 +30,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 RESULTS_JSON = REPO_ROOT / "data" / "eval" / "results.json"
 LABELS_CSV = REPO_ROOT / "data" / "eval" / "labels.csv"
 JOURNAL_RESULTS_JSON = REPO_ROOT / "data" / "eval" / "journal_results.json"
+JOURNAL_RESULTS_HOLDOUT_JSON = REPO_ROOT / "data" / "eval" / "journal_results_holdout.json"
 TABLES_DIR = REPO_ROOT / "paper" / "tables"
 FIGURES_DIR = REPO_ROOT / "paper" / "figures"
 
@@ -402,11 +403,12 @@ def _emit_bypubtype_barchart(predictions: list[dict], labels_by_id: dict[str, di
 
 
 def _emit_journal_quality_table() -> None:
-    """Phase 4 (journal-quality) eval: combined confusion + metrics table.
+    """Phase 4 (journal-quality) eval: calibration + held-out side-by-side.
 
-    Reads data/eval/journal_results.json if present; otherwise emits a
-    placeholder fragment so main.tex still compiles before run_journal_eval.py
-    has been run.
+    Reads data/eval/journal_results.json (calibration) and
+    data/eval/journal_results_holdout.json (held-out). The held-out column
+    is what tells the reader whether the concern-list approach generalizes;
+    the calibration column is the upper bound from fitting to that set.
     """
     if not JOURNAL_RESULTS_JSON.is_file():
         body = (
@@ -416,26 +418,39 @@ def _emit_journal_quality_table() -> None:
         )
         (TABLES_DIR / "eval_journal_quality.tex").write_text(body, encoding="utf-8")
         return
-    data = json.loads(JOURNAL_RESULTS_JSON.read_text(encoding="utf-8"))
-    s = data["summary"]
-    body = (
-        "\\begin{tabular}{lc}\n\\toprule\n Metric & Value \\\\\n\\midrule\n"
-        f" References evaluated & {s['n']:,} \\\\\n"
-        " True positive (predatory caught) & "
-        f"{s['tp']:,} \\\\\n"
-        " False negative (predatory missed) & "
-        f"{s['fn']:,} \\\\\n"
-        " False positive (legit flagged) & "
-        f"{s['fp']:,} \\\\\n"
-        " True negative (legit passed) & "
-        f"{s['tn']:,} \\\\\n"
-        "\\midrule\n"
-        f" Precision & {_fmt(s['precision'])} \\\\\n"
-        f" Recall & {_fmt(s['recall'])} \\\\\n"
-        f" False-positive rate & {_fmt(s['fpr'])} \\\\\n"
-        f" $F_1$ & {_fmt(s['f1'])} \\\\\n"
-        "\\bottomrule\n\\end{tabular}\n"
-    )
+
+    calib = json.loads(JOURNAL_RESULTS_JSON.read_text(encoding="utf-8"))["summary"]
+    held: dict | None = None
+    if JOURNAL_RESULTS_HOLDOUT_JSON.is_file():
+        held = json.loads(JOURNAL_RESULTS_HOLDOUT_JSON.read_text(encoding="utf-8"))["summary"]
+
+    if held is None:
+        # Single-column table (calibration only).
+        body = (
+            "\\begin{tabular}{lc}\n\\toprule\n Metric & Calibration set \\\\\n\\midrule\n"
+            f" References evaluated & {calib['n']:,} \\\\\n"
+            f" Precision & {_fmt(calib['precision'])} \\\\\n"
+            f" Recall & {_fmt(calib['recall'])} \\\\\n"
+            f" False-positive rate & {_fmt(calib['fpr'])} \\\\\n"
+            f" $F_1$ & {_fmt(calib['f1'])} \\\\\n"
+            "\\bottomrule\n\\end{tabular}\n"
+        )
+    else:
+        body = (
+            "\\begin{tabular}{lcc}\n\\toprule\n"
+            " Metric & Calibration set & Held-out set \\\\\n\\midrule\n"
+            f" References evaluated & {calib['n']:,} & {held['n']:,} \\\\\n"
+            f" True positive (predatory caught) & {calib['tp']:,} & {held['tp']:,} \\\\\n"
+            f" False negative (predatory missed) & {calib['fn']:,} & {held['fn']:,} \\\\\n"
+            f" False positive (legit flagged) & {calib['fp']:,} & {held['fp']:,} \\\\\n"
+            f" True negative (legit passed) & {calib['tn']:,} & {held['tn']:,} \\\\\n"
+            "\\midrule\n"
+            f" Precision & {_fmt(calib['precision'])} & {_fmt(held['precision'])} \\\\\n"
+            f" Recall & {_fmt(calib['recall'])} & {_fmt(held['recall'])} \\\\\n"
+            f" False-positive rate & {_fmt(calib['fpr'])} & {_fmt(held['fpr'])} \\\\\n"
+            f" $F_1$ & {_fmt(calib['f1'])} & {_fmt(held['f1'])} \\\\\n"
+            "\\bottomrule\n\\end{tabular}\n"
+        )
     (TABLES_DIR / "eval_journal_quality.tex").write_text(body, encoding="utf-8")
 
 
