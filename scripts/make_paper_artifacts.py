@@ -31,6 +31,7 @@ RESULTS_JSON = REPO_ROOT / "data" / "eval" / "results.json"
 LABELS_CSV = REPO_ROOT / "data" / "eval" / "labels.csv"
 JOURNAL_RESULTS_JSON = REPO_ROOT / "data" / "eval" / "journal_results.json"
 JOURNAL_RESULTS_HOLDOUT_JSON = REPO_ROOT / "data" / "eval" / "journal_results_holdout.json"
+CLAIM_RESULTS_JSON = REPO_ROOT / "data" / "eval" / "claim_results.json"
 TABLES_DIR = REPO_ROOT / "paper" / "tables"
 FIGURES_DIR = REPO_ROOT / "paper" / "figures"
 
@@ -467,6 +468,90 @@ def _emit_journal_quality_table() -> None:
     (TABLES_DIR / "eval_journal_quality.tex").write_text(body, encoding="utf-8")
 
 
+def _emit_claim_quality_tables() -> None:
+    """Phase 5 (claim verification) eval: headline + severity + error-type tables.
+
+    Reads data/eval/claim_results.json produced by scripts/run_claim_eval.py.
+    Emits two .tex files:
+      - eval_claim_headline.tex: a single-table block with precision/recall/FPR/F1
+        plus the 2x2 confusion matrix.
+      - eval_claim_stratified.tex: side-by-side recall by severity and by error_type.
+    """
+    if not CLAIM_RESULTS_JSON.is_file():
+        body = (
+            "\\begin{tabular}{lc}\n\\toprule\nMetric & Value \\\\\n\\midrule\n"
+            "\\multicolumn{2}{l}{\\textit{Run scripts/run\\_claim\\_eval.py to populate}} \\\\\n"
+            "\\bottomrule\n\\end{tabular}\n"
+        )
+        (TABLES_DIR / "eval_claim_headline.tex").write_text(body, encoding="utf-8")
+        (TABLES_DIR / "eval_claim_stratified.tex").write_text(body, encoding="utf-8")
+        return
+
+    summary = json.loads(CLAIM_RESULTS_JSON.read_text(encoding="utf-8"))["summary"]
+
+    n_scored = summary.get("n_scored", 0)
+    headline = (
+        "\\begin{tabular}{lc}\n\\toprule\n Metric & Value \\\\\n\\midrule\n"
+        f" Items scored & {n_scored} / {summary.get('n_items_loaded', 0)} \\\\\n"
+        f" Excluded (no source text) & {summary.get('n_excluded_no_text', 0)} \\\\\n"
+        "\\midrule\n"
+        f" True positive (error caught) & {summary.get('tp', 0)} \\\\\n"
+        f" False negative (error missed) & {summary.get('fn', 0)} \\\\\n"
+        f" False positive (correct claim flagged) & {summary.get('fp', 0)} \\\\\n"
+        f" True negative (correct claim passed) & {summary.get('tn', 0)} \\\\\n"
+        "\\midrule\n"
+        f" Precision & {_fmt(summary.get('precision', 0))} \\\\\n"
+        f" Recall & {_fmt(summary.get('recall', 0))} \\\\\n"
+        f" False-positive rate & {_fmt(summary.get('fpr', 0))} \\\\\n"
+        f" $F_1$ & {_fmt(summary.get('f1', 0))} \\\\\n"
+        "\\bottomrule\n\\end{tabular}\n"
+    )
+    (TABLES_DIR / "eval_claim_headline.tex").write_text(headline, encoding="utf-8")
+
+    # Stratified recall: severity then error_type.
+    sev_rows: list[str] = []
+    for label in ("subtle", "moderate", "blatant"):
+        bucket = summary.get("recall_by_severity", {}).get(label) or {}
+        sev_rows.append(
+            f" {label.capitalize()} & {bucket.get('n', 0)} & {_fmt(bucket.get('recall', float('nan')))} \\\\\n"
+        )
+
+    err_order = (
+        "distortion",
+        "fabricated_specifics",
+        "overstatement",
+        "cherry_picking",
+        "citation_claim_mismatch",
+        "misattribution",
+    )
+    err_rows: list[str] = []
+    err_data = summary.get("recall_by_error_type", {})
+    for et in err_order:
+        bucket = err_data.get(et)
+        if not bucket:
+            continue
+        # Pretty-print the error type name.
+        label = et.replace("_", " ").capitalize()
+        err_rows.append(
+            f" {label} & {bucket.get('n', 0)} & {_fmt(bucket.get('recall', float('nan')))} \\\\\n"
+        )
+
+    stratified = (
+        "\\begin{tabular}{lcc}\n\\toprule\n"
+        "\\multicolumn{3}{l}{\\textit{Panel A: Recall by severity (false items only)}} \\\\\n"
+        "\\midrule\n"
+        " Severity & $n$ & Recall \\\\\n\\midrule\n"
+        + "".join(sev_rows)
+        + "\\midrule\n"
+        "\\multicolumn{3}{l}{\\textit{Panel B: Recall by error type (false items only)}} \\\\\n"
+        "\\midrule\n"
+        " Error type & $n$ & Recall \\\\\n\\midrule\n"
+        + "".join(err_rows)
+        + "\\bottomrule\n\\end{tabular}\n"
+    )
+    (TABLES_DIR / "eval_claim_stratified.tex").write_text(stratified, encoding="utf-8")
+
+
 def _emit_predicted_by_class_fig(predictions: list[dict]) -> None:
     import matplotlib
 
@@ -577,6 +662,7 @@ def main() -> int:
     _emit_per_layer_firing_rate(predictions)
     _emit_bypubtype_barchart(predictions, labels_by_id)
     _emit_journal_quality_table()
+    _emit_claim_quality_tables()
 
     tp, fn, fp, tn = _confusion(predictions)
     m = _metrics_from_confusion(tp, fn, fp, tn)

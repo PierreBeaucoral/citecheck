@@ -45,7 +45,7 @@ compiles to 26 pages.
 | Phase 2: retraction check | ✅ | ⚠ partial | ⚠ App. B notes the gap | Wakefield case verified live; no scale eval yet (deferred — needs labeled retracted DOIs) |
 | Phase 3: hallucination detection | ✅ | ✅ (770-ref corpus) | ✅ §6 + figures | Five layers; rule-based aggregator; asymmetric caveat. Per-layer firing rates published |
 | Phase 4: journal quality (v2) | ✅ | ✅ (calibration 50 + held-out 25) | ✅ §6.1 + table | Multi-signal continuous risk score (DOAJ, Scopus, h-index, citations/article, concern list, journal-flood, APC, portfolio size). Held-out precision 1.000, recall 0.900, FPR 0.000 — closes the v1 0/0/0.133 gap |
-| Phase 5: claim verification | ✅ | ❌ | ⚠ App. plan | Implementation ships with mocked tests; no labeled (claim, paper, support) corpus exists publicly — v2 plan documented |
+| Phase 5: claim verification | ✅ | ✅ (100-triple hand-curated set, 11 sources) | ✅ §6.2 + 2 tables | Precision 0.952, recall 0.909, FPR 0.043, F1 0.930 against gemma4:31b-cloud (free cloud Ollama). Stratified by severity + error_type. PMC E-utilities fetcher added |
 | Budget hardening | ✅ | n/a | ✅ docs/SCALING.md | OpenAlex circuit-breaker, metrics tracker, automatic Crossref-only fallback |
 | Companion paper | ✅ | n/a | ✅ self | Methods/data paper at `paper/main.tex`. Writer-critic round 1 done; round 2 pending |
 
@@ -252,4 +252,4 @@ These came out of the build, not the original spec:
 - **Never** edit the original `~/Downloads/citecheck_PLAN.md`. It is
   the project's preserved baseline.
 
-Last updated: 2026-05-21 (after Phase 4 v2 multi-signal rebuild — held-out precision 1.000, recall 0.900, FPR 0.000).
+Last updated: 2026-05-21 (after Phase 4 v2 + Phase 5 100-triple eval — claim verification reaches precision 0.952, recall 0.909, FPR 0.043, F1 0.930 against gemma4:31b-cloud).

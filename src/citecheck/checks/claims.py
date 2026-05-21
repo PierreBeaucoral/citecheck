@@ -173,8 +173,15 @@ def _call_ollama(
         raise ClaimsExtraNotInstalled("ollama") from exc
     client = ollama.Client(host=host)
     resp = client.generate(model=model, prompt=prompt, options={"temperature": 0.0})
-    # `resp` is dict-like with a "response" key in current ollama-python.
-    return resp.get("response", "") if isinstance(resp, dict) else str(resp)
+    # ollama-python changed return type around 2025: older versions returned a
+    # dict-like with `"response"`; newer versions return a `GenerateResponse`
+    # pydantic object that exposes `.response` as an attribute.  Handle both
+    # without depending on a specific version.
+    if isinstance(resp, dict):
+        return resp.get("response", "")
+    if hasattr(resp, "response"):
+        return getattr(resp, "response", "") or ""
+    return str(resp)
 
 
 def _parse_verdict(raw: str) -> dict[str, Any] | None:
@@ -212,6 +219,7 @@ def verify_claim(
     cache: CacheStore | None = None,
     embedder=None,
     ollama_call=_call_ollama,
+    text: str | None = None,
 ) -> ClaimCheck:
     """Run the verification pipeline for one (reference, claim) pair.
 
@@ -219,34 +227,48 @@ def verify_claim(
     cheap: substitute a fake embedder and a function that returns a canned
     JSON string. The defaults wire up the real models when invoked from the
     CLI.
+
+    `text`: when provided, the function skips the Unpaywall fetch + pypdf
+    extraction and uses the supplied paper text directly.  Used by the Phase 5
+    eval runner, which has its own text-acquisition step (Unpaywall PDF for
+    DOIs, NCBI E-utilities for PMC IDs).
     """
-    doi = (reference.resolved_doi or "").lower().strip()
-    if not doi:
-        return ClaimCheck(
-            status=ClaimStatus.UNCHECKED,
-            claim_sentence=claim_sentence,
-            notes=["no resolved DOI"],
-        )
+    if text is not None:
+        # Pre-supplied text path: skip the DOI/PDF acquisition entirely.
+        if not text.strip():
+            return ClaimCheck(
+                status=ClaimStatus.UNVERIFIABLE,
+                claim_sentence=claim_sentence,
+                notes=["supplied paper text was empty"],
+            )
+    else:
+        doi = (reference.resolved_doi or "").lower().strip()
+        if not doi:
+            return ClaimCheck(
+                status=ClaimStatus.UNCHECKED,
+                claim_sentence=claim_sentence,
+                notes=["no resolved DOI"],
+            )
 
-    pdf_path = fetch_pdf(doi, cache=cache)
-    if pdf_path is None:
-        return ClaimCheck(
-            status=ClaimStatus.UNVERIFIABLE,
-            claim_sentence=claim_sentence,
-            notes=["no OA PDF available via Unpaywall"],
-        )
+        pdf_path = fetch_pdf(doi, cache=cache)
+        if pdf_path is None:
+            return ClaimCheck(
+                status=ClaimStatus.UNVERIFIABLE,
+                claim_sentence=claim_sentence,
+                notes=["no OA PDF available via Unpaywall"],
+            )
 
-    try:
-        text = _read_pdf_text(pdf_path)
-    except (ClaimsExtraNotInstalled, RuntimeError) as exc:
-        # Re-raise the install instruction; for other errors, surface as ERROR.
-        if isinstance(exc, ClaimsExtraNotInstalled):
-            raise
-        return ClaimCheck(
-            status=ClaimStatus.ERROR,
-            claim_sentence=claim_sentence,
-            notes=[f"PDF text extraction failed: {exc}"],
-        )
+        try:
+            text = _read_pdf_text(pdf_path)
+        except (ClaimsExtraNotInstalled, RuntimeError) as exc:
+            # Re-raise the install instruction; for other errors, surface as ERROR.
+            if isinstance(exc, ClaimsExtraNotInstalled):
+                raise
+            return ClaimCheck(
+                status=ClaimStatus.ERROR,
+                claim_sentence=claim_sentence,
+                notes=[f"PDF text extraction failed: {exc}"],
+            )
 
     chunks = _chunk_text(text)
     if not chunks:
