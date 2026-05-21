@@ -1,0 +1,80 @@
+{
+  "summary": {
+    "n_items_loaded": 3,
+    "n_scored": 3,
+    "n_excluded_no_text": 0,
+    "n_excluded_other": 0,
+    "provider": "hf",
+    "model": "Qwen/Qwen2.5-7B-Instruct",
+    "tp": 1,
+    "fp": 0,
+    "fn": 0,
+    "tn": 2,
+    "precision": 1.0,
+    "recall": 1.0,
+    "fpr": 0.0,
+    "f1": 1.0,
+    "recall_by_severity": {
+      "moderate": {
+        "n": 1,
+        "recall": 1.0
+      }
+    },
+    "recall_by_error_type": {
+      "distortion": {
+        "n": 1,
+        "recall": 1.0
+      }
+    }
+  },
+  "predictions": [
+    {
+      "id": "001",
+      "source_id": "S1",
+      "expected": "correct",
+      "predicted_status": "supported",
+      "predicted_label": "correct",
+      "error_type": "none",
+      "severity": "none",
+      "field": "Clinical Psychology",
+      "provenance": "unpaywall_pdf",
+      "elapsed_s": 2.46,
+      "match": true,
+      "quote": "While all treatments were largely comparable in their effects at post-treatment (week 8), the treatments differed in their long-term effects, rapidity of response and pattern of deteriorations.",
+      "confidence": "high",
+      "reasoning": "The cited paper directly states the claim about comparable effects at post-treatment and diverging effects over time."
+    },
+    {
+      "id": "002",
+      "source_id": "S1",
+      "expected": "incorrect",
+      "predicted_status": "not_supported",
+      "predicted_label": "incorrect",
+      "error_type": "distortion",
+      "severity": "moderate",
+      "field": "Clinical Psychology",
+      "provenance": "unpaywall_pdf",
+      "elapsed_s": 2.26,
+      "match": true,
+      "quote": null,
+      "confidence": "high",
+      "reasoning": "The cited paper does not support the claim of 'clearly superior' effect, instead stating that all treatments were largely comparable in their effects at post-treatment."
+    },
+    {
+      "id": "003",
+      "source_id": "S1",
+      "expected": "correct",
+      "predicted_status": "supported",
+      "predicted_label": "correct",
+      "error_type": "none",
+      "severity": "none",
+      "field": "Clinical Psychology",
+      "provenance": "unpaywall_pdf",
+      "elapsed_s": 2.5,
+      "match": true,
+      "quote": "FA showed the fastest rate of improvement and the fewest deteriorations on stress, anxiety and depression during treatment, but a loss of treatment-related gains PLOS ONE PLOS ONE | https://doi.org/10.1371/journal.pone.0244838 January 12, 2021 1 / 21",
+      "confidence": "high",
+      "reasoning": "The cited paper directly states that FA showed the fastest rate of improvement and the fewest deteriorations for stress and anxiety, which aligns with the claim."
+    }
+  ]
+}

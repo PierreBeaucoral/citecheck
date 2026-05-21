@@ -62,7 +62,12 @@ from dotenv import load_dotenv  # noqa: E402
 load_dotenv(REPO_ROOT / ".env")
 
 from citecheck.checks.cache import CacheStore  # noqa: E402
-from citecheck.checks.claims import _call_ollama, verify_claim  # noqa: E402
+from citecheck.checks.claims import (  # noqa: E402
+    _call_cerebras,
+    _call_hf_chat,
+    _call_ollama,
+    verify_claim,
+)
 from citecheck.models import (  # noqa: E402
     ClaimStatus,
     RawReference,
@@ -175,10 +180,46 @@ def main() -> int:
         help="Output JSON path.",
     )
     parser.add_argument(
+        "--provider",
+        type=str,
+        choices=("ollama", "hf", "cerebras"),
+        default=os.environ.get("CITECHECK_LLM_PROVIDER", "ollama"),
+        help="LLM provider: 'ollama' (default; honors --model), 'hf' "
+        "(HF Inference Router; honors --hf-model), or 'cerebras' "
+        "(Cerebras Cloud; honors --cerebras-model).",
+    )
+    parser.add_argument(
         "--model",
         type=str,
         default=os.environ.get("OLLAMA_MODEL", "gemma4:31b-cloud"),
         help="Ollama model name. Default: gemma4:31b-cloud (free cloud tier).",
+    )
+    parser.add_argument(
+        "--hf-model",
+        type=str,
+        default=os.environ.get("CITECHECK_HF_MODEL", "Qwen/Qwen2.5-7B-Instruct"),
+        help="HuggingFace model id (used when --provider hf). "
+        "Default: Qwen/Qwen2.5-7B-Instruct.",
+    )
+    parser.add_argument(
+        "--cerebras-model",
+        type=str,
+        default=os.environ.get(
+            "CITECHECK_CEREBRAS_MODEL", "qwen-3-235b-a22b-instruct-2507"
+        ),
+        help="Cerebras model id (used when --provider cerebras). "
+        "Default: qwen-3-235b-a22b-instruct-2507 (free tier).",
+    )
+    parser.add_argument(
+        "--sleep-s",
+        type=float,
+        default=0.0,
+        help="Sleep this many seconds between LLM calls.  Recommended values "
+        "by provider: Cerebras free tier ~1.5 (30 req/min cap; verified live "
+        "the 2.5s setting kept us at ~4 req/min, safely under cap but slower "
+        "than necessary); HF Inference free ~0 (no per-minute cap but tight "
+        "monthly token quota); Ollama local 0 (no rate limit).  Has no effect "
+        "on the deployed app (one request per claim).",
     )
     parser.add_argument(
         "--limit",
@@ -209,8 +250,15 @@ def main() -> int:
     if args.limit > 0:
         items = items[: args.limit]
 
+    chosen_provider = args.provider
+    if chosen_provider == "hf":
+        chosen_model = args.hf_model
+    elif chosen_provider == "cerebras":
+        chosen_model = args.cerebras_model
+    else:
+        chosen_model = args.model
     print(f"loaded {len(items)} items over {len(sources)} sources", file=sys.stderr)
-    print(f"model: {args.model}", file=sys.stderr)
+    print(f"provider: {chosen_provider}, model: {chosen_model}", file=sys.stderr)
 
     cache = CacheStore()
     try:
@@ -228,12 +276,17 @@ def main() -> int:
             )
             return 3
 
-        # 2) The Ollama call needs to honor --model; wrap _call_ollama in a
-        #    closure that fixes the model at the chosen value.
-        chosen_model = args.model
-
-        def ollama_call(prompt: str) -> str:
-            return _call_ollama(prompt, model=chosen_model)
+        # 2) Wrap the chosen LLM provider in a closure that fixes the model
+        #    at the chosen value, matching verify_claim's expected signature.
+        if chosen_provider == "hf":
+            def ollama_call(prompt: str) -> str:
+                return _call_hf_chat(prompt, model=chosen_model)
+        elif chosen_provider == "cerebras":
+            def ollama_call(prompt: str) -> str:
+                return _call_cerebras(prompt, model=chosen_model)
+        else:
+            def ollama_call(prompt: str) -> str:
+                return _call_ollama(prompt, model=chosen_model)
 
         # 3) The embedder is expensive to load — share one instance across items.
         from citecheck.checks.claims import _load_embedder  # noqa: WPS433
@@ -271,6 +324,9 @@ def main() -> int:
                 next((s["doi"] for s in sources if s["source_id"] == sid), "")
             )[0])
 
+            # Inter-request throttle for rate-limited free providers.
+            if args.sleep_s > 0:
+                time.sleep(args.sleep_s)
             t0 = time.time()
             try:
                 check = verify_claim(
@@ -390,7 +446,8 @@ def main() -> int:
         "n_scored": len(scored),
         "n_excluded_no_text": skipped_no_text,
         "n_excluded_other": len(items) - len(scored) - skipped_no_text,
-        "model": args.model,
+        "provider": chosen_provider,
+        "model": chosen_model,
         "tp": tp,
         "fp": fp,
         "fn": fn,
@@ -425,7 +482,7 @@ def main() -> int:
         "# Citecheck Phase 5 (claim verification) eval results",
         "",
         f"Evaluated {len(items)} items over {len(set(p['source_id'] for p in predictions))} sources from `{args.labels.relative_to(REPO_ROOT)}`.",
-        f"Model: `{args.model}`.",
+        f"Provider: `{chosen_provider}`, model: `{chosen_model}`.",
         "",
         "## Headline (binary: predicted INCORRECT vs ground-truth INCORRECT)",
         "",

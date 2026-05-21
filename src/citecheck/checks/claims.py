@@ -40,6 +40,14 @@ log = logging.getLogger(__name__)
 DEFAULT_EMBED_MODEL = os.environ.get("CITECHECK_EMBED_MODEL", "BAAI/bge-small-en-v1.5")
 DEFAULT_OLLAMA_MODEL = os.environ.get("OLLAMA_MODEL", "qwen2.5:7b-instruct")
 DEFAULT_OLLAMA_HOST = os.environ.get("OLLAMA_HOST", "http://localhost:11434")
+# HuggingFace serverless Router (OpenAI-compatible). Used by the deployed
+# web app on HF Spaces and by Phase-6a eval comparisons.  The Router auto-
+# selects the best inference provider for the model id and supports the
+# /v1/chat/completions schema; no extra SDK needed.
+DEFAULT_HF_MODEL = os.environ.get("CITECHECK_HF_MODEL", "Qwen/Qwen2.5-7B-Instruct")
+DEFAULT_HF_BASE_URL = os.environ.get(
+    "CITECHECK_HF_BASE_URL", "https://router.huggingface.co/v1"
+)
 
 CHUNK_TOKENS = 500
 CHUNK_OVERLAP = 50
@@ -179,6 +187,132 @@ Reply ONLY with this JSON object:
 
 - "quote" must be EXACT text from the passages; if no good quote, use null.
 - Reply with only the JSON. No prose before or after."""
+
+
+def _call_openai_compatible(
+    prompt: str,
+    *,
+    model: str,
+    base_url: str,
+    token: str,
+    provider_name: str = "OpenAI-compatible",
+    timeout_s: float = 120.0,
+    max_retries: int = 4,
+    backoff_base_s: float = 8.0,
+) -> str:
+    """Call any OpenAI-compatible /chat/completions endpoint with backoff on 429.
+
+    HuggingFace's serverless Router, Cerebras Cloud, Groq, Together AI,
+    OpenRouter, and (obviously) OpenAI itself all accept the same chat-
+    completions schema, so a single client suffices for all of them.  The
+    distinguishing parameters are the base URL and the model id.
+
+    On a 429 response, the function sleeps for `backoff_base_s * 2**attempt`
+    seconds (exponential backoff) and retries up to `max_retries` times.
+    This lets the eval runner saturate a provider's per-minute rate limit
+    without manual throttling.  Returns the raw assistant `content` string
+    so the existing `_parse_verdict` works unchanged.
+    """
+    import time
+
+    import httpx
+
+    if not token:
+        raise RuntimeError(
+            f"{provider_name} API token not set; cannot call the LLM provider."
+        )
+    url = f"{base_url.rstrip('/')}/chat/completions"
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Content-Type": "application/json",
+    }
+    body = {
+        "model": model,
+        "messages": [{"role": "user", "content": prompt}],
+        # 1024 tokens is comfortably above what our JSON schema produces
+        # (typically <300 tokens) and leaves headroom for verbose reasoning.
+        "max_tokens": 1024,
+        "temperature": 0.0,
+    }
+    last_status = None
+    last_body = ""
+    for attempt in range(max_retries + 1):
+        with httpx.Client(timeout=timeout_s) as client:
+            resp = client.post(url, headers=headers, json=body)
+        if resp.status_code == 200:
+            data = resp.json() or {}
+            choices = data.get("choices") or []
+            if not choices:
+                raise RuntimeError(f"{provider_name} API returned no choices: {data}")
+            return (choices[0].get("message") or {}).get("content") or ""
+        last_status = resp.status_code
+        last_body = resp.text[:200]
+        # Retry only on rate-limit / transient server errors; bail on auth /
+        # bad-request / not-found / payment-required.
+        if resp.status_code not in (429, 500, 502, 503, 504):
+            break
+        if attempt == max_retries:
+            break
+        sleep_s = backoff_base_s * (2 ** attempt)
+        log.warning(
+            "%s API %s on attempt %d/%d, sleeping %.1fs before retry",
+            provider_name,
+            resp.status_code,
+            attempt + 1,
+            max_retries + 1,
+            sleep_s,
+        )
+        time.sleep(sleep_s)
+    raise RuntimeError(
+        f"{provider_name} API returned {last_status}: {last_body}"
+    )
+
+
+def _call_hf_chat(
+    prompt: str,
+    *,
+    model: str = DEFAULT_HF_MODEL,
+    base_url: str = DEFAULT_HF_BASE_URL,
+    token: str | None = None,
+    timeout_s: float = 120.0,
+) -> str:
+    """HuggingFace serverless Router wrapper around `_call_openai_compatible`."""
+    return _call_openai_compatible(
+        prompt,
+        model=model,
+        base_url=base_url,
+        token=(token or os.environ.get("HF_TOKEN", "").strip()),
+        provider_name="HF Inference",
+        timeout_s=timeout_s,
+    )
+
+
+# Cerebras Cloud (OpenAI-compatible).  Free tier offers qwen-3-32b,
+# llama-3.3-70b, and llama-3.1-8b with no monthly cap (30 req/min, 60k
+# tokens/min) -- substantially more generous than HF's free Inference tier.
+DEFAULT_CEREBRAS_MODEL = os.environ.get("CITECHECK_CEREBRAS_MODEL", "qwen-3-32b")
+DEFAULT_CEREBRAS_BASE_URL = os.environ.get(
+    "CITECHECK_CEREBRAS_BASE_URL", "https://api.cerebras.ai/v1"
+)
+
+
+def _call_cerebras(
+    prompt: str,
+    *,
+    model: str = DEFAULT_CEREBRAS_MODEL,
+    base_url: str = DEFAULT_CEREBRAS_BASE_URL,
+    token: str | None = None,
+    timeout_s: float = 120.0,
+) -> str:
+    """Cerebras Cloud wrapper around `_call_openai_compatible`."""
+    return _call_openai_compatible(
+        prompt,
+        model=model,
+        base_url=base_url,
+        token=(token or os.environ.get("CEREBRAS_API_KEY", "").strip()),
+        provider_name="Cerebras",
+        timeout_s=timeout_s,
+    )
 
 
 def _call_ollama(
