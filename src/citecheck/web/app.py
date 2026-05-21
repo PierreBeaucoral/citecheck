@@ -13,6 +13,18 @@ from __future__ import annotations
 
 from pathlib import Path
 
+# Load .env BEFORE importing any module that reads environment variables at
+# import time (e.g. claims.py reading OLLAMA_MODEL, unpaywall.py demanding
+# CITECHECK_CONTACT_EMAIL).  The CLI does this in cli.py; the web app needs
+# the same treatment when launched via `uvicorn citecheck.web.app:app`.
+from dotenv import load_dotenv
+
+_REPO_ROOT = Path(__file__).resolve().parents[3]
+load_dotenv(_REPO_ROOT / ".env")
+# Also try a .env next to the current working directory (HF Spaces /
+# Docker deployments where the repo root isn't the launch directory).
+load_dotenv(Path.cwd() / ".env")
+
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles

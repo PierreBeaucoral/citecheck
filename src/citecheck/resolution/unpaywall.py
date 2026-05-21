@@ -45,14 +45,23 @@ MAX_PDF_BYTES = 25 * 1024 * 1024
 DEFAULT_TIMEOUT_S = 60.0
 
 
+class UnpaywallEmailMissing(RuntimeError):
+    """Raised by `fetch_pdf` when CITECHECK_CONTACT_EMAIL isn't configured.
+
+    Callers can catch this specifically to skip Unpaywall (e.g. fall through
+    to the abstract-only Phase 5 path) without crashing the whole job.
+    """
+
+
 def _polite_email() -> str:
     email = os.environ.get("CITECHECK_CONTACT_EMAIL", "").strip()
     if not email or "@" not in email:
-        # Unpaywall mandates an email; bail loudly rather than silently
-        # making 4xx requests against their service.
-        raise RuntimeError(
+        # Unpaywall mandates an email; bail with a specific exception so
+        # `fetch_text_any` can fall through to the abstract path.
+        raise UnpaywallEmailMissing(
             "Unpaywall requires CITECHECK_CONTACT_EMAIL in .env. "
-            "Add a valid email address before invoking the claim-verification flow."
+            "Set it in the environment to enable full-text claim verification; "
+            "without it, citecheck falls back to OpenAlex abstracts."
         )
     return email
 
@@ -412,7 +421,13 @@ def fetch_text_any(
       3. PMC path: fetch JATS XML via E-utilities and strip to text.
     """
     if doi:
-        pdf_path = fetch_pdf(doi, cache=cache, timeout_s=timeout_s)
+        try:
+            pdf_path = fetch_pdf(doi, cache=cache, timeout_s=timeout_s)
+        except UnpaywallEmailMissing:
+            # Operator hasn't set CITECHECK_CONTACT_EMAIL.  Skip the
+            # Unpaywall route entirely and fall through to the PMC / abstract
+            # fallbacks below.  Logged once per process by `fetch_pdf`.
+            pdf_path = None
         if pdf_path is not None:
             try:
                 from pypdf import PdfReader  # type: ignore[import-not-found]
@@ -426,7 +441,10 @@ def fetch_text_any(
         # Fall through: see if Unpaywall handed us a PMC URL we can route
         # through E-utilities instead.
         if pmc_id is None:
-            cached_url = best_oa_url(doi, cache=cache, timeout_s=timeout_s)
+            try:
+                cached_url = best_oa_url(doi, cache=cache, timeout_s=timeout_s)
+            except UnpaywallEmailMissing:
+                cached_url = None
             pmc_id = _pmc_id_from_url(cached_url)
     if pmc_id:
         text = fetch_pmc_text(pmc_id, cache=cache, timeout_s=timeout_s)
