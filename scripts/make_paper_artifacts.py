@@ -277,6 +277,7 @@ def _emit_bypubtype_clean(predictions: list[dict], labels_by_id: dict[str, dict]
             by_type.setdefault(m_.group(1), []).append(p)
 
     rows: list[str] = []
+    tot = {"n": 0, "tp": 0, "fn": 0, "fp": 0, "tn": 0}
     for code in ["A", "B", "C", "W"]:
         preds_t = by_type.get(code, [])
         if not preds_t:
@@ -285,16 +286,28 @@ def _emit_bypubtype_clean(predictions: list[dict], labels_by_id: dict[str, dict]
         m = _metrics_from_confusion(tp, fn, fp, tn)
         n_fab = tp + fn
         n_real = fp + tn
+        tot["n"] += len(preds_t)
+        tot["tp"] += tp
+        tot["fn"] += fn
+        tot["fp"] += fp
+        tot["tn"] += tn
         rows.append(
             f"{type_names[code]:<28}            & {len(preds_t):,} & {n_fab:,} & {n_real:,} & "
             f"{_fmt(m['precision'])} & {_fmt(m['recall'])} & {_fmt(m['fpr'])} & {_fmt(m['f1'])} \\\\"
         )
 
+    tm = _metrics_from_confusion(tot["tp"], tot["fn"], tot["fp"], tot["tn"])
+    total_row = (
+        f"\\midrule\nWalters total                              & "
+        f"{tot['n']:,} & {tot['tp'] + tot['fn']:,} & {tot['fp'] + tot['tn']:,} & "
+        f"{_fmt(tm['precision'])} & {_fmt(tm['recall'])} & "
+        f"{_fmt(tm['fpr'])} & {_fmt(tm['f1'])} \\\\"
+    )
     body = (
         "\\begin{tabular}{lrrrcccc}\n\\toprule\n"
         "Publication type                          & N & Fab & Real & "
         "Precision & Recall & FPR & $F_1$ \\\\\n"
-        "\\midrule\n" + "\n".join(rows) + "\n\\bottomrule\n\\end{tabular}\n"
+        "\\midrule\n" + "\n".join(rows) + "\n" + total_row + "\n\\bottomrule\n\\end{tabular}\n"
     )
     (TABLES_DIR / "eval_bypubtype.tex").write_text(body, encoding="utf-8")
 

@@ -1,12 +1,12 @@
 # Fdb version 4
-["biber main"] 1779345105.52288 "main.bcf" "main.bbl" "main" 1779345113.79758 0
-  "main.bcf" 1779345113.64923 110782 2932155beb32924d359daad87ed772a6 "pdflatex"
+["biber main"] 1779346274.01097 "main.bcf" "main.bbl" "main" 1779346281.94797 0
+  "main.bcf" 1779346281.79947 110782 2932155beb32924d359daad87ed772a6 "pdflatex"
   "references.bib" 1779302475.20782 2640 858cec710ccb58ce2f16f66c93192ce2 ""
   (generated)
   "main.bbl"
   "main.blg"
   (rewritten before read)
-["pdflatex"] 1779345111.99737 "main.tex" "main.pdf" "main" 1779345113.79816 0
+["pdflatex"] 1779346280.09845 "main.tex" "main.pdf" "main" 1779346281.94848 0
   "/Users/pierrebeaucoral/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc" 1254269338 2375 baa924870cfb487815765f9094cf3728 ""
   "/Users/pierrebeaucoral/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc" 1202520719 2405 5dcf2c1b967ee25cc46c58cd52244aed ""
   "/Users/pierrebeaucoral/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc" 1202520719 2840 216e6e45ad352e2456e1149f28885bee ""
@@ -180,19 +180,19 @@
   "/Users/pierrebeaucoral/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1779269623 185083 e872e113f0410db960a84bb2176a46b3 ""
   "/Users/pierrebeaucoral/Library/TinyTeX/texmf-var/web2c/pdftex/pdflatex.fmt" 1779269634 2252114 d2035950c08be86f1dcf5894eb0e65bd ""
   "/Users/pierrebeaucoral/Library/TinyTeX/texmf.cnf" 1774272787.69109 708 85fd07691b6294ba94c59dbc62380410 ""
-  "figures/metrics_by_pubtype.pdf" 1779345051.73308 12363 6f92dbd8c6e87f856241336db4a34488 ""
-  "figures/predicted_by_class.pdf" 1779345051.62581 11886 541dfbd9ca4139cf2d75ae1f08d312b3 ""
-  "figures/red_flag_distribution.pdf" 1779345051.67977 12625 0d429edf29c38a2d9ce1e68458557160 ""
-  "main.aux" 1779345113.64523 12844 ad58d4f86fd4467cae76ca24430ea143 "pdflatex"
-  "main.bbl" 1779345108.30803 10800 d824972987ecc4b592088de4cf8b56d6 "biber main"
-  "main.out" 1779345113.64772 2108 2100eebe9c5c4e0f30a2d95cf22f884a "pdflatex"
-  "main.run.xml" 1779345113.65036 2345 2a3bf96a8d53afbde995fbc1171fecf2 "pdflatex"
-  "main.tex" 1779345089.34404 52521 cf6e127f71f11d74699c8f4a1550292a ""
-  "tables/eval_bypubtype.tex" 1779345051.68232 531 5549e7d8cde4786f882d766de2bd1338 ""
-  "tables/eval_bysource.tex" 1779345051.68149 387 ae333859449a504cab1e2006899ad6e9 ""
-  "tables/eval_headline.tex" 1779345051.68076 570 b8426ffda79bf4d818995a20313b39a2 ""
-  "tables/eval_journal_quality.tex" 1779345051.73468 453 92c70af2bd6eecedeca239794ba02de7 ""
-  "tables/eval_per_layer.tex" 1779345051.683 396 8676569a71a5e1e4ee97681f94c04a1d ""
+  "figures/metrics_by_pubtype.pdf" 1779346271.9476 12363 93b1898e38c263880907b60327135eba ""
+  "figures/predicted_by_class.pdf" 1779346271.83986 11886 14c8d1271239746168269ff8e17461c1 ""
+  "figures/red_flag_distribution.pdf" 1779346271.89422 12625 48d775910899ab9a890c1190a872ecdf ""
+  "main.aux" 1779346281.79537 13346 fb433e51f283de66c03d9a019ba0ccec "pdflatex"
+  "main.bbl" 1779346276.24828 10800 d824972987ecc4b592088de4cf8b56d6 "biber main"
+  "main.out" 1779346281.798 2108 2100eebe9c5c4e0f30a2d95cf22f884a "pdflatex"
+  "main.run.xml" 1779346281.80089 2345 2a3bf96a8d53afbde995fbc1171fecf2 "pdflatex"
+  "main.tex" 1779346191.84186 56289 d784e7f0426caa170d10689a2619a60f ""
+  "tables/eval_bypubtype.tex" 1779346271.89667 636 b8e544c16e552312625b41714ac86714 ""
+  "tables/eval_bysource.tex" 1779346271.89583 387 ae333859449a504cab1e2006899ad6e9 ""
+  "tables/eval_headline.tex" 1779346271.89521 570 b8426ffda79bf4d818995a20313b39a2 ""
+  "tables/eval_journal_quality.tex" 1779346271.94917 453 92c70af2bd6eecedeca239794ba02de7 ""
+  "tables/eval_per_layer.tex" 1779346271.89717 396 8676569a71a5e1e4ee97681f94c04a1d ""
   (generated)
   "main.aux"
   "main.bcf"
