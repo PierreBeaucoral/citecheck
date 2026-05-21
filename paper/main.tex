@@ -44,7 +44,8 @@
 
 % ====== Figure and Caption Packages ======
 \usepackage{graphicx, subcaption}
-% pdflscape, tikz omitted — no landscape or TikZ here
+\usepackage{tikz}
+\usetikzlibrary{positioning, arrows.meta, shapes.geometric, fit, backgrounds}
 \usepackage{caption}
 \captionsetup{font=small, labelfont=bf, justification=justified}
 \usepackage{float}
@@ -141,7 +142,7 @@ Citations to retracted work pose a parallel problem. The Retraction Watch databa
 
 This paper describes citecheck, a free, open-source, locally runnable tool that scans an academic PDF for four classes of citation issue: retraction, fabrication, predatory venue, and misrepresentation. The contributions are fivefold. First, the tool combines five complementary fabrication signals on top of two free public APIs (Crossref and OpenAlex) and does not require an LLM at runtime for the metadata checks; three layers are \emph{existence} checks (does this field appear in a database?) and two are \emph{coherence} checks (do two fields agree?), with a rule-based aggregator that weights coherence flags more heavily and implements an asymmetric low-coverage policy. Second, the journal-quality stage aggregates eight DOAJ + OpenAlex reputation signals into a continuous risk score that generalises beyond a static concern list. Third, the claim-verification stage uses retrieval-augmented generation against a local or free-cloud LLM with a structured-output prompt + parser guard rail that closes the overstatement gap documented in \cref{sec:eval-claims}. Fourth, the evaluation contributes labeled datasets for three of the four checks: a 60-DOI retraction set sampled from OpenAlex, a 75-journal predatory-venue calibration + held-out split, and a 100-triple hand-curated claim-verification benchmark with severity and error-type stratification (\cref{sec:eval-set,sec:eval-jq,sec:eval-claims}). Fifth, the per-layer evaluation in \cref{app:per-layer} provides direct empirical support for the design hypothesis that coherence checks (L5) discriminate more sharply than existence checks (L2, L3, L4): we report a twelvefold L5 class ratio. The fabrication-eval corpus assembles 770 citations from \citet{walters_wilder_2023} and two arXiv economics preprints whose reference lists serve as a real-by-construction control.
 
-The rest of the paper is organized as follows. \Cref{sec:problem} states the four citation-integrity failure modes the tool targets. \Cref{sec:tool} describes the six-stage pipeline. \Cref{sec:eval-set,sec:methodology} document the evaluation corpora and metrics. \Cref{sec:results} reports the fabrication headline numbers; within it, \cref{sec:eval-jq} evaluates the journal-quality risk score on a 50/25 calibration/held-out split and \cref{sec:eval-claims} evaluates the claim-verification check against a 100-triple hand-curated set. \Cref{sec:discussion} discusses design choices and limitations. \Cref{sec:conclusion} concludes. Two appendices document the per-layer firing rates (\cref{app:per-layer}) and the retraction-check coverage measurement (\cref{app:retraction}).
+The rest of the paper is organized as follows. \Cref{sec:problem} states the four citation-integrity failure modes the tool targets. \Cref{sec:tool} describes the six-stage pipeline. \Cref{sec:eval-set,sec:methodology} document the evaluation corpora and metrics. \Cref{sec:results} reports the fabrication headline numbers; within it, \cref{sec:eval-jq} evaluates the journal-quality risk score on a 50/25 calibration/held-out split and \cref{sec:eval-claims} evaluates the claim-verification check against a 100-triple hand-curated set. \Cref{sec:discussion} discusses design choices and limitations. \Cref{sec:conclusion} concludes. Three appendices document the per-layer firing rates (\cref{app:per-layer}), the retraction-check coverage measurement (\cref{app:retraction}), and the verbatim Phase 5 prompt template (\cref{app:phase5-prompt}).
 
 \section{The citation-integrity problem in the LLM era}\label{sec:problem}
 
@@ -155,7 +156,73 @@ The third failure mode is misrepresentation. A citation can refer to a real, un-
 
 \section{The citecheck pipeline}\label{sec:tool}
 
-The tool runs as a command-line interface over a six-stage pipeline. Each stage produces a typed data object that the next stage consumes, so the pipeline can be inspected or replaced at any boundary. The stages are extraction, resolution, retraction check, fabrication detection, journal-quality scoring, and claim verification. Stages 3--6 correspond to the four citation-integrity checks the paper evaluates separately: throughout the rest of the paper, we use ``Phase 2'' for the retraction check (Stage 3), ``Phase 3'' for fabrication detection (Stage 4), ``Phase 4'' for journal-quality scoring (Stage 5), and ``Phase 5'' for claim verification (Stage 6). The Stage-N naming follows the pipeline order; the Phase-N naming follows the development timeline and is the convention in the repository's documentation.
+The tool runs as a command-line interface over a six-stage pipeline. Each stage produces a typed data object that the next stage consumes, so the pipeline can be inspected or replaced at any boundary. The stages are extraction, resolution, retraction check, fabrication detection, journal-quality scoring, and claim verification. Stages 3--6 correspond to the four citation-integrity checks the paper evaluates separately: throughout the rest of the paper, we use ``Phase 2'' for the retraction check (Stage 3), ``Phase 3'' for fabrication detection (Stage 4), ``Phase 4'' for journal-quality scoring (Stage 5), and ``Phase 5'' for claim verification (Stage 6). The Stage-N naming follows the pipeline order; the Phase-N naming follows the development timeline and is the convention in the repository's documentation. \Cref{fig:pipeline} shows the data flow.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+    font=\small\sffamily,
+    >={Stealth[length=2mm,width=2mm]},
+    node distance=4mm and 5mm,
+    box/.style={draw, rounded corners=2pt, minimum width=24mm, minimum height=10mm, align=center, inner sep=3pt},
+    stage/.style={box, fill=blue!8},
+    check/.style={box, fill=red!8},
+    data/.style={box, draw=gray!60, fill=gray!8, font=\footnotesize\sffamily\itshape},
+    api/.style={font=\footnotesize\sffamily\itshape, text=gray!60!black},
+    arr/.style={->, thick, gray!70!black},
+]
+
+% Input
+\node[data] (pdf) {PDF};
+
+% Stage 1
+\node[stage, right=of pdf] (s1) {Stage 1\\extraction};
+\node[api, below=1pt of s1] {GROBID};
+
+% Stage 2 — resolution
+\node[stage, right=of s1] (s2) {Stage 2\\resolution};
+\node[api, below=1pt of s2] {Crossref + OpenAlex};
+
+% Typed Reference
+\node[data, right=of s2] (ref) {Reference\\(with DOI)};
+
+% Four parallel checks (Stages 3-6) below Reference
+\node[check, below=12mm of ref, xshift=-45mm] (s3) {Stage 3\\retraction\\(Phase 2)};
+\node[check, right=of s3] (s4) {Stage 4\\fabrication\\(Phase 3)};
+\node[check, right=of s4] (s5) {Stage 5\\journal qual.\\(Phase 4)};
+\node[check, right=of s5] (s6) {Stage 6\\claim verif.\\(Phase 5)};
+
+% APIs under checks
+\node[api, below=1pt of s3] {Crossref \texttt{update-to}};
+\node[api, below=1pt of s4] {OpenAlex \texttt{/authors},};
+\node[api, below=4mm of s4, font=\footnotesize\sffamily\itshape] {\texttt{/sources}, \texttt{/works}};
+\node[api, below=1pt of s5] {DOAJ + OpenAlex};
+\node[api, below=1pt of s6] {Unpaywall / PMC + LLM};
+
+% Output box spanning the four checks
+\node[data, below=12mm of s4, xshift=18mm, minimum width=110mm] (out) {Report: RetractionCheck $\,\cdot\,$ HallucinationCheck $\,\cdot\,$ JournalQualityCheck $\,\cdot\,$ ClaimCheck};
+
+% Arrows: pipeline
+\draw[arr] (pdf) -- (s1);
+\draw[arr] (s1) -- (s2);
+\draw[arr] (s2) -- (ref);
+
+% Fan-out from Reference to the four checks
+\draw[arr] (ref.south) -- ++(0,-3mm) -| (s3.north);
+\draw[arr] (ref.south) -- ++(0,-3mm) -| (s4.north);
+\draw[arr] (ref.south) -- ++(0,-3mm) -| (s5.north);
+\draw[arr] (ref.south) -- ++(0,-3mm) -| (s6.north);
+
+% Fan-in from checks to the report
+\draw[arr] (s3.south) |- ++(0,-5mm) -| (out.north -| s3.south);
+\draw[arr] (s4.south) -- (out.north -| s4.south);
+\draw[arr] (s5.south) -- (out.north -| s5.south);
+\draw[arr] (s6.south) |- ++(0,-5mm) -| (out.north -| s6.south);
+
+\end{tikzpicture}
+\caption{Citecheck's six-stage pipeline. Stages 1--2 extract a typed \texttt{Reference} from the input PDF. Stages 3--6 run in parallel against that \texttt{Reference}, each producing a typed check result. The aggregated report is the union of those four check results, one per citation-integrity failure mode. APIs consulted by each stage are labeled in italics; each stage is a separately replaceable module in \texttt{src/citecheck/}.}
+\label{fig:pipeline}
+\end{figure}
 
 \paragraph{Stage 1: extraction.} A PDF is sent to a local instance of GROBID \citep{grobid}, an open-source conditional random field model for parsing scholarly documents. We use the \texttt{/api/processReferences} endpoint and request raw citation strings in the returned TEI XML. The non-obvious choice is \texttt{consolidateCitations=0}: GROBID supports calling Crossref during extraction to enrich metadata, and we explicitly disable it. Resolution is handled by the next stage with our own caching, scoring, and polite-pool headers; allowing GROBID to consolidate would bypass that control and double-count Crossref traffic. The parser keeps the subset of TEI fields needed to populate a typed \texttt{RawReference} record (title, authors, year, journal, DOI, raw citation string) and discards the rest.
 
@@ -357,7 +424,7 @@ Ten items were excluded from scoring because their source (Bak et al., 2014, \te
 
 \Cref{tab:eval-claim-headline} reports the binary headline. The verifier flags 43 of the 44 false items (recall 0.977), flags 7 of the 46 true items (false-positive rate 0.152), and reaches $F_1 = 0.915$. Precision is 0.860. The headline numbers reflect a deliberate calibration choice we made between two evaluation rounds. An initial run scored precision 0.952, recall 0.909, and FPR 0.043 with 4 false negatives. The failure mode in those 4 misses was instructive: in three of the four, the model's free-text reasoning correctly identified the discrepancy (\textit{e.g.}, ``the paper says \textit{moderate} effect, the claim says \textit{large}'') while the JSON \texttt{supported} field was still set to \texttt{yes}. The misalignment showed up most starkly on the overstatement error type (two of the five overstatement items were missed this way, dragging overstatement recall down to 0.600 in the initial run).
 
-The fix was a prompt + parser change rather than a model change. We added an explicit \texttt{discrepancies\_found} array to the JSON schema and instructed the model to enumerate qualifier, quantifier, and strength mismatches before setting the verdict, with the rule that any non-empty array forces \texttt{supported} to \texttt{no}. The parser carries a guard rail of the same shape: \texttt{ClaimStatus.NOT\_SUPPORTED} is forced whenever \texttt{discrepancies\_found} is non-empty, even if the model still returns \texttt{supported = yes}. The change moved overstatement recall from 0.600 to 1.000 (both previously-missed items caught), subtle-severity recall from 0.941 to 1.000, and blatant-severity recall from 0.857 to 1.000, at the cost of five additional false positives on items where the model identified plausible-looking qualifier drops in passages that were ultimately consistent with the claim. The trade-off was intentional: in a citation-checker the cost of missing a misrepresentation is higher than the cost of flagging a hedged passage for human review, so we tuned for sensitivity.
+The fix was a prompt + parser change rather than a model change. We added an explicit \texttt{discrepancies\_found} array to the JSON schema and instructed the model to enumerate qualifier, quantifier, and strength mismatches before setting the verdict, with the rule that any non-empty array forces \texttt{supported} to \texttt{no}. The full prompt is reproduced verbatim in \cref{app:phase5-prompt}. The parser carries a guard rail of the same shape: \texttt{ClaimStatus.NOT\_SUPPORTED} is forced whenever \texttt{discrepancies\_found} is non-empty, even if the model still returns \texttt{supported = yes}. The change moved overstatement recall from 0.600 to 1.000 (both previously-missed items caught), subtle-severity recall from 0.941 to 1.000, and blatant-severity recall from 0.857 to 1.000, at the cost of five additional false positives on items where the model identified plausible-looking qualifier drops in passages that were ultimately consistent with the claim. The trade-off was intentional: in a citation-checker the cost of missing a misrepresentation is higher than the cost of flagging a hedged passage for human review, so we tuned for sensitivity.
 
 \Cref{tab:eval-claim-stratified} reports the stratified result with the calibrated prompt. The verifier reaches 1.000 recall on \textit{subtle} and \textit{blatant} severity and 0.950 on \textit{moderate}. By error type, \textit{distortion}, \textit{overstatement}, \textit{cherry-picking}, and \textit{citation--claim mismatch} all reach 1.000 recall; the remaining weakness is \textit{fabricated specifics} (0.923 on $n=13$), where the lone miss is the case where the model misread a sentence about the number of breast-cancer interventions in the cited paper.
 
@@ -474,5 +541,80 @@ With that caveat in place, the substantive finding is Panel B, visualised in \cr
 \caption{Source coverage among correctly-flagged retractions ($n=30$). A Crossref-only design would miss the right-hand 60\% of the bar; the dual-source merger catches them via OpenAlex's \texttt{is\_retracted} flag. Figure generated by \texttt{scripts/make\_paper\_artifacts.py} from \texttt{data/eval/retraction\_results.json}.}
 \label{fig:retraction-coverage}
 \end{figure}
+
+\section{Phase 5 prompt template}\label{app:phase5-prompt}
+
+\Cref{lst:phase5-prompt} reproduces the prompt template citecheck sends to the LLM in the Phase 5 claim-verification stage. The two placeholders \texttt{\{claim\}} and \texttt{\{passages\}} are filled in by \texttt{verify\_claim} with the in-text claim sentence and the concatenation of the top-5 retrieved chunks from the cited paper. The prompt is the source of two design features the paper analyses in detail: the \texttt{discrepancies\_found} array that forces the model to enumerate qualifier and quantifier mismatches explicitly (\cref{sec:eval-claims}), and the seven-pattern list of misrepresentation patterns that gives the model concrete examples to attend to. The parser guard rail described in \cref{sec:tool} (Stage 6) forces the verdict to \texttt{NOT\_SUPPORTED} whenever the array is non-empty, providing redundancy against models that follow the field convention but mis-set the \texttt{supported} field. The live source of truth is \texttt{src/citecheck/checks/claims.py} in the repository; reproducing it verbatim here makes the paper self-contained for reviewers who want to reason about the prompt independently of the code.
+
+\begin{lstlisting}[caption={Phase 5 claim-verification prompt. The \texttt{\{claim\}} and \texttt{\{passages\}} placeholders are interpolated at runtime. Source: \texttt{src/citecheck/checks/claims.py} (verbatim).}, label={lst:phase5-prompt}, basicstyle=\ttfamily\footnotesize, breaklines=true, columns=fullflexible, frame=single]
+You are a citation auditor. The user is checking whether a
+cited paper supports a specific claim made about it in
+another paper.
+
+CLAIM (from the citing paper):
+{claim}
+
+PASSAGES (from the cited paper; these are the chunks most
+semantically similar to the claim):
+{passages}
+
+TASK: Decide whether the passages above support the claim,
+paying close attention to qualifiers, quantifiers, and
+strength of language.
+
+A claim is NOT supported when the citing paper inflates or
+drops a qualifier the cited paper actually uses. Common
+patterns of misrepresentation:
+
+- The claim says "large" / "strong" / "dramatic" but the
+  paper says "moderate" / "small" / "modest".
+- The claim says "proved" / "established" / "showed" but
+  the paper says "preliminary" / "suggests" / "may
+  indicate".
+- The claim says "all" / "every" / "always" but the paper
+  says "most" / "many" / "in most cases".
+- The claim asserts causation but the paper reports an
+  association or correlation.
+- The claim presents a finding as universal but the paper
+  restricts it to a subgroup.
+- The claim omits an exception the paper explicitly states
+  (e.g., "no effect on X" where X was the one null result).
+- The claim invents specific numbers (effect sizes,
+  percentages, sample sizes) the paper does not report.
+
+Procedure:
+
+1. First, list any qualifier / quantifier / strength
+   mismatches you detect between the claim and the passages,
+   in the `discrepancies_found` array. Use one short
+   sentence per mismatch. Use an empty array `[]` only when
+   you have actively checked and found none.
+2. Then set `supported`:
+   - "yes" only if the passages clearly state the claim or
+     a direct consequence AND `discrepancies_found` is
+     empty.
+   - "partial" if the passages are topically consistent
+     with the claim but do not state it directly, AND
+     `discrepancies_found` is empty.
+   - "no" whenever `discrepancies_found` is non-empty, OR
+     none of the passages support the claim.
+
+Reply ONLY with this JSON object:
+
+{
+  "discrepancies_found": ["short sentence per mismatch,
+                          or empty array"],
+  "supported": "yes" | "partial" | "no",
+  "quote": "<exact text from one passage that supports the
+            claim, or null>",
+  "confidence": "low" | "medium" | "high",
+  "reasoning": "<one short sentence explaining your
+                decision>"
+}
+
+- "quote" must be EXACT text from the passages; if no good
+  quote, use null.
+- Reply with only the JSON. No prose before or after.
+\end{lstlisting}
 
 \end{document}
