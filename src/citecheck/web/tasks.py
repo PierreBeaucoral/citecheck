@@ -132,6 +132,8 @@ def _run_pipeline_inner(
         # Stage 6: Phase 5 claim verification (opt-in).
         phase5_summary: dict[str, Any] = {
             "enabled": phase5_enabled,
+            "n_candidates": 0,            # refs with a resolved DOI = eligible for Phase 5
+            "n_refs_no_doi": 0,           # refs lacking any DOI; not Phase-5-eligible
             "claims_verified": 0,
             "claims_skipped_quota": 0,
             "claims_skipped_no_text": 0,
@@ -254,27 +256,67 @@ def _run_phase5(
         def llm_call(prompt: str) -> str:
             return _call_ollama(prompt, model=settings.llm_model)
 
-    # Identify candidate refs: have a resolved DOI and a raw citation text.
+    # Identify candidate refs: have a resolved DOI we can fetch full text for.
     # The "claim" we verify is the citation context — in v1 we use the raw
     # citation string itself as a proxy; v1.1 will extract the in-text
-    # sentence that cites this ref via GROBID's coordinates.  Reference
-    # objects serialize with the original `raw` block nested inside, plus a
-    # top-level `resolved_doi` from the dispatch result.
+    # sentence that cites this ref via GROBID's coordinates.
+    #
+    # Serialized Reference shape:
+    #   r["raw"]["resolved_doi"]   <- canonical DOI from dispatch (preferred)
+    #   r["raw"]["raw"]["doi"]     <- DOI extracted directly by GROBID (rare)
+    #   r["raw"]["raw"]["raw_text"]<- original citation string
+    #   r["raw"]["raw"]["title"]   <- parsed title
     candidates: list[tuple[int, dict, str]] = []
+    n_no_doi = 0
     for idx, r in enumerate(per_ref_results):
-        raw_block = r.get("raw") or {}
-        nested_raw = raw_block.get("raw") if isinstance(raw_block, dict) else None
-        if isinstance(nested_raw, dict):
-            raw_block = nested_raw
-        raw_text = raw_block.get("raw_text") or ""
-        doi = (
-            r.get("raw", {}).get("resolved_doi")
-            or raw_block.get("doi")
-            or ""
-        )
-        if not raw_text or not doi:
+        outer = r.get("raw") or {}                  # serialized Reference
+        inner = outer.get("raw") if isinstance(outer, dict) else None
+        if not isinstance(inner, dict):
+            inner = {}
+        raw_text = inner.get("raw_text") or inner.get("title") or ""
+        doi = outer.get("resolved_doi") or inner.get("doi") or ""
+        if not doi:
+            n_no_doi += 1
+            continue
+        if not raw_text:
             continue
         candidates.append((idx, r, raw_text))
+
+    phase5_summary["n_candidates"] = len(candidates)
+    phase5_summary["n_refs_no_doi"] = n_no_doi
+
+    if not candidates:
+        phase5_summary["skipped_reason"] = (
+            f"No references had a resolvable DOI we could fetch full text for "
+            f"({n_no_doi} of {len(per_ref_results)} references were missing a DOI). "
+            "Phase 5 can only verify claims against papers we can retrieve."
+        )
+        return
+
+    # Prioritize candidates whose DOI is likely to have an open-access PDF.
+    # Known OA-friendly DOI registrants (PLOS, BMC, eLife, MDPI, Frontiers,
+    # Wellcome OA, Nature Communications, Scientific Reports, F1000, JMIR,
+    # PNAS Nexus, Royal Society Open Science).  Boosts the hit rate
+    # dramatically vs naive first-N: an econometrics preprint with 50
+    # Econometrica refs and 5 PLOS refs would otherwise burn all 20 cap
+    # slots on paywalled JSTOR lookups that return nothing.
+    OA_PREFIXES = (
+        "10.1371/",  # PLOS
+        "10.1186/",  # BMC / SpringerOpen
+        "10.7554/",  # eLife
+        "10.3390/",  # MDPI
+        "10.3389/",  # Frontiers
+        "10.1038/sr",  # Scientific Reports
+        "10.1038/nc",  # Nature Communications (partial)
+        "10.12688/",  # F1000
+        "10.2196/",  # JMIR
+        "10.1098/rs",  # Royal Society Open Science
+        "10.1093/pn",  # PNAS Nexus
+    )
+    def _oa_priority(triple):
+        doi = (triple[1].get("raw", {}) or {}).get("resolved_doi", "") or ""
+        return 0 if any(doi.startswith(p) for p in OA_PREFIXES) else 1
+    candidates.sort(key=_oa_priority)
 
     # Cap to max_claims_per_pdf to prevent monopolizing the daily budget.
     capped = candidates[: settings.max_claims_per_pdf]

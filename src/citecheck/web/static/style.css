@@ -512,6 +512,63 @@ button[type="submit"]:active { transform: translateY(1px); }
 .ref-card dd .pill.warn   { background: var(--warn-soft);   color: #92400e; }
 .ref-card dd .pill.danger { background: var(--danger-soft); color: #991b1b; }
 
+.ref-details {
+  margin-top: 0.8rem;
+  border-top: 1px dashed var(--border-soft);
+  padding-top: 0.6rem;
+}
+.ref-details summary {
+  cursor: pointer;
+  font-size: 0.88rem;
+  color: var(--accent);
+  font-weight: 500;
+  user-select: none;
+  list-style: none;
+}
+.ref-details summary::before {
+  content: "▸ ";
+  display: inline-block;
+  margin-right: 0.2rem;
+  transition: transform 0.15s;
+}
+.ref-details[open] summary::before {
+  transform: rotate(90deg);
+}
+.ref-details summary:hover { text-decoration: underline; }
+.ref-details summary::-webkit-details-marker { display: none; }
+.ref-details-body {
+  margin-top: 0.6rem;
+  font-size: 0.9rem;
+}
+.detail-label {
+  margin: 0.7rem 0 0.25rem;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--fg-muted);
+}
+.layer-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.layer-list li {
+  padding: 0.25rem 0;
+  border-bottom: 1px dotted var(--border-soft);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+.layer-list li:last-child { border-bottom: none; }
+.layer-name {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  background: var(--bg-sunken);
+  padding: 1px 6px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
 .claim {
   background: var(--bg-sunken);
   border-radius: 6px;
@@ -639,7 +696,15 @@ button[type="submit"]:active { transform: translateY(1px); }
   height: 130px;
   vertical-align: middle;
 }
-.coffee-person svg { display: block; width: 100%; height: 100%; }
+.coffee-person svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* Keep the pixel-art edges crisp at any zoom level. */
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  shape-rendering: crispEdges;
+}
 
 .coffee-person .cp-hair { fill: var(--hair); }
 .coffee-person .cp-skin { fill: var(--skin); }
@@ -673,15 +738,15 @@ button[type="submit"]:active { transform: translateY(1px); }
   100% { transform: translateY(-14px) scale(1.4); opacity: 0; }
 }
 
-/* Sipping animation: tiny rotation of the arm/cup group every ~3s. */
+/* Sipping animation: tiny rotation of the arm/cup group every ~3s.
+   Origin point is the shoulder so the cup arc reads as "hand to mouth". */
 .coffee-person .cp-arm-cup {
   animation: cp-sip 3.2s infinite ease-in-out;
-  transform-origin: 60px 95px;
-  transform-box: fill-box;
+  transform-origin: 87.5px 85px;
 }
 @keyframes cp-sip {
   0%, 70%, 100% { transform: translate(0, 0) rotate(0deg); }
-  85%           { transform: translate(0, -3px) rotate(-12deg); }
+  85%           { transform: translate(-4px, -2px) rotate(-15deg); }
 }
 
 /* Mascot wrapper / context-specific layouts. */

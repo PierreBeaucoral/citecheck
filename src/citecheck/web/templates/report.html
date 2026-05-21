@@ -6,32 +6,49 @@
 
 {% block content %}
 
-{# ----- Pre-compute counters once so the template doesn't loop multiple times ----- #}
-{% set retracted_n = 0 %}
-{% set retracted_eoc_n = 0 %}
-{% set fab_susp_n = 0 %}
-{% set fab_likely_n = 0 %}
-{% set high_jq_n = 0 %}
-{% set medium_jq_n = 0 %}
-{% set claim_not_supported_n = 0 %}
-{% set claim_supported_n = 0 %}
+{# ----- Pre-compute counters using a Jinja2 namespace so writes inside the
+       for-loop actually survive into the outer scope.  A plain `{% set %}`
+       inside `{% for %}` creates a new variable in the loop's local scope
+       and does NOT update the outer name, which is exactly the trap that
+       made every summary card show 0 in the first version of this page. #}
+{% set c = namespace(
+   retracted_n=0,
+   retracted_eoc_n=0,
+   fab_susp_n=0,
+   fab_likely_n=0,
+   high_jq_n=0,
+   medium_jq_n=0,
+   claim_not_supported_n=0,
+   claim_supported_n=0,
+   clean_refs=0,
+) %}
 {% set total_refs = report.n_references %}
-{% set clean_refs = 0 %}
 
 {% for r in report.references %}
-  {% set is_flagged = false %}
-  {% if r.retraction.status == 'retracted' %}{% set retracted_n = retracted_n + 1 %}{% set is_flagged = true %}{% endif %}
-  {% if r.retraction.status == 'expression_of_concern' %}{% set retracted_eoc_n = retracted_eoc_n + 1 %}{% set is_flagged = true %}{% endif %}
-  {% if r.hallucination.verdict == 'suspicious' %}{% set fab_susp_n = fab_susp_n + 1 %}{% set is_flagged = true %}{% endif %}
-  {% if r.hallucination.verdict == 'likely_hallucinated' %}{% set fab_likely_n = fab_likely_n + 1 %}{% set is_flagged = true %}{% endif %}
-  {% if r.journal_quality.risk_level == 'high' %}{% set high_jq_n = high_jq_n + 1 %}{% set is_flagged = true %}{% endif %}
-  {% if r.journal_quality.risk_level == 'medium' %}{% set medium_jq_n = medium_jq_n + 1 %}{% endif %}
-  {% for c in r.claims %}
-    {% if c.status == 'not_supported' %}{% set claim_not_supported_n = claim_not_supported_n + 1 %}{% set is_flagged = true %}{% endif %}
-    {% if c.status == 'supported' %}{% set claim_supported_n = claim_supported_n + 1 %}{% endif %}
+  {% set row = namespace(is_flagged=false) %}
+  {% if r.retraction.status == 'retracted' %}{% set c.retracted_n = c.retracted_n + 1 %}{% set row.is_flagged = true %}{% endif %}
+  {% if r.retraction.status == 'expression_of_concern' %}{% set c.retracted_eoc_n = c.retracted_eoc_n + 1 %}{% set row.is_flagged = true %}{% endif %}
+  {% if r.hallucination.verdict == 'suspicious' %}{% set c.fab_susp_n = c.fab_susp_n + 1 %}{% set row.is_flagged = true %}{% endif %}
+  {% if r.hallucination.verdict == 'likely_hallucinated' %}{% set c.fab_likely_n = c.fab_likely_n + 1 %}{% set row.is_flagged = true %}{% endif %}
+  {% if r.journal_quality.risk_level == 'high' %}{% set c.high_jq_n = c.high_jq_n + 1 %}{% set row.is_flagged = true %}{% endif %}
+  {% if r.journal_quality.risk_level == 'medium' %}{% set c.medium_jq_n = c.medium_jq_n + 1 %}{% endif %}
+  {% for cl in r.claims %}
+    {% if cl.status == 'not_supported' %}{% set c.claim_not_supported_n = c.claim_not_supported_n + 1 %}{% set row.is_flagged = true %}{% endif %}
+    {% if cl.status == 'supported' %}{% set c.claim_supported_n = c.claim_supported_n + 1 %}{% endif %}
   {% endfor %}
-  {% if not is_flagged %}{% set clean_refs = clean_refs + 1 %}{% endif %}
+  {% if not row.is_flagged %}{% set c.clean_refs = c.clean_refs + 1 %}{% endif %}
 {% endfor %}
+
+{# Convenience aliases so the rest of the template reads cleanly. #}
+{% set retracted_n = c.retracted_n %}
+{% set retracted_eoc_n = c.retracted_eoc_n %}
+{% set fab_susp_n = c.fab_susp_n %}
+{% set fab_likely_n = c.fab_likely_n %}
+{% set high_jq_n = c.high_jq_n %}
+{% set medium_jq_n = c.medium_jq_n %}
+{% set claim_not_supported_n = c.claim_not_supported_n %}
+{% set claim_supported_n = c.claim_supported_n %}
+{% set clean_refs = c.clean_refs %}
 
 <section>
   <h2 style="margin-top: 0;">Citation-integrity report</h2>
@@ -47,7 +64,7 @@
     <span><a href="/api/reports/{{ job.job_id }}.json">Download JSON</a></span>
   </div>
 
-  {% if report.phase5.partial %}
+  {% if report.phase5.enabled and report.phase5.partial %}
     <div class="banner banner-warn">
       <span aria-hidden="true">⏳</span>
       <span>
@@ -57,7 +74,33 @@
         claims verified before the daily LLM quota was reached.
       </span>
     </div>
-  {% elif not report.phase5.enabled %}
+  {% elif report.phase5.enabled and report.phase5.claims_verified == 0 %}
+    <div class="banner banner-warn">
+      <span aria-hidden="true">⚠</span>
+      <span>
+        <strong>Phase 5 verified 0 claims.</strong>
+        {% if report.phase5.skipped_reason %}
+          {{ report.phase5.skipped_reason }}
+        {% else %}
+          We tried Phase 5 on {{ [report.phase5.n_candidates, settings.max_claims_per_pdf] | min }} references
+          ({{ report.phase5.n_candidates }} had a resolvable DOI, capped at {{ settings.max_claims_per_pdf }}
+          per PDF), but every attempted source was either paywalled or otherwise unfetchable
+          ({{ report.phase5.claims_skipped_no_text }} no-text skips,
+           {{ report.phase5.claims_skipped_quota }} quota skips).
+          Phase 5 needs an open-access full text to verify claims — this paper's reference list
+          is dominated by paywalled venues, so the metadata checks above are the most we can say.
+        {% endif %}
+      </span>
+    </div>
+  {% elif report.phase5.enabled %}
+    <div class="banner banner-success">
+      <span aria-hidden="true">✓</span>
+      <span>
+        <strong>Phase 5 ran on {{ report.phase5.claims_verified }} claim{{ 's' if report.phase5.claims_verified != 1 else '' }}.</strong>
+        Model: <code>{{ report.phase5.model }}</code> via {{ report.phase5.provider }}.
+      </span>
+    </div>
+  {% else %}
     <div class="banner banner-info">
       <span aria-hidden="true">ℹ</span>
       <span>
@@ -163,17 +206,95 @@
         {% if r.claims %}
           <dt>Claim verification</dt>
           <dd>
-            {% for c in r.claims %}
-              <div class="claim claim-{{ c.status }}">
-                <strong>{{ c.status | replace('_', ' ') }}</strong>
-                {% if c.confidence %} (confidence: {{ c.confidence }}){% endif %}
-                {% if c.reasoning %}<div class="muted small" style="margin-top: 0.2rem;">{{ c.reasoning }}</div>{% endif %}
-                {% if c.quote %}<blockquote>{{ c.quote }}</blockquote>{% endif %}
+            {% for cl in r.claims %}
+              <div class="claim claim-{{ cl.status }}">
+                <strong>{{ cl.status | replace('_', ' ') }}</strong>
+                {% if cl.confidence %} (confidence: {{ cl.confidence }}){% endif %}
+                {% if cl.reasoning %}<div class="muted small" style="margin-top: 0.2rem;">{{ cl.reasoning }}</div>{% endif %}
+                {% if cl.quote %}<blockquote>{{ cl.quote }}</blockquote>{% endif %}
               </div>
             {% endfor %}
           </dd>
         {% endif %}
       </dl>
+
+      {# Expandable details — show layer-by-layer reasoning so a reader can
+         judge *why* the verdict landed where it did. #}
+      <details class="ref-details">
+        <summary>Why this verdict?</summary>
+        <div class="ref-details-body">
+
+          {# Hallucination per-layer #}
+          {% if r.hallucination.signals %}
+            <p class="detail-label">Fabrication signals (5-layer detector):</p>
+            <ul class="layer-list">
+              {% for sig in r.hallucination.signals %}
+                <li>
+                  <span class="layer-name">{{ sig.layer }}</span>
+                  <span class="pill {{ 'warn' if sig.flagged else 'ok' }}">{{ 'flag' if sig.flagged else 'pass' }}</span>
+                  <span class="muted small">{{ sig.reasoning }}</span>
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {# Hallucination caveats (low-coverage downgrades) #}
+          {% if r.hallucination.caveats %}
+            <p class="detail-label">Caveats applied:</p>
+            <ul class="layer-list">
+              {% for cv in r.hallucination.caveats %}
+                <li class="muted small">{{ cv }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {# Journal quality signals (risk-score contributors) #}
+          {% if r.journal_quality.signals %}
+            <p class="detail-label">Journal-quality signals
+              {% if r.journal_quality.risk_score is not none %}
+                (final score: {{ r.journal_quality.risk_score }})
+              {% endif %}
+            </p>
+            <ul class="layer-list">
+              {% for s in r.journal_quality.signals %}
+                <li class="muted small">{{ s }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          {# Resolution provenance #}
+          <p class="detail-label">Resolved identifiers:</p>
+          <ul class="layer-list">
+            <li class="small">
+              DOI: <code>{{ r.raw.resolved_doi or '(none — could not resolve)' }}</code>
+            </li>
+            {% if rawref.year %}
+              <li class="small">Year: {{ rawref.year }}</li>
+            {% endif %}
+            {% if rawref.journal %}
+              <li class="small">Journal: {{ rawref.journal }}</li>
+            {% endif %}
+            {% if rawref.authors %}
+              <li class="small">
+                Authors:
+                {% for a in rawref.authors[:5] %}
+                  {{ a.family }}{% if not loop.last %},{% endif %}
+                {% endfor %}
+                {% if rawref.authors|length > 5 %} ...{% endif %}
+              </li>
+            {% endif %}
+          </ul>
+
+          {% if r.retraction.notes %}
+            <p class="detail-label">Retraction-check notes:</p>
+            <ul class="layer-list">
+              {% for n in r.retraction.notes %}
+                <li class="muted small">{{ n }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </div>
+      </details>
     </article>
   {% endfor %}
 </section>
@@ -181,69 +302,103 @@
 {# ----- Chart.js wiring + ref filter ----- #}
 <script>
 (function () {
-  const data = {
-    clean: {{ clean_refs }},
-    flagged: {{ retracted_n + retracted_eoc_n + fab_susp_n + fab_likely_n + high_jq_n + claim_not_supported_n }},
-    medium: {{ medium_jq_n }},
-    byCheck: {
-      retracted: {{ retracted_n + retracted_eoc_n }},
-      fabricated: {{ fab_susp_n + fab_likely_n }},
-      highJournal: {{ high_jq_n }},
-      claimsNotSupported: {{ claim_not_supported_n }},
-    },
+  // Counts pulled from the Jinja namespace; ALL share the same dataset
+  // so we can drive multiple charts from one source.
+  const totals = {
+    refs:        {{ report.n_references }},
+    clean:       {{ clean_refs }},
+    medium:      {{ medium_jq_n }},
+    flagged:     {{ retracted_n + retracted_eoc_n + fab_susp_n + fab_likely_n + high_jq_n + claim_not_supported_n }},
+    retracted:   {{ retracted_n + retracted_eoc_n }},
+    fab_susp:    {{ fab_susp_n }},
+    fab_likely:  {{ fab_likely_n }},
+    high_jq:     {{ high_jq_n }},
+    medium_jq:   {{ medium_jq_n }},
+    claim_bad:   {{ claim_not_supported_n }},
+    claim_ok:    {{ claim_supported_n }},
   };
 
-  // Overall doughnut
+  // Avoid an empty doughnut when there is nothing to chart.
+  function hasData(...values) { return values.some(v => v > 0); }
+
+  // ---- Chart 1: Overall reference health (doughnut) ----
+  // Three slices: clean, medium-risk-journal-only, flagged.
+  // Medium-only = refs whose only "risk" was a medium-risk journal AND nothing else fired.
+  // To get that count exactly we'd need a per-ref pass in JS; for now we
+  // approximate by max(0, medium_jq - flagged) since a flagged ref's
+  // medium-journal status is dominated by the bigger issue.
+  const mediumOnly = Math.max(0, totals.medium - totals.flagged);
   const ctxOverall = document.getElementById('chart-overall');
   if (ctxOverall) {
-    new Chart(ctxOverall, {
-      type: 'doughnut',
-      data: {
-        labels: ['Clean', 'Medium-risk journal', 'Flagged'],
-        datasets: [{
-          data: [data.clean, Math.max(0, data.medium - data.flagged), data.flagged],
-          backgroundColor: ['#16a34a', '#d97706', '#dc2626'],
-          borderWidth: 0,
-        }],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 12 } } },
+    if (hasData(totals.clean, mediumOnly, totals.flagged)) {
+      new Chart(ctxOverall, {
+        type: 'doughnut',
+        data: {
+          labels: ['Clean (no issues found)', 'Only medium-risk journal', 'Flagged'],
+          datasets: [{
+            data: [totals.clean, mediumOnly, totals.flagged],
+            backgroundColor: ['#16a34a', '#ea580c', '#e11d48'],
+            borderWidth: 2,
+            borderColor: '#ffffff',
+          }],
         },
-        cutout: '60%',
-      },
-    });
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 12 }, padding: 12 } },
+            tooltip: { callbacks: { label: ctx => `${ctx.label}: ${ctx.parsed}` } },
+          },
+          cutout: '58%',
+        },
+      });
+    } else {
+      ctxOverall.replaceWith(Object.assign(document.createElement('p'), {
+        className: 'muted small',
+        innerText: 'Nothing to chart — every reference resolved cleanly.',
+      }));
+    }
   }
 
-  // By-check bar
+  // ---- Chart 2: Detailed counts by check (stacked horizontal bar) ----
+  // Each row = a check; bars stacked by severity (danger / warn / ok).
   const ctxByCheck = document.getElementById('chart-bycheck');
   if (ctxByCheck) {
     new Chart(ctxByCheck, {
       type: 'bar',
       data: {
-        labels: ['Retracted', 'Fabricated', 'Predatory venue', 'Claim not supported'],
-        datasets: [{
-          data: [data.byCheck.retracted, data.byCheck.fabricated, data.byCheck.highJournal, data.byCheck.claimsNotSupported],
-          backgroundColor: ['#dc2626', '#dc2626', '#dc2626', '#dc2626'],
-          borderRadius: 4,
-        }],
+        labels: ['Retraction', 'Fabrication', 'Journal quality', 'Claim verification'],
+        datasets: [
+          {
+            label: 'High / danger',
+            data: [totals.retracted, totals.fab_likely, totals.high_jq, totals.claim_bad],
+            backgroundColor: '#e11d48',
+            borderRadius: 4,
+          },
+          {
+            label: 'Suspicious / medium',
+            data: [0, totals.fab_susp, totals.medium_jq, 0],
+            backgroundColor: '#ea580c',
+            borderRadius: 4,
+          },
+        ],
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
         indexAxis: 'y',
-        plugins: { legend: { display: false } },
+        plugins: {
+          legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 }, padding: 8 } },
+        },
         scales: {
-          x: { beginAtZero: true, ticks: { precision: 0 } },
-          y: { ticks: { font: { size: 11 } } },
+          x: { stacked: true, beginAtZero: true, ticks: { precision: 0 } },
+          y: { stacked: true, ticks: { font: { size: 11 } } },
         },
       },
     });
   }
 
-  // Ref filter
+  // ---- Ref-card filter buttons ----
   const toggles = document.querySelectorAll('.ref-toggle');
   const cards = document.querySelectorAll('.ref-card');
   toggles.forEach(btn => {
