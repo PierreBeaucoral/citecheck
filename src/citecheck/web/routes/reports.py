@@ -34,7 +34,10 @@ async def report_page(request: Request, job_id: str) -> HTMLResponse:
     return templates.TemplateResponse(
         request=request,
         name="report.html",
-        context={"job": job, "report": report},
+        # `settings` is required by the Phase 5 breakdown banner
+        # (max_claims_per_pdf reference); the prior context omitted it,
+        # which raised UndefinedError on the `| min` filter call.
+        context={"job": job, "report": report, "settings": request.app.state.settings},
     )
 
 
