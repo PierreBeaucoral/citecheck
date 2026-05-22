@@ -7,7 +7,7 @@ sdk: docker
 app_port: 7860
 pinned: false
 license: apache-2.0
-short_description: Scan academic PDFs for retracted, fabricated, predatory, and misrepresented citations.
+short_description: Detect retracted, fake, or predatory citations in PDFs.
 tags:
   - academic-integrity
   - citations
