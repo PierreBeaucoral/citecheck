@@ -126,9 +126,7 @@ def _gather_source_texts(
         if text is None:
             log.warning("source %s: no text resolved", sid)
         else:
-            log.info(
-                "source %s: %d chars via %s", sid, len(text), provenance
-            )
+            log.info("source %s: %d chars via %s", sid, len(text), provenance)
         out[sid] = (text, provenance)
     return out
 
@@ -198,15 +196,12 @@ def main() -> int:
         "--hf-model",
         type=str,
         default=os.environ.get("CITECHECK_HF_MODEL", "Qwen/Qwen2.5-7B-Instruct"),
-        help="HuggingFace model id (used when --provider hf). "
-        "Default: Qwen/Qwen2.5-7B-Instruct.",
+        help="HuggingFace model id (used when --provider hf). Default: Qwen/Qwen2.5-7B-Instruct.",
     )
     parser.add_argument(
         "--cerebras-model",
         type=str,
-        default=os.environ.get(
-            "CITECHECK_CEREBRAS_MODEL", "qwen-3-235b-a22b-instruct-2507"
-        ),
+        default=os.environ.get("CITECHECK_CEREBRAS_MODEL", "qwen-3-235b-a22b-instruct-2507"),
         help="Cerebras model id (used when --provider cerebras). "
         "Default: qwen-3-235b-a22b-instruct-2507 (free tier).",
     )
@@ -279,17 +274,20 @@ def main() -> int:
         # 2) Wrap the chosen LLM provider in a closure that fixes the model
         #    at the chosen value, matching verify_claim's expected signature.
         if chosen_provider == "hf":
+
             def ollama_call(prompt: str) -> str:
                 return _call_hf_chat(prompt, model=chosen_model)
         elif chosen_provider == "cerebras":
+
             def ollama_call(prompt: str) -> str:
                 return _call_cerebras(prompt, model=chosen_model)
         else:
+
             def ollama_call(prompt: str) -> str:
                 return _call_ollama(prompt, model=chosen_model)
 
         # 3) The embedder is expensive to load — share one instance across items.
-        from citecheck.checks.claims import _load_embedder  # noqa: WPS433
+        from citecheck.checks.claims import _load_embedder
 
         embedder = _load_embedder()
 
@@ -320,9 +318,9 @@ def main() -> int:
                 skipped_no_text += 1
                 continue
 
-            ref = _build_reference(_classify_id(
-                next((s["doi"] for s in sources if s["source_id"] == sid), "")
-            )[0])
+            ref = _build_reference(
+                _classify_id(next((s["doi"] for s in sources if s["source_id"] == sid), ""))[0]
+            )
 
             # Inter-request throttle for rate-limited free providers.
             if args.sleep_s > 0:
@@ -337,7 +335,7 @@ def main() -> int:
                     ollama_call=ollama_call,
                     text=text,
                 )
-            except Exception as exc:  # noqa: BLE001
+            except Exception as exc:
                 # Don't let one bad LLM response kill the run.
                 check = None
                 err = repr(exc)
@@ -359,11 +357,9 @@ def main() -> int:
                 confidence = check.confidence
                 reasoning = check.reasoning
 
-            match: bool | None
-            if predicted_label is None:
-                match = None
-            else:
-                match = predicted_label == item["correctness"]
+            match: bool | None = (
+                None if predicted_label is None else predicted_label == item["correctness"]
+            )
 
             predictions.append(
                 {
@@ -402,9 +398,15 @@ def main() -> int:
 
     # Positive class = predicted "incorrect" (flagged as misrepresentation).
     scored = [p for p in predictions if p["predicted_label"] is not None]
-    tp = sum(1 for p in scored if p["predicted_label"] == "incorrect" and p["expected"] == "incorrect")
-    fp = sum(1 for p in scored if p["predicted_label"] == "incorrect" and p["expected"] == "correct")
-    fn = sum(1 for p in scored if p["predicted_label"] == "correct" and p["expected"] == "incorrect")
+    tp = sum(
+        1 for p in scored if p["predicted_label"] == "incorrect" and p["expected"] == "incorrect"
+    )
+    fp = sum(
+        1 for p in scored if p["predicted_label"] == "incorrect" and p["expected"] == "correct"
+    )
+    fn = sum(
+        1 for p in scored if p["predicted_label"] == "correct" and p["expected"] == "incorrect"
+    )
     tn = sum(1 for p in scored if p["predicted_label"] == "correct" and p["expected"] == "correct")
 
     precision = _safe_div(tp, tp + fp)

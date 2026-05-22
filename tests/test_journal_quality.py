@@ -59,7 +59,9 @@ class TestConcernMatch:
 
     def test_held_out_target_now_matched(self) -> None:
         # v2 added held-out predatory targets to the concern list.
-        assert _concern_publisher_match("Insight Medical Publishing") == "insight medical publishing"
+        assert (
+            _concern_publisher_match("Insight Medical Publishing") == "insight medical publishing"
+        )
         assert _concern_publisher_match("SciFed Journals") == "scifed"
 
     def test_contested_entries_removed(self) -> None:
@@ -78,7 +80,7 @@ class TestConcernMatch:
 
 class TestScoreJournal:
     def test_doaj_alone_pushes_low(self) -> None:
-        score, signals = _score_journal(
+        score, _ = _score_journal(
             doaj_listed=True,
             is_indexed_in_scopus=None,
             h_index=None,
@@ -92,7 +94,7 @@ class TestScoreJournal:
         assert _score_to_level(score) == JournalRiskLevel.LOW
 
     def test_concern_alone_pushes_high(self) -> None:
-        score, signals = _score_journal(
+        score, _ = _score_journal(
             doaj_listed=None,
             is_indexed_in_scopus=None,
             h_index=None,

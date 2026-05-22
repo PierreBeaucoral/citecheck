@@ -1,0 +1,95 @@
+# Auto-deploy citecheck to its HuggingFace Space on every push to main.
+#
+# Mechanism: HF Spaces are git repos.  We add the Space as a second
+# remote and push main to it.  The Space then rebuilds the Docker image
+# from the Dockerfile at its root (which is identical to ours).
+#
+# Required secrets (set in repo Settings -> Secrets and variables -> Actions):
+#   HF_TOKEN  — a HuggingFace User Access Token with write access to the
+#               target Space.  Generate at https://huggingface.co/settings/tokens
+#               (role: "write" or "fine-grained" with write to Spaces).
+#
+# Required repo variables (Settings -> Secrets and variables -> Variables):
+#   HF_USERNAME  — the HF user that owns the Space (e.g. "pierrebeaucoral").
+#   HF_SPACE_NAME — the Space name (e.g. "citecheck").
+#
+# First-time setup: create the Space manually on HF (UI -> "New Space" ->
+# SDK: Docker -> empty repo).  Subsequent pushes are handled by this job.
+
+name: Deploy to HuggingFace Space
+
+on:
+  push:
+    branches: [main]
+  # Allow manual trigger from the Actions tab for emergency redeploys.
+  workflow_dispatch:
+
+# Cancel previous in-flight deploys when a new push arrives — we only
+# care about the latest main.
+concurrency:
+  group: hf-deploy
+  cancel-in-progress: true
+
+jobs:
+  push-to-hf:
+    name: Push main to HuggingFace Space
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main with full history
+        uses: actions/checkout@v4
+        with:
+          # HF rejects shallow pushes; we need the full history.
+          fetch-depth: 0
+          lfs: false
+
+      - name: Sanity-check Dockerfile is present
+        run: |
+          if [[ ! -f Dockerfile ]]; then
+            echo "::error::Dockerfile missing at repo root — HF Space build will fail."
+            exit 1
+          fi
+          if [[ ! -f spaces/README.md ]]; then
+            echo "::error::spaces/README.md missing — HF Space metadata header lives there."
+            exit 1
+          fi
+
+      - name: Copy spaces/README.md to repo-root README for HF
+        # HF Spaces reads the YAML frontmatter from the root README.md.
+        # Our main README.md is a developer-facing project README without
+        # the YAML header; the Space-specific header lives in
+        # spaces/README.md.  We overwrite the root README only on the
+        # deploy branch — never in main itself.
+        run: |
+          cp spaces/README.md README.md
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git commit -m "deploy: substitute HF Space README" || echo "(no changes to README)"
+
+      - name: Push to HuggingFace Space
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_USERNAME: ${{ vars.HF_USERNAME }}
+          HF_SPACE_NAME: ${{ vars.HF_SPACE_NAME }}
+        run: |
+          if [[ -z "$HF_TOKEN" ]]; then
+            echo "::error::HF_TOKEN secret not set."
+            exit 1
+          fi
+          if [[ -z "$HF_USERNAME" || -z "$HF_SPACE_NAME" ]]; then
+            echo "::error::HF_USERNAME or HF_SPACE_NAME repo variable not set."
+            exit 1
+          fi
+
+          # Use the token as the password component of the URL.  HF
+          # accepts basic-auth git pushes when the username is the
+          # account name and the password is the token.
+          REMOTE_URL="https://${HF_USERNAME}:${HF_TOKEN}@huggingface.co/spaces/${HF_USERNAME}/${HF_SPACE_NAME}"
+
+          git remote add space "$REMOTE_URL" 2>/dev/null || \
+            git remote set-url space "$REMOTE_URL"
+
+          # Force-push because the Space's history may diverge from main
+          # (HF auto-commits when you edit secrets in the UI etc.).
+          # We treat main as the source of truth.
+          git push --force space HEAD:main

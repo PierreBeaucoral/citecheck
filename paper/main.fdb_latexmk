@@ -1,12 +1,12 @@
 # Fdb version 4
-["biber main"] 1779365039.71729 "main.bcf" "main.bbl" "main" 1779373269.06049 0
-  "main.bcf" 1779373268.91823 110782 2932155beb32924d359daad87ed772a6 "pdflatex"
+["biber main"] 1779378993.78877 "main.bcf" "main.bbl" "main" 1779378999.18846 0
+  "main.bcf" 1779378999.05108 110623 6b46d861a8a458b532daaeeecbb66d2e "pdflatex"
   "references.bib" 1779363625.55445 2603 d851e899b2bc30f9f19cec4a1c2bf84c ""
   (generated)
   "main.bbl"
   "main.blg"
   (rewritten before read)
-["pdflatex"] 1779373267.37221 "main.tex" "main.pdf" "main" 1779373269.06079 0
+["pdflatex"] 1779378997.54655 "main.tex" "main.pdf" "main" 1779378999.18875 0
   "/Users/pierrebeaucoral/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc" 1254269338 2375 baa924870cfb487815765f9094cf3728 ""
   "/Users/pierrebeaucoral/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc" 1202520719 2405 5dcf2c1b967ee25cc46c58cd52244aed ""
   "/Users/pierrebeaucoral/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc" 1202520719 2840 216e6e45ad352e2456e1149f28885bee ""
@@ -267,11 +267,11 @@
   "figures/predicted_by_class.pdf" 1779355985.80962 11899 e40d4a8ffd707f19d0bfe9b3bcc6794e ""
   "figures/red_flag_distribution.pdf" 1779355985.84789 12606 430a63fc03a4e67eb60c79d437ac4070 ""
   "figures/retraction_source_coverage.pdf" 1779355985.95717 14174 4362275342bee01c0ddba6a8c0273ef6 ""
-  "main.aux" 1779373268.91501 20349 29b31f292f8becafdcbb7276c28ec740 "pdflatex"
-  "main.bbl" 1779365042.19282 10763 f5aaf62529b13fe450513e62b682c302 "biber main"
-  "main.out" 1779373268.91673 2334 99ddc7617d5289315a46526750c90b66 "pdflatex"
-  "main.run.xml" 1779373268.9193 2345 2a3bf96a8d53afbde995fbc1171fecf2 "pdflatex"
-  "main.tex" 1779373193.85706 86637 8e354deb99406fab98ea652502821ad2 ""
+  "main.aux" 1779378999.0487 20133 2c9f94e6387e64a2063a88bb2e6ce5ed "pdflatex"
+  "main.bbl" 1779378995.81391 10763 f5aaf62529b13fe450513e62b682c302 "biber main"
+  "main.out" 1779378999.05024 2334 99ddc7617d5289315a46526750c90b66 "pdflatex"
+  "main.run.xml" 1779378999.05172 2345 2a3bf96a8d53afbde995fbc1171fecf2 "pdflatex"
+  "main.tex" 1779378819.81685 85237 b3a07ba70a0503f6b869e30ceaead62c ""
   "tables/eval_bypubtype.tex" 1779355985.84916 636 0f0c6aca36ea0fe54177e40519c9d418 ""
   "tables/eval_bysource.tex" 1779355985.84863 387 123e83b5cef8a2ce3268ad00a92113ad ""
   "tables/eval_claim_headline.tex" 1779355985.88866 424 6fe5e306bc173ca007738f46a056b734 ""

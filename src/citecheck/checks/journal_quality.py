@@ -249,9 +249,7 @@ def _query_openalex_source_metadata(
     if resp is None:
         return None
     if resp.status_code != 200:
-        log.warning(
-            "journal_quality: OpenAlex /sources HTTP %s for %r", resp.status_code, journal
-        )
+        log.warning("journal_quality: OpenAlex /sources HTTP %s for %r", resp.status_code, journal)
         return None
     body = resp.json() or {}
     results = body.get("results") or []
@@ -396,16 +394,9 @@ def _score_journal(
         score += 0.6
         signals.append(f"concern-list match '{concern_match}' (+0.6)")
     # Journal-flood pattern: tiny h-index but enormous works_count.
-    if (
-        h_index is not None
-        and works_count is not None
-        and h_index <= 3
-        and works_count >= 500
-    ):
+    if h_index is not None and works_count is not None and h_index <= 3 and works_count >= 500:
         score += 0.4
-        signals.append(
-            f"journal-flood pattern (h-index={h_index}, works={works_count}) (+0.4)"
-        )
+        signals.append(f"journal-flood pattern (h-index={h_index}, works={works_count}) (+0.4)")
     if apc_usd is not None and apc_usd > 1500 and doaj_listed is not True:
         score += 0.3
         signals.append(f"APC=${apc_usd} > $1500 and not DOAJ-listed (+0.3)")
@@ -515,7 +506,9 @@ def check_journal_quality(
     # Coverage caveats: we want users to see when the score is based on a
     # narrow slice of signals (e.g., DOAJ down + OpenAlex budget exhausted).
     if not metadata:
-        notes.append("OpenAlex /sources unavailable (budget or no match); score uses DOAJ + concern list only.")
+        notes.append(
+            "OpenAlex /sources unavailable (budget or no match); score uses DOAJ + concern list only."
+        )
     if doaj_listed is None:
         notes.append("DOAJ check failed; signal omitted.")
     if not signals:

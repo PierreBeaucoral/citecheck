@@ -585,9 +585,7 @@ def _emit_claim_quality_tables() -> None:
         "\\begin{tabular}{lcc}\n\\toprule\n"
         "\\multicolumn{3}{l}{\\textit{Panel A: Recall by severity (false items only)}} \\\\\n"
         "\\midrule\n"
-        " Severity & $n$ & Recall \\\\\n\\midrule\n"
-        + "".join(sev_rows)
-        + "\\midrule\n"
+        " Severity & $n$ & Recall \\\\\n\\midrule\n" + "".join(sev_rows) + "\\midrule\n"
         "\\multicolumn{3}{l}{\\textit{Panel B: Recall by error type (false items only)}} \\\\\n"
         "\\midrule\n"
         " Error type & $n$ & Recall \\\\\n\\midrule\n"
@@ -707,13 +705,15 @@ def _emit_per_layer_bar_fig(predictions: list[dict]) -> None:
     fab_rates: list[float] = []
     for k in layer_keys:
         r_flag = sum(
-            1 for p in predictions
+            1
+            for p in predictions
             if p["expected_verdict"] != "likely_hallucinated"
             and (p.get("layer_flags") or {}).get(k) is True
         )
         r_total = sum(1 for p in predictions if p["expected_verdict"] != "likely_hallucinated")
         f_flag = sum(
-            1 for p in predictions
+            1
+            for p in predictions
             if p["expected_verdict"] == "likely_hallucinated"
             and (p.get("layer_flags") or {}).get(k) is True
         )
@@ -724,12 +724,8 @@ def _emit_per_layer_bar_fig(predictions: list[dict]) -> None:
     x = list(range(len(layer_names)))
     width = 0.36
     fig, ax = plt.subplots(figsize=(7.5, 4.0))
-    ax.bar(
-        [xi - width / 2 for xi in x], real_rates, width, label="Real refs", color="#4c8bd9"
-    )
-    ax.bar(
-        [xi + width / 2 for xi in x], fab_rates, width, label="Fabricated refs", color="#d9534f"
-    )
+    ax.bar([xi - width / 2 for xi in x], real_rates, width, label="Real refs", color="#4c8bd9")
+    ax.bar([xi + width / 2 for xi in x], fab_rates, width, label="Fabricated refs", color="#d9534f")
     ax.set_xticks(x)
     ax.set_xticklabels(layer_names, rotation=15, ha="right")
     ax.set_ylabel("Flag rate")
@@ -781,7 +777,15 @@ def _emit_retraction_coverage_fig() -> None:
     ax.set_xlim(0, total)
     ax.set_xlabel(f"Correctly-flagged retractions (n = {total})")
     # Add inline percentage labels.
-    ax.text(crossref_n / 2, 0, f"{crossref_n / total:.0%}", ha="center", va="center", color="white", fontsize=12)
+    ax.text(
+        crossref_n / 2,
+        0,
+        f"{crossref_n / total:.0%}",
+        ha="center",
+        va="center",
+        color="white",
+        fontsize=12,
+    )
     ax.text(
         crossref_n + openalex_n / 2,
         0,
@@ -840,14 +844,26 @@ def _emit_claim_stratified_fig() -> None:
     color = "#1f6fbf"
     bars1 = ax1.bar(sev_labels, sev_recall, color=color)
     for bar, n in zip(bars1, sev_n, strict=False):
-        ax1.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.02, f"n={n}", ha="center", fontsize=9)
+        ax1.text(
+            bar.get_x() + bar.get_width() / 2,
+            bar.get_height() + 0.02,
+            f"n={n}",
+            ha="center",
+            fontsize=9,
+        )
     ax1.set_ylim(0, 1.1)
     ax1.set_ylabel("Recall")
     ax1.set_title("(a) by severity", fontsize=10)
 
     bars2 = ax2.bar(err_labels, err_recall, color=color)
     for bar, n in zip(bars2, err_n, strict=False):
-        ax2.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.02, f"n={n}", ha="center", fontsize=9)
+        ax2.text(
+            bar.get_x() + bar.get_width() / 2,
+            bar.get_height() + 0.02,
+            f"n={n}",
+            ha="center",
+            fontsize=9,
+        )
     ax2.set_ylim(0, 1.1)
     ax2.tick_params(axis="x", rotation=20)
     for tl in ax2.get_xticklabels():

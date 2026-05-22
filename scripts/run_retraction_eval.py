@@ -208,9 +208,7 @@ def main() -> int:
     )
 
     if args.resample or not args.labels.is_file():
-        code = build_labels(
-            n_retracted=args.n_retracted, n_clean=args.n_clean, out_csv=args.labels
-        )
+        code = build_labels(n_retracted=args.n_retracted, n_clean=args.n_clean, out_csv=args.labels)
         if code != 0:
             return code
 
@@ -237,9 +235,7 @@ def main() -> int:
             # Identify which source produced the signal: Crossref's update-to
             # would have populated `notice_doi`; OpenAlex-only paths do not.
             crossref_signal = bool(check.notice_doi)
-            openalex_signal = (
-                check.status == RetractionStatus.RETRACTED and not crossref_signal
-            )
+            openalex_signal = check.status == RetractionStatus.RETRACTED and not crossref_signal
 
             predictions.append(
                 {
@@ -268,7 +264,9 @@ def main() -> int:
 
     # ---- Scoring -----------------------------------------------------------
     scored = [p for p in predictions if p["predicted_label"] is not None]
-    tp = sum(1 for p in scored if p["predicted_label"] == "retracted" and p["expected"] == "retracted")
+    tp = sum(
+        1 for p in scored if p["predicted_label"] == "retracted" and p["expected"] == "retracted"
+    )
     fp = sum(1 for p in scored if p["predicted_label"] == "retracted" and p["expected"] == "clean")
     fn = sum(1 for p in scored if p["predicted_label"] == "clean" and p["expected"] == "retracted")
     tn = sum(1 for p in scored if p["predicted_label"] == "clean" and p["expected"] == "clean")

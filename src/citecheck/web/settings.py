@@ -37,7 +37,9 @@ class WebSettings(BaseSettings):
     # Site title shown on the upload page and in browser tabs.
     site_title: str = "citecheck"
     # Tagline shown on the upload page.
-    site_tagline: str = "Scan academic PDFs for retracted, fabricated, predatory, and misrepresented citations."
+    site_tagline: str = (
+        "Scan academic PDFs for retracted, fabricated, predatory, and misrepresented citations."
+    )
 
     # --- Storage paths -------------------------------------------------------
     # Directory for uploaded PDFs (kept only while the job runs).

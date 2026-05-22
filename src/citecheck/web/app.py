@@ -9,14 +9,18 @@ HuggingFace Spaces) and as a `create_app()` callable so tests can spin
 up isolated instances with custom settings and tmpdir-backed storage.
 """
 
+# Imports are deliberately ordered with `load_dotenv` first so that
+# every downstream module sees the .env-resolved environment.  Some
+# modules (claims.py, unpaywall.py) read env vars at import time and
+# would otherwise crash when launched via uvicorn without env loaded.
+# We silence ruff E402 (module-level imports must be at top) for the
+# whole file because the dotenv-first order is intentional.
+# ruff: noqa: E402
+
 from __future__ import annotations
 
 from pathlib import Path
 
-# Load .env BEFORE importing any module that reads environment variables at
-# import time (e.g. claims.py reading OLLAMA_MODEL, unpaywall.py demanding
-# CITECHECK_CONTACT_EMAIL).  The CLI does this in cli.py; the web app needs
-# the same treatment when launched via `uvicorn citecheck.web.app:app`.
 from dotenv import load_dotenv
 
 _REPO_ROOT = Path(__file__).resolve().parents[3]
@@ -25,7 +29,7 @@ load_dotenv(_REPO_ROOT / ".env")
 # Docker deployments where the repo root isn't the launch directory).
 load_dotenv(Path.cwd() / ".env")
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -101,7 +105,7 @@ def create_app(settings: WebSettings | None = None) -> FastAPI:
 
     # Friendly favicon shim so the browser stops 404'ing it.
     @app.get("/favicon.ico", include_in_schema=False)
-    async def favicon():  # noqa: D401
+    async def favicon():
         return HTMLResponse(status_code=204)
 
     return app

@@ -27,7 +27,7 @@ MAX_PDF_BYTES = 25 * 1024 * 1024
 async def upload_pdf(
     request: Request,
     background_tasks: BackgroundTasks,
-    pdf: UploadFile = File(...),
+    pdf: UploadFile = File(...),  # noqa: B008 — FastAPI dep-injection idiom.
     verify_claims: str | None = Form(None),
 ) -> RedirectResponse:
     """Accept one PDF; create a job; redirect to /jobs/{job_id}.
@@ -47,9 +47,7 @@ async def upload_pdf(
     if len(raw) == 0:
         return _error_redirect("Uploaded PDF is empty.")
     if len(raw) > MAX_PDF_BYTES:
-        return _error_redirect(
-            f"PDF exceeds {MAX_PDF_BYTES // (1024 * 1024)} MB limit."
-        )
+        return _error_redirect(f"PDF exceeds {MAX_PDF_BYTES // (1024 * 1024)} MB limit.")
 
     phase5_enabled = bool(verify_claims) and settings.enable_phase5_toggle
 

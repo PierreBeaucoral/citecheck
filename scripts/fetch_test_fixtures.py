@@ -27,7 +27,7 @@ import httpx
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 FIXTURES_DIR = REPO_ROOT / "data" / "fixtures"
-USER_AGENT = "citecheck-test-fixtures/0.0.1 (mailto:pbeauco@gmail.com)"
+USER_AGENT = "citecheck-test-fixtures/0.0.1 (mailto:pierre.beaucoral@uca.fr)"
 
 # arXiv accepts both the modern (YYMM.NNNNN) and legacy (subject-class/YYMMNNN) forms.
 _ARXIV_ID_RE = re.compile(

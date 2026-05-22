@@ -23,9 +23,7 @@ async def job_status_page(request: Request, job_id: str) -> HTMLResponse:
     templates: Jinja2Templates = request.app.state.templates
     job = store.get_job(job_id)
     if job is None:
-        return HTMLResponse(
-            content="<h1>Job not found</h1>", status_code=404
-        )
+        return HTMLResponse(content="<h1>Job not found</h1>", status_code=404)
     return templates.TemplateResponse(
         request=request,
         name="job_status.html",

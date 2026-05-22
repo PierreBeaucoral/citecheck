@@ -9,10 +9,6 @@ from __future__ import annotations
 
 from typing import Any
 
-import pytest
-
-from citecheck.web.storage import STATUS_DONE, STATUS_ERROR
-
 
 def test_index_renders_upload_form(client) -> None:
     resp = client.get("/")
@@ -80,7 +76,9 @@ def test_jobs_page_404s_for_unknown_id(client) -> None:
 def test_jobs_status_partial_shows_running(client, app) -> None:
     store = app.state.store
     job_id = store.create_job(pdf_bytes=b"%PDF-X", phase5_enabled=False)
-    store.set_status(job_id, "running", progress_stage="resolution", progress_text="resolving 12 refs")
+    store.set_status(
+        job_id, "running", progress_stage="resolution", progress_text="resolving 12 refs"
+    )
     resp = client.get(f"/api/jobs/{job_id}/status")
     assert resp.status_code == 200
     assert "resolution" in resp.text

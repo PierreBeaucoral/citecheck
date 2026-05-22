@@ -45,9 +45,7 @@ DEFAULT_OLLAMA_HOST = os.environ.get("OLLAMA_HOST", "http://localhost:11434")
 # selects the best inference provider for the model id and supports the
 # /v1/chat/completions schema; no extra SDK needed.
 DEFAULT_HF_MODEL = os.environ.get("CITECHECK_HF_MODEL", "Qwen/Qwen2.5-7B-Instruct")
-DEFAULT_HF_BASE_URL = os.environ.get(
-    "CITECHECK_HF_BASE_URL", "https://router.huggingface.co/v1"
-)
+DEFAULT_HF_BASE_URL = os.environ.get("CITECHECK_HF_BASE_URL", "https://router.huggingface.co/v1")
 
 CHUNK_TOKENS = 500
 CHUNK_OVERLAP = 50
@@ -218,9 +216,7 @@ def _call_openai_compatible(
     import httpx
 
     if not token:
-        raise RuntimeError(
-            f"{provider_name} API token not set; cannot call the LLM provider."
-        )
+        raise RuntimeError(f"{provider_name} API token not set; cannot call the LLM provider.")
     url = f"{base_url.rstrip('/')}/chat/completions"
     headers = {
         "Authorization": f"Bearer {token}",
@@ -253,7 +249,7 @@ def _call_openai_compatible(
             break
         if attempt == max_retries:
             break
-        sleep_s = backoff_base_s * (2 ** attempt)
+        sleep_s = backoff_base_s * (2**attempt)
         log.warning(
             "%s API %s on attempt %d/%d, sleeping %.1fs before retry",
             provider_name,
@@ -263,9 +259,7 @@ def _call_openai_compatible(
             sleep_s,
         )
         time.sleep(sleep_s)
-    raise RuntimeError(
-        f"{provider_name} API returned {last_status}: {last_body}"
-    )
+    raise RuntimeError(f"{provider_name} API returned {last_status}: {last_body}")
 
 
 def _call_hf_chat(

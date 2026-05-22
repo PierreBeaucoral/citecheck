@@ -156,9 +156,7 @@ def _publisher_pdf_candidates(doi: str) -> list[str]:
     # PLOS journals — DOIs of the form 10.1371/journal.<jrnl>.<id> serve their
     # PDFs at this stable URL pattern.
     if doi.startswith("10.1371/journal."):
-        out.append(
-            f"https://journals.plos.org/plosone/article/file?id={doi}&type=printable"
-        )
+        out.append(f"https://journals.plos.org/plosone/article/file?id={doi}&type=printable")
     return out
 
 
@@ -436,7 +434,7 @@ def fetch_text_any(
                 text = "\n\n".join((page.extract_text() or "") for page in reader.pages)
                 if text and text.strip():
                     return text, "unpaywall_pdf"
-            except Exception as exc:  # noqa: BLE001
+            except Exception as exc:
                 log.warning("pdf text extraction failed for %s: %s", doi, exc)
         # Fall through: see if Unpaywall handed us a PMC URL we can route
         # through E-utilities instead.

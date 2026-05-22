@@ -43,7 +43,9 @@ def test_phase5_flag_persists(store: JobStore) -> None:
 
 def test_status_transitions(store: JobStore) -> None:
     job_id = store.create_job(pdf_bytes=b"%PDF-X", phase5_enabled=False)
-    store.set_status(job_id, STATUS_RUNNING, progress_stage="resolution", progress_text="resolving 12 refs")
+    store.set_status(
+        job_id, STATUS_RUNNING, progress_stage="resolution", progress_text="resolving 12 refs"
+    )
     job = store.get_job(job_id)
     assert job.status == STATUS_RUNNING
     assert job.progress_stage == "resolution"

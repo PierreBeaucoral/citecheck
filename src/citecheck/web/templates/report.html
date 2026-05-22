@@ -93,11 +93,40 @@
       </span>
     </div>
   {% elif report.phase5.enabled %}
+    {# Compute how many refs were attempted vs how many got skipped, so the
+       user sees why N out of N_refs were verified (e.g. "2 of 19" — the
+       other 17 were paywalled / had no DOI). #}
+    {% set p5 = report.phase5 %}
+    {% set attempted = p5.claims_verified + p5.claims_skipped_no_text + p5.claims_skipped_quota %}
+    {% set unfetchable = p5.claims_skipped_no_text + p5.claims_skipped_cap %}
     <div class="banner banner-success">
       <span aria-hidden="true">✓</span>
       <span>
-        <strong>Phase 5 ran on {{ report.phase5.claims_verified }} claim{{ 's' if report.phase5.claims_verified != 1 else '' }}.</strong>
-        Model: <code>{{ report.phase5.model }}</code> via {{ report.phase5.provider }}.
+        <strong>Phase 5 verified {{ p5.claims_verified }} of {{ report.n_references }} reference{{ 's' if report.n_references != 1 else '' }}.</strong>
+        Model: <code>{{ p5.model }}</code> via {{ p5.provider }}.
+        {% if unfetchable > 0 or p5.n_refs_no_doi > 0 or p5.claims_skipped_quota > 0 %}
+        <details class="phase5-breakdown">
+          <summary>Why not all {{ report.n_references }}? <em>(click to expand)</em></summary>
+          <ul>
+            {% if p5.n_refs_no_doi > 0 %}
+            <li><strong>{{ p5.n_refs_no_doi }}</strong> reference{{ 's' if p5.n_refs_no_doi != 1 else '' }} had no resolvable DOI — Phase 5 needs a DOI to look up the cited paper's full text or abstract.</li>
+            {% endif %}
+            {% if p5.claims_skipped_no_text > 0 %}
+            <li><strong>{{ p5.claims_skipped_no_text }}</strong> reference{{ 's' if p5.claims_skipped_no_text != 1 else '' }} had a DOI but no fetchable text: Unpaywall found no open-access PDF, the paper isn't in PMC, and OpenAlex had no abstract. Common for paywalled economics / law / humanities journals.</li>
+            {% endif %}
+            {% if p5.claims_skipped_cap > 0 %}
+            <li><strong>{{ p5.claims_skipped_cap }}</strong> reference{{ 's' if p5.claims_skipped_cap != 1 else '' }} skipped because the per-PDF cap (max {{ settings.max_claims_per_pdf }}) was reached — keeps a single big PDF from monopolizing the daily LLM budget.</li>
+            {% endif %}
+            {% if p5.claims_skipped_quota > 0 %}
+            <li><strong>{{ p5.claims_skipped_quota }}</strong> reference{{ 's' if p5.claims_skipped_quota != 1 else '' }} skipped because the daily LLM quota was reached. Resets at 00:00 UTC.</li>
+            {% endif %}
+          </ul>
+          <p class="muted small">
+            Phase 5 trades off coverage for honesty: we only verify a claim when we can read the cited paper, and we tell you when we can't.
+            The four metadata checks above (retraction, fabrication, journal quality) ran on all {{ report.n_references }} references.
+          </p>
+        </details>
+        {% endif %}
       </span>
     </div>
   {% else %}

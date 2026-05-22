@@ -1,0 +1,63 @@
+# Keep the Docker build context small — under ~50 MB excluding source.
+#
+# Anything in this list is NOT sent to the daemon during `docker build`,
+# which both speeds builds and prevents accidentally baking secrets,
+# caches, or large eval PDFs into the image.
+
+# Git internals (not needed at runtime; the image doesn't run git).
+.git/
+.github/
+.gitignore
+
+# Secrets and local state.
+.env
+.env.*
+!.env.example
+
+# Local virtualenvs (the image creates its own at /app/.venv via uv).
+.venv/
+venv/
+
+# Python build artifacts.
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+build/
+dist/
+
+# Test + lint caches.
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Editor + OS noise.
+.vscode/
+.idea/
+.DS_Store
+*.swp
+*.swo
+
+# citecheck local caches.
+.citecheck/
+.uv-cache/
+
+# Eval data — too large for the image (multi-GB of PDFs) and not used
+# at runtime.  Labels CSVs are tracked in git but also not needed inside
+# the container.
+data/eval/*.pdf
+data/fixtures/*.pdf
+
+# Paper sources and quality reports — not needed at runtime.
+paper/
+quality_reports/
+docs/
+
+# Tests (image is runtime-only; tests run in CI).
+tests/
+
+# Pre-compiled artifacts that don't ship.
+*.log
+*.tar.gz

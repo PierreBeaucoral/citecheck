@@ -35,11 +35,11 @@ from typing import Any
 # threshold for the circuit-breaker so we never actually hit the API's
 # hard cap.
 _DEFAULT_DAILY_TOKEN_LIMIT = {
-    "cerebras": 800_000,        # conservative vs ~1M docs
-    "hf": 30_000,               # HF free is monthly-not-daily; we use a
-                                # daily-equivalent proxy here
-    "ollama": 10_000_000,       # local Ollama: no real cap; nominal value
-    "anthropic": 50_000_000,    # placeholder for v1.1 when credits land
+    "cerebras": 800_000,  # conservative vs ~1M docs
+    "hf": 30_000,  # HF free is monthly-not-daily; we use a
+    # daily-equivalent proxy here
+    "ollama": 10_000_000,  # local Ollama: no real cap; nominal value
+    "anthropic": 50_000_000,  # placeholder for v1.1 when credits land
 }
 
 # Per-call upper bound for cost estimation (input + output) at our prompt

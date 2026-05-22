@@ -19,6 +19,7 @@ This module is the thin layer that adapts citecheck's library code
 
 from __future__ import annotations
 
+import contextlib
 import logging
 import tempfile
 from pathlib import Path
@@ -59,7 +60,7 @@ def run_pipeline(
             quota=quota,
             settings=settings,
         )
-    except Exception as exc:  # noqa: BLE001 — entry point for background work
+    except Exception as exc:
         log.exception("pipeline failed for job %s", job_id)
         store.set_error(job_id, f"{type(exc).__name__}: {exc}")
 
@@ -132,11 +133,11 @@ def _run_pipeline_inner(
         # Stage 6: Phase 5 claim verification (opt-in).
         phase5_summary: dict[str, Any] = {
             "enabled": phase5_enabled,
-            "n_candidates": 0,                # refs with a resolved DOI = eligible for Phase 5
-            "n_refs_no_doi": 0,               # refs lacking any DOI; not Phase-5-eligible
-            "claims_verified": 0,             # total claims with a verdict
-            "claims_verified_fulltext": 0,    # of those, verdicts against full text
-            "claims_verified_abstract": 0,    # of those, verdicts against abstract-only fallback
+            "n_candidates": 0,  # refs with a resolved DOI = eligible for Phase 5
+            "n_refs_no_doi": 0,  # refs lacking any DOI; not Phase-5-eligible
+            "claims_verified": 0,  # total claims with a verdict
+            "claims_verified_fulltext": 0,  # of those, verdicts against full text
+            "claims_verified_abstract": 0,  # of those, verdicts against abstract-only fallback
             "claims_skipped_quota": 0,
             "claims_skipped_no_text": 0,
             "claims_skipped_cap": 0,
@@ -167,16 +168,19 @@ def _run_pipeline_inner(
         store.set_report(job_id, report)
     finally:
         cache.close()
-        # Tempfile cleanup; not critical if it fails.
-        try:
+        # Tempfile cleanup; not critical if it fails (e.g., already gone).
+        with contextlib.suppress(OSError):
             pdf_path.unlink(missing_ok=True)
-        except OSError:
-            pass
 
 
 def _write_temp_pdf(pdf_bytes: bytes, upload_dir: Path) -> Path:
-    """Write the bytes to a uniquely-named tempfile under upload_dir."""
-    fd = tempfile.NamedTemporaryFile(
+    """Write the bytes to a uniquely-named tempfile under upload_dir.
+
+    `delete=False` is deliberate — the file must outlive this function so
+    the BackgroundTask can read it; cleanup happens in run_pipeline's
+    finally block via contextlib.suppress(OSError) above.
+    """
+    fd = tempfile.NamedTemporaryFile(  # noqa: SIM115 — see docstring.
         dir=str(upload_dir), suffix=".pdf", delete=False
     )
     fd.write(pdf_bytes)
@@ -249,12 +253,15 @@ def _run_phase5(
 
     # Pick the LLM call function based on settings.llm_provider.
     if settings.llm_provider == "cerebras":
+
         def llm_call(prompt: str) -> str:
             return _call_cerebras(prompt, model=settings.llm_model)
     elif settings.llm_provider == "hf":
+
         def llm_call(prompt: str) -> str:
             return _call_hf_chat(prompt, model=settings.llm_model)
     else:
+
         def llm_call(prompt: str) -> str:
             return _call_ollama(prompt, model=settings.llm_model)
 
@@ -271,7 +278,7 @@ def _run_phase5(
     candidates: list[tuple[int, dict, str]] = []
     n_no_doi = 0
     for idx, r in enumerate(per_ref_results):
-        outer = r.get("raw") or {}                  # serialized Reference
+        outer = r.get("raw") or {}  # serialized Reference
         inner = outer.get("raw") if isinstance(outer, dict) else None
         if not isinstance(inner, dict):
             inner = {}
@@ -315,9 +322,11 @@ def _run_phase5(
         "10.1098/rs",  # Royal Society Open Science
         "10.1093/pn",  # PNAS Nexus
     )
+
     def _oa_priority(triple):
         doi = (triple[1].get("raw", {}) or {}).get("resolved_doi", "") or ""
         return 0 if any(doi.startswith(p) for p in OA_PREFIXES) else 1
+
     candidates.sort(key=_oa_priority)
 
     # Cap to max_claims_per_pdf to prevent monopolizing the daily budget.
@@ -379,7 +388,7 @@ def _run_phase5(
                 ollama_call=llm_call,
                 text=text,
             )
-        except Exception as exc:  # noqa: BLE001 — must not crash the job
+        except Exception as exc:
             log.warning("verify_claim failed for ref %d: %s", idx, exc)
             r["claims"].append({"status": "error", "reasoning": repr(exc)[:200]})
             # If the error looks like a quota-exhaustion 429, stop early.
