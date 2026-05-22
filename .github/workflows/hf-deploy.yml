@@ -53,20 +53,17 @@ jobs:
             exit 1
           fi
 
-      - name: Copy spaces/README.md to repo-root README for HF
-        # HF Spaces reads the YAML frontmatter from the root README.md.
-        # Our main README.md is a developer-facing project README without
-        # the YAML header; the Space-specific header lives in
-        # spaces/README.md.  We overwrite the root README only on the
-        # deploy branch — never in main itself.
-        run: |
-          cp spaces/README.md README.md
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add README.md
-          git commit -m "deploy: substitute HF Space README" || echo "(no changes to README)"
-
-      - name: Push to HuggingFace Space
+      - name: Build orphan deploy commit + push to HuggingFace Space
+        # HF Spaces' git server has a hard 10 MB per-file limit (LFS required
+        # otherwise).  Our `main` history contains older revisions of
+        # paper/main.pdf that exceed that limit, even though the current tip
+        # is under.  We could rewrite history, but the Space genuinely does
+        # not need paper/, data/eval/, quality_reports/, or tests/ at runtime.
+        #
+        # Approach: create an *orphan* branch (no parent commits → no history
+        # → no big-blob blame) containing only deploy-relevant files, then
+        # force-push that orphan as the Space's main branch.  GitHub's main
+        # keeps the full history; HF gets a flat, slim, deploy-only mirror.
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
           HF_USERNAME: ${{ vars.HF_USERNAME }}
@@ -81,15 +78,34 @@ jobs:
             exit 1
           fi
 
-          # Use the token as the password component of the URL.  HF
-          # accepts basic-auth git pushes when the username is the
-          # account name and the password is the token.
-          REMOTE_URL="https://${HF_USERNAME}:${HF_TOKEN}@huggingface.co/spaces/${HF_USERNAME}/${HF_SPACE_NAME}"
+          # ---- 1. Strip non-deploy directories from the working tree ----
+          # These are large or irrelevant for the Space:
+          #   paper/        — manuscript sources and the PDF
+          #   data/         — eval corpora (PDFs, CSVs)
+          #   quality_reports/ — plans, reports, internal notes
+          #   tests/        — unit tests (runs in CI, not in the Space)
+          #   docs/         — developer documentation
+          # Keep: Dockerfile, src/, scripts/, pyproject.toml, uv.lock,
+          # README (from spaces/), spaces/, .dockerignore.
+          rm -rf paper data quality_reports tests docs
 
+          # ---- 2. Substitute spaces/README.md as the root README ----
+          # HF reads YAML frontmatter from the repo-root README.md.  Our
+          # developer README doesn't have the frontmatter; spaces/README.md
+          # does.
+          cp spaces/README.md README.md
+
+          # ---- 3. Build an orphan commit ----
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout --orphan hf-deploy
+          # Re-stage the surviving tree; --orphan keeps files but resets the
+          # index/HEAD ancestry.
+          git add -A
+          git commit -m "deploy: citecheck @ ${GITHUB_SHA::8}"
+
+          # ---- 4. Force-push orphan as Space's main ----
+          REMOTE_URL="https://${HF_USERNAME}:${HF_TOKEN}@huggingface.co/spaces/${HF_USERNAME}/${HF_SPACE_NAME}"
           git remote add space "$REMOTE_URL" 2>/dev/null || \
             git remote set-url space "$REMOTE_URL"
-
-          # Force-push because the Space's history may diverge from main
-          # (HF auto-commits when you edit secrets in the UI etc.).
-          # We treat main as the source of truth.
-          git push --force space HEAD:main
+          git push --force space hf-deploy:main
